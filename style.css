@@ -1385,3 +1385,171 @@ html {
         bottom: 22px;
     }
 }
+
+
+
+/* ============================= */
+/* COMO COMPRAR + FAQ */
+/* ============================= */
+
+.seccion-header {
+    max-width: 850px;
+    margin: 0 auto 35px;
+    text-align: center;
+}
+
+.seccion-header h2 {
+    color: var(--vino);
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.seccion-header p {
+    color: #6c5961;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.como-comprar {
+    padding: 75px 40px;
+    background: linear-gradient(135deg, #fff7f2 0%, #f9dbe7 100%);
+}
+
+.pasos-compra {
+    max-width: 1150px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.paso-card {
+    background-color: white;
+    border-radius: 24px;
+    padding: 26px 22px;
+    text-align: center;
+    border: 1px solid var(--rosado-claro);
+    box-shadow: 0 10px 25px rgba(138, 47, 85, 0.12);
+    transition: 0.3s;
+}
+
+.paso-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 34px rgba(138, 47, 85, 0.2);
+}
+
+.paso-numero {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--vino), var(--rosado-oscuro));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 22px;
+}
+
+.paso-card h3 {
+    color: var(--vino);
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.paso-card p {
+    color: #6c5961;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+.faq {
+    padding: 75px 40px;
+    background-color: var(--crema);
+}
+
+.faq-contenedor {
+    max-width: 900px;
+    margin: auto;
+}
+
+.faq-item {
+    background-color: white;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    border: 1px solid var(--rosado-claro);
+    box-shadow: 0 8px 22px rgba(138, 47, 85, 0.09);
+    overflow: hidden;
+}
+
+.faq-pregunta {
+    width: 100%;
+    border: none;
+    background-color: white;
+    color: var(--vino);
+    padding: 20px 22px;
+    font-size: 17px;
+    font-weight: bold;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-pregunta span {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--rosado-claro);
+    color: var(--vino);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    transition: 0.3s;
+}
+
+.faq-respuesta {
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.3s ease;
+}
+
+.faq-respuesta p {
+    padding: 0 22px 20px;
+    color: #6c5961;
+    line-height: 1.7;
+}
+
+.faq-item.activo .faq-respuesta {
+    max-height: 180px;
+}
+
+.faq-item.activo .faq-pregunta span {
+    transform: rotate(45deg);
+    background-color: var(--rosado-oscuro);
+    color: white;
+}
+
+@media (max-width: 900px) {
+    .pasos-compra {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .como-comprar,
+    .faq {
+        padding: 55px 22px;
+    }
+
+    .pasos-compra {
+        grid-template-columns: 1fr;
+    }
+
+    .seccion-header h2 {
+        font-size: 30px;
+    }
+}

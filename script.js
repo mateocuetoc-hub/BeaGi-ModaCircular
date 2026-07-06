@@ -559,3 +559,26 @@ document.addEventListener("keydown", (evento) => {
 });
 
 actualizarPanelFavoritos();
+
+
+
+
+/* ============================= */
+/* FAQ INTERACTIVO */
+/* ============================= */
+
+const preguntasFaq = document.querySelectorAll(".faq-pregunta");
+
+preguntasFaq.forEach((pregunta) => {
+    pregunta.addEventListener("click", () => {
+        const item = pregunta.closest(".faq-item");
+
+        document.querySelectorAll(".faq-item").forEach((faq) => {
+            if (faq !== item) {
+                faq.classList.remove("activo");
+            }
+        });
+
+        item.classList.toggle("activo");
+    });
+});
