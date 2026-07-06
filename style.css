@@ -891,3 +891,87 @@ html {
 .catalogo {
     padding-top: 55px !important;
 }
+
+/* ============================= */
+/* MENÚ HAMBURGUESA CELULAR */
+/* ============================= */
+.menu-toggle {
+    display: none;
+    background-color: var(--rosado-claro);
+    color: var(--vino);
+    border: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        position: relative;
+        flex-direction: row !important;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .marca h1 {
+        font-size: 18px;
+    }
+
+    .marca span {
+        font-size: 11px;
+    }
+
+    .logo-circulo {
+        width: 44px;
+        height: 44px;
+        font-size: 17px;
+    }
+
+    .menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 68px;
+        right: 0;
+        width: min(260px, 90vw);
+        background-color: white;
+        border-radius: 22px;
+        padding: 18px;
+        display: none !important;
+        flex-direction: column;
+        gap: 8px;
+        box-shadow: 0 14px 35px rgba(92, 31, 58, 0.25);
+        border: 1px solid var(--rosado-claro);
+        z-index: 999;
+    }
+
+    .nav-links.activo {
+        display: flex !important;
+    }
+
+    .nav-links li {
+        width: 100%;
+    }
+
+    .nav-links a {
+        display: block;
+        color: var(--vino) !important;
+        padding: 13px 16px;
+        border-radius: 14px;
+        text-align: left;
+    }
+
+    .nav-links a:hover {
+        background-color: var(--rosado-claro);
+        color: var(--rosado-oscuro) !important;
+    }
+}

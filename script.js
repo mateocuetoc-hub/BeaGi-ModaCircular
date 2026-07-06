@@ -258,6 +258,29 @@ cerrarModal.addEventListener("click", () => {
     modal.classList.remove("activo");
 });
 
+const menuToggle = document.getElementById("menu-toggle");
+const navLinks = document.getElementById("nav-links");
+
+menuToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("activo");
+
+    if (navLinks.classList.contains("activo")) {
+        menuToggle.textContent = "×";
+        menuToggle.setAttribute("aria-label", "Cerrar menú");
+    } else {
+        menuToggle.textContent = "☰";
+        menuToggle.setAttribute("aria-label", "Abrir menú");
+    }
+});
+
+navLinks.addEventListener("click", (evento) => {
+    if (evento.target.tagName === "A") {
+        navLinks.classList.remove("activo");
+        menuToggle.textContent = "☰";
+        menuToggle.setAttribute("aria-label", "Abrir menú");
+    }
+});
+
 modal.addEventListener("click", (evento) => {
     if (evento.target === modal) {
         modal.classList.remove("activo");
