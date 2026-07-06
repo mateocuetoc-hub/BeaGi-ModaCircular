@@ -29,6 +29,18 @@ let categoriaActiva = "todos";
 const favoritosGuardados = JSON.parse(localStorage.getItem("favoritosBeaGi")) || [];
 const favoritos = new Set(favoritosGuardados);
 
+function obtenerImagenes(abrigo) {
+    if (Array.isArray(abrigo.imagenes) && abrigo.imagenes.length > 0) {
+        return abrigo.imagenes;
+    }
+
+    if (abrigo.imagen) {
+        return [abrigo.imagen];
+    }
+
+    return [];
+}
+
 function guardarFavoritos() {
     localStorage.setItem("favoritosBeaGi", JSON.stringify([...favoritos]));
 }
@@ -189,18 +201,26 @@ function renderizarAbrigos(listaAbrigos) {
         const mensajeWhatsApp = crearMensajeWhatsApp(abrigo);
         const esFavorito = favoritos.has(abrigo.id);
         const disponibilidad = obtenerDisponibilidad(abrigo);
+        const imagenes = obtenerImagenes(abrigo);
+        const imagenPrincipal = imagenes[0] || "";
 
         producto.innerHTML = `
             <div class="producto-imagen">
                 ${
-                    abrigo.imagen
-                        ? `<img src="${abrigo.imagen}" alt="${abrigo.nombre}">`
+                    imagenPrincipal
+                        ? `<img src="${imagenPrincipal}" alt="${abrigo.nombre}">`
                         : `<div class="imagen-placeholder">Foto pendiente</div>`
                 }
 
                 ${
                     abrigo.destacado
                         ? `<span class="badge-destacado">Destacado</span>`
+                        : ""
+                }
+
+                ${
+                    imagenes.length > 1
+                        ? `<span class="badge-fotos">${imagenes.length} fotos</span>`
                         : ""
                 }
 
@@ -299,9 +319,41 @@ function abrirDetalle(id) {
         return;
     }
 
-    modalImagen.innerHTML = abrigo.imagen
-        ? `<img src="${abrigo.imagen}" alt="${abrigo.nombre}">`
-        : `<div class="imagen-placeholder modal-placeholder">Foto pendiente</div>`;
+    const imagenes = obtenerImagenes(abrigo);
+
+    if (imagenes.length > 0) {
+        modalImagen.innerHTML = `
+            <div class="galeria-modal">
+                <div class="galeria-principal">
+                    <img 
+                        id="galeria-img-principal" 
+                        src="${imagenes[0]}" 
+                        alt="${abrigo.nombre}"
+                    >
+                </div>
+
+                ${
+                    imagenes.length > 1
+                        ? `<div class="galeria-miniaturas">
+                            ${imagenes
+                                .map((imagen, index) => `
+                                    <button 
+                                        class="miniatura-modal ${index === 0 ? "activa" : ""}" 
+                                        data-imagen="${imagen}" 
+                                        aria-label="Ver foto ${index + 1}"
+                                    >
+                                        <img src="${imagen}" alt="Foto ${index + 1} de ${abrigo.nombre}">
+                                    </button>
+                                `)
+                                .join("")}
+                        </div>`
+                        : ""
+                }
+            </div>
+        `;
+    } else {
+        modalImagen.innerHTML = `<div class="imagen-placeholder modal-placeholder">Foto pendiente</div>`;
+    }
 
     modalNombre.textContent = abrigo.nombre;
     modalDescripcion.textContent = abrigo.descripcion;
@@ -380,6 +432,28 @@ contenedorProductos.addEventListener("click", (evento) => {
         guardarFavoritos();
         aplicarFiltros();
     }
+});
+
+modalImagen.addEventListener("click", (evento) => {
+    const miniatura = evento.target.closest(".miniatura-modal");
+
+    if (!miniatura) {
+        return;
+    }
+
+    const imagenPrincipal = document.getElementById("galeria-img-principal");
+
+    if (!imagenPrincipal) {
+        return;
+    }
+
+    imagenPrincipal.src = miniatura.dataset.imagen;
+
+    document.querySelectorAll(".miniatura-modal").forEach((item) => {
+        item.classList.remove("activa");
+    });
+
+    miniatura.classList.add("activa");
 });
 
 cerrarModal.addEventListener("click", () => {

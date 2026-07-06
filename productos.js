@@ -1,5 +1,6 @@
 // Productos del catálogo BeaGi ModaCircular
 // Para modificar el catálogo, cambia los datos de este archivo.
+// Puedes agregar varias fotos por producto usando la propiedad imagenes.
 
 const productosBeaGi = [
     {
@@ -12,7 +13,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Abrigo elegante y versátil, ideal para outfits de invierno.",
-        "destacado": true
+        "destacado": true,
+        "imagenes": []
     },
     {
         "id": 2,
@@ -24,7 +26,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Abrigo negro formal, perfecto para uso diario o eventos.",
-        "destacado": true
+        "destacado": true,
+        "imagenes": []
     },
     {
         "id": 3,
@@ -36,7 +39,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Abrigo cómodo, combinable y con estilo casual.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 4,
@@ -48,7 +52,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo de lana. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 5,
@@ -60,7 +65,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para trench coat. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 6,
@@ -72,7 +78,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo teddy. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 7,
@@ -84,7 +91,8 @@ const productosBeaGi = [
         "disponibilidad": "Reservado",
         "imagen": "",
         "descripcion": "Espacio reservado para parka larga. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": true
+        "destacado": true,
+        "imagenes": []
     },
     {
         "id": 8,
@@ -96,7 +104,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo oversize. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 9,
@@ -108,7 +117,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para gabardina. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 10,
@@ -120,7 +130,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para chaquetón. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 11,
@@ -132,7 +143,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo de paño. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 12,
@@ -144,7 +156,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para blazer largo. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 13,
@@ -156,7 +169,8 @@ const productosBeaGi = [
         "disponibilidad": "Vendido",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo peludo. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 14,
@@ -168,7 +182,8 @@ const productosBeaGi = [
         "disponibilidad": "Reservado",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo de lana. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": true
+        "destacado": true,
+        "imagenes": []
     },
     {
         "id": 15,
@@ -180,7 +195,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para trench coat. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 16,
@@ -192,7 +208,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo teddy. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 17,
@@ -204,7 +221,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para parka larga. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 18,
@@ -216,7 +234,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo oversize. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 19,
@@ -228,7 +247,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para gabardina. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 20,
@@ -240,7 +260,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para chaquetón. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 21,
@@ -252,7 +273,8 @@ const productosBeaGi = [
         "disponibilidad": "Reservado",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo de paño. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": true
+        "destacado": true,
+        "imagenes": []
     },
     {
         "id": 22,
@@ -264,7 +286,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para blazer largo. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 23,
@@ -276,7 +299,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo peludo. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 24,
@@ -288,7 +312,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo de lana. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 25,
@@ -300,7 +325,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para trench coat. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 26,
@@ -312,7 +338,8 @@ const productosBeaGi = [
         "disponibilidad": "Vendido",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo teddy. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 27,
@@ -324,7 +351,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para parka larga. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 28,
@@ -336,7 +364,8 @@ const productosBeaGi = [
         "disponibilidad": "Reservado",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo oversize. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": true
+        "destacado": true,
+        "imagenes": []
     },
     {
         "id": 29,
@@ -348,7 +377,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para gabardina. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 30,
@@ -360,7 +390,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para chaquetón. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 31,
@@ -372,7 +403,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo de paño. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 32,
@@ -384,7 +416,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para blazer largo. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 33,
@@ -396,7 +429,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo peludo. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 34,
@@ -408,7 +442,8 @@ const productosBeaGi = [
         "disponibilidad": "Disponible",
         "imagen": "",
         "descripcion": "Espacio reservado para abrigo de lana. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": false
+        "destacado": false,
+        "imagenes": []
     },
     {
         "id": 35,
@@ -420,7 +455,8 @@ const productosBeaGi = [
         "disponibilidad": "Reservado",
         "imagen": "",
         "descripcion": "Espacio reservado para trench coat. Aquí luego agregaremos foto real, color, medidas y detalles.",
-        "destacado": true
+        "destacado": true,
+        "imagenes": []
     }
 ];
 
