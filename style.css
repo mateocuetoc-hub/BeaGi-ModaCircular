@@ -1,0 +1,275 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --rosado-claro: #f9dbe7;
+    --rosado-suave: #f4b6c8;
+    --rosado-medio: #d96c94;
+    --rosado-oscuro: #8a2f55;
+    --vino: #5c1f3a;
+    --crema: #fff7f2;
+    --texto: #2f2528;
+    --blanco: #ffffff;
+    --whatsapp: #25d366;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--crema);
+    color: var(--texto);
+}
+
+.header {
+    background: linear-gradient(90deg, var(--vino), var(--rosado-oscuro));
+    color: var(--blanco);
+    padding: 18px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(92, 31, 58, 0.25);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 26px;
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: var(--blanco);
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--rosado-claro);
+}
+
+.hero {
+    min-height: 75vh;
+    background:
+        linear-gradient(rgba(92, 31, 58, 0.65), rgba(217, 108, 148, 0.45)),
+        url("img/portada.jpg");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+    color: var(--blanco);
+}
+
+.hero-content {
+    max-width: 750px;
+}
+
+.hero-content h2 {
+    font-size: 52px;
+    margin-bottom: 15px;
+}
+
+.hero-content p {
+    font-size: 21px;
+    margin-bottom: 28px;
+}
+
+.btn-principal,
+.btn-wsp {
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-principal {
+    background-color: var(--rosado-medio);
+    color: var(--blanco);
+    padding: 14px 30px;
+    box-shadow: 0 6px 16px rgba(217, 108, 148, 0.35);
+}
+
+.btn-principal:hover {
+    background-color: var(--rosado-oscuro);
+    transform: translateY(-3px);
+}
+
+.catalogo {
+    padding: 70px 40px;
+    text-align: center;
+}
+
+.catalogo h2,
+.nosotros h2,
+.contacto h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: var(--vino);
+}
+
+.subtitulo {
+    margin-bottom: 40px;
+    color: #6c5961;
+}
+
+.productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+    max-width: 1250px;
+    margin: auto;
+}
+
+.producto {
+    background-color: var(--blanco);
+    border-radius: 22px;
+    padding: 18px;
+    box-shadow: 0 8px 22px rgba(138, 47, 85, 0.15);
+    border: 1px solid var(--rosado-claro);
+    transition: 0.3s;
+}
+
+.producto:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(138, 47, 85, 0.22);
+}
+
+.producto img {
+    width: 100%;
+    height: 310px;
+    object-fit: cover;
+    border-radius: 18px;
+    margin-bottom: 15px;
+}
+
+.imagen-placeholder {
+    width: 100%;
+    height: 310px;
+    border-radius: 18px;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, #f9dbe7, #f4b6c8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8a2f55;
+    font-weight: bold;
+    font-size: 18px;
+    border: 2px dashed #d96c94;
+}
+
+.producto h3 {
+    font-size: 23px;
+    margin-bottom: 8px;
+    color: var(--rosado-oscuro);
+}
+
+.producto p {
+    margin-bottom: 6px;
+    color: #4a3b40;
+}
+
+.precio {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--vino);
+    margin: 14px 0;
+}
+
+.btn-wsp {
+    background-color: var(--whatsapp);
+    color: var(--blanco);
+    padding: 12px 20px;
+    margin-top: 8px;
+}
+
+.btn-wsp:hover {
+    background-color: #1ebe5d;
+    transform: scale(1.04);
+}
+
+.nosotros {
+    background-color: var(--rosado-claro);
+    border-radius: 28px;
+    padding: 60px 40px;
+    text-align: center;
+    max-width: 950px;
+    margin: 30px auto;
+    box-shadow: 0 8px 20px rgba(138, 47, 85, 0.12);
+}
+
+.contacto {
+    padding: 65px 40px;
+    text-align: center;
+    max-width: 900px;
+    margin: auto;
+}
+
+.nosotros p,
+.contacto p {
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+.grande {
+    margin-top: 22px;
+    font-size: 18px;
+    padding: 14px 28px;
+}
+
+.footer {
+    background: linear-gradient(90deg, var(--vino), var(--rosado-oscuro));
+    color: var(--blanco);
+    text-align: center;
+    padding: 22px;
+    margin-top: 40px;
+}
+
+/* Responsive para celular */
+@media (max-width: 768px) {
+    .header {
+        padding: 18px 20px;
+    }
+
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .hero-content h2 {
+        font-size: 36px;
+    }
+
+    .hero-content p {
+        font-size: 18px;
+    }
+
+    .productos {
+        grid-template-columns: 1fr;
+    }
+
+    .catalogo {
+        padding: 50px 22px;
+    }
+}
