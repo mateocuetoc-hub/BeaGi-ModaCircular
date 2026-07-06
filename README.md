@@ -6,7 +6,7 @@ Página web tipo catálogo para **BeaGi ModaCircular**, una tienda enfocada en a
 
 Puedes ingresar a la página desde este link:
 
-https://mateocuetoc-hub.github.io/BeaGi-ModaCircular./
+https://mateocuetoc-hub.github.io/BeaGi-ModaCircular/
 
 > Si el link todavía no abre, falta activar GitHub Pages desde el repositorio.
 
