@@ -1,19 +1,35 @@
 # BeaGi ModaCircular
 
-Página web tipo catálogo para **BeaGi ModaCircular**, una tienda enfocada en la venta de abrigos de mujer y moda circular.
+Página web tipo catálogo para **BeaGi ModaCircular**, una tienda enfocada en abrigos de mujer y moda circular.
+
+## Ver página online
+
+Puedes ingresar a la página desde este link:
+
+https://mateocuetoc-hub.github.io/BeaGi-ModaCircular./
+
+> Si el link todavía no abre, falta activar GitHub Pages desde el repositorio.
 
 ## Descripción
 
-Este proyecto muestra un catálogo visual de abrigos, donde cada producto puede incluir:
+Este proyecto muestra un catálogo visual de abrigos de mujer, pensado para que las clientas puedan revisar prendas disponibles y consultar directamente por WhatsApp.
 
-- Foto del abrigo
-- Nombre del producto
-- Talla
-- Estado de la prenda
-- Precio
-- Botón de consulta por WhatsApp
+La página está diseñada para una pyme/emprendimiento, con una interfaz moderna, colores rosados, estilo elegante y navegación simple.
 
-La idea principal es que las clientas puedan revisar los abrigos disponibles y consultar directamente por WhatsApp de forma rápida.
+## Funcionalidades actuales
+
+- Página de inicio con presentación de marca.
+- Catálogo con 35 espacios para abrigos.
+- Buscador de productos.
+- Filtro por talla.
+- Filtro por precio.
+- Contador de productos visibles.
+- Botón para ver detalle de cada abrigo.
+- Ventana emergente con información del producto.
+- Botón de consulta directa por WhatsApp.
+- Botón flotante de WhatsApp.
+- Diseño responsive adaptable a celular.
+- Interfaz visual en tonos rosados, crema y vino.
 
 ## Tecnologías utilizadas
 
@@ -23,6 +39,7 @@ La idea principal es que las clientas puedan revisar los abrigos disponibles y c
 - Visual Studio Code
 - Git
 - GitHub
+- GitHub Pages
 
 ## Estructura del proyecto
 
@@ -33,23 +50,23 @@ BeaGi-ModaCircular/
 ├── README.md
 └── img/
 
-## Funcionalidades actuales
-
-- Diseño responsive adaptable a celular.
-- Catálogo con 35 espacios para abrigos.
-- Tarjetas de productos generadas con JavaScript.
-- Botón de contacto por WhatsApp.
-- Estilo visual en tonos rosados, crema y vino.
-
 ## Próximas mejoras
 
+- Agregar logo real de BeaGi ModaCircular.
 - Agregar fotos reales de los abrigos.
-- Conectar cada producto con un mensaje personalizado de WhatsApp.
-- Agregar logo oficial de BeaGi ModaCircular.
-- Mejorar portada principal.
-- Subir la página a GitHub Pages.
-- Agregar sección de redes sociales.
+- Cambiar el número de WhatsApp por el oficial.
+- Agregar Instagram de la tienda.
+- Agregar dirección o zona de entrega.
+- Mejorar la sección de contacto.
+- Agregar categorías por tipo de abrigo.
+- Agregar disponibilidad de cada producto.
+
+## Estado del proyecto
+
+Proyecto en desarrollo.
+
+Actualmente la página cuenta con una base funcional para catálogo online y consultas por WhatsApp.
 
 ## Autor
 
-Desarrollado por Mateo como proyecto web para pyme / emprendimiento.
+Desarrollado por Mateo como proyecto web para pyme/emprendimiento.
