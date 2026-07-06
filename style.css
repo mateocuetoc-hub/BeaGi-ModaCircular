@@ -975,3 +975,164 @@ html {
         color: var(--rosado-oscuro) !important;
     }
 }
+
+
+/* ============================= */
+/* MEJORAS INTERACTIVAS */
+/* ============================= */
+
+html {
+    scroll-behavior: smooth;
+}
+
+.chips-categorias {
+    max-width: 1100px;
+    margin: 0 auto 28px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+.chip {
+    border: 1px solid var(--rosado-claro);
+    background-color: white;
+    color: var(--vino);
+    padding: 11px 18px;
+    border-radius: 999px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 5px 16px rgba(138, 47, 85, 0.08);
+}
+
+.chip:hover {
+    background-color: var(--rosado-claro);
+    transform: translateY(-3px);
+}
+
+.chip.activo {
+    background-color: var(--rosado-oscuro);
+    color: white;
+    border-color: var(--rosado-oscuro);
+}
+
+.producto {
+    opacity: 0;
+    transform: translateY(25px);
+}
+
+.producto.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.producto-imagen {
+    overflow: hidden;
+    border-radius: 18px;
+}
+
+.producto img,
+.imagen-placeholder {
+    transition: 0.35s;
+}
+
+.producto:hover img,
+.producto:hover .imagen-placeholder {
+    transform: scale(1.04);
+}
+
+.imagen-placeholder {
+    background-size: 220% 220%;
+    animation: brilloPlaceholder 5s ease infinite;
+}
+
+@keyframes brilloPlaceholder {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.btn-favorito {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.92);
+    color: var(--rosado-oscuro);
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(92, 31, 58, 0.18);
+    transition: 0.3s;
+}
+
+.btn-favorito:hover {
+    transform: scale(1.12);
+    background-color: var(--rosado-claro);
+}
+
+.btn-favorito.activo {
+    background-color: var(--rosado-oscuro);
+    color: white;
+}
+
+.btn-subir {
+    position: fixed;
+    right: 24px;
+    bottom: 88px;
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--vino);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(92, 31, 58, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(15px);
+    transition: 0.3s;
+    z-index: 350;
+}
+
+.btn-subir.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.btn-subir:hover {
+    background-color: var(--rosado-oscuro);
+    transform: translateY(-4px);
+}
+
+@media (max-width: 768px) {
+    .chips-categorias {
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding: 0 5px 10px;
+    }
+
+    .chip {
+        white-space: nowrap;
+    }
+
+    .btn-subir {
+        right: 16px;
+        bottom: 82px;
+    }
+}

@@ -4,7 +4,7 @@ const abrigos = [
     {
         id: 1,
         nombre: "Abrigo Beige Clásico",
-        tipo: "Abrigo de paño",
+        tipo: "Abrigo de Paño",
         talla: "M",
         estado: "Excelente estado",
         precio: 25000,
@@ -15,7 +15,7 @@ const abrigos = [
     {
         id: 2,
         nombre: "Abrigo Negro Elegante",
-        tipo: "Abrigo largo",
+        tipo: "Abrigo Largo",
         talla: "L",
         estado: "Muy buen estado",
         precio: 28000,
@@ -26,7 +26,7 @@ const abrigos = [
     {
         id: 3,
         nombre: "Abrigo Café Casual",
-        tipo: "Abrigo urbano",
+        tipo: "Abrigo Urbano",
         talla: "S",
         estado: "Buen estado",
         precio: 22000,
@@ -64,7 +64,7 @@ for (let i = 4; i <= 35; i++) {
         precio: i % 5 === 0 ? null : 18000 + i * 1000,
         imagen: "",
         descripcion: `Espacio reservado para ${tipo.toLowerCase()}. Aquí luego agregaremos foto real, color, medidas y detalles.`,
-        destacado: false,
+        destacado: i % 7 === 0,
     });
 }
 
@@ -74,6 +74,7 @@ const filtroTalla = document.getElementById("filtro-talla");
 const filtroPrecio = document.getElementById("filtro-precio");
 const btnLimpiar = document.getElementById("btn-limpiar");
 const contadorProductos = document.getElementById("contador-productos");
+const chipsCategorias = document.getElementById("chips-categorias");
 
 const modal = document.getElementById("modal-producto");
 const cerrarModal = document.getElementById("cerrar-modal");
@@ -84,6 +85,17 @@ const modalTalla = document.getElementById("modal-talla");
 const modalEstado = document.getElementById("modal-estado");
 const modalPrecio = document.getElementById("modal-precio");
 const modalWhatsapp = document.getElementById("modal-whatsapp");
+
+const btnSubir = document.getElementById("btn-subir");
+
+let categoriaActiva = "todos";
+
+const favoritosGuardados = JSON.parse(localStorage.getItem("favoritosBeaGi")) || [];
+const favoritos = new Set(favoritosGuardados);
+
+function guardarFavoritos() {
+    localStorage.setItem("favoritosBeaGi", JSON.stringify([...favoritos]));
+}
 
 function formatearPrecio(precio) {
     if (precio === null) {
@@ -109,6 +121,25 @@ Precio: ${precioTexto}`;
     return encodeURIComponent(mensaje);
 }
 
+function activarAnimacionesTarjetas() {
+    const tarjetas = document.querySelectorAll(".producto");
+
+    const observador = new IntersectionObserver(
+        (entradas) => {
+            entradas.forEach((entrada) => {
+                if (entrada.isIntersecting) {
+                    entrada.target.classList.add("visible");
+                }
+            });
+        },
+        {
+            threshold: 0.15,
+        }
+    );
+
+    tarjetas.forEach((tarjeta) => observador.observe(tarjeta));
+}
+
 function renderizarAbrigos(listaAbrigos) {
     contenedorProductos.innerHTML = "";
 
@@ -118,7 +149,7 @@ function renderizarAbrigos(listaAbrigos) {
         contenedorProductos.innerHTML = `
             <div class="sin-resultados">
                 <h3>No encontramos abrigos con esos filtros</h3>
-                <p>Prueba cambiando la talla, el precio o el texto de búsqueda.</p>
+                <p>Prueba cambiando la talla, el precio o la categoría.</p>
             </div>
         `;
         return;
@@ -130,6 +161,7 @@ function renderizarAbrigos(listaAbrigos) {
 
         const precioTexto = formatearPrecio(abrigo.precio);
         const mensajeWhatsApp = crearMensajeWhatsApp(abrigo);
+        const esFavorito = favoritos.has(abrigo.id);
 
         producto.innerHTML = `
             <div class="producto-imagen">
@@ -144,6 +176,10 @@ function renderizarAbrigos(listaAbrigos) {
                         ? `<span class="badge-destacado">Destacado</span>`
                         : ""
                 }
+
+                <button class="btn-favorito ${esFavorito ? "activo" : ""}" data-id="${abrigo.id}" aria-label="Agregar a favoritos">
+                    ${esFavorito ? "♥" : "♡"}
+                </button>
             </div>
 
             <h3>${abrigo.nombre}</h3>
@@ -169,6 +205,8 @@ function renderizarAbrigos(listaAbrigos) {
 
         contenedorProductos.appendChild(producto);
     });
+
+    activarAnimacionesTarjetas();
 }
 
 function aplicarFiltros() {
@@ -206,7 +244,17 @@ function aplicarFiltros() {
             coincidePrecio = abrigo.precio === null;
         }
 
-        return coincideTexto && coincideTalla && coincidePrecio;
+        let coincideCategoria = true;
+
+        if (categoriaActiva !== "todos" && categoriaActiva !== "favoritos") {
+            coincideCategoria = abrigo.tipo === categoriaActiva;
+        }
+
+        if (categoriaActiva === "favoritos") {
+            coincideCategoria = favoritos.has(abrigo.id);
+        }
+
+        return coincideTexto && coincideTalla && coincidePrecio && coincideCategoria;
     });
 
     renderizarAbrigos(resultado);
@@ -242,15 +290,55 @@ btnLimpiar.addEventListener("click", () => {
     buscador.value = "";
     filtroTalla.value = "todos";
     filtroPrecio.value = "todos";
+    categoriaActiva = "todos";
+
+    document.querySelectorAll(".chip").forEach((chip) => {
+        chip.classList.remove("activo");
+    });
+
+    document.querySelector('.chip[data-tipo="todos"]').classList.add("activo");
+
     renderizarAbrigos(abrigos);
+});
+
+chipsCategorias.addEventListener("click", (evento) => {
+    const chip = evento.target.closest(".chip");
+
+    if (!chip) {
+        return;
+    }
+
+    categoriaActiva = chip.dataset.tipo;
+
+    document.querySelectorAll(".chip").forEach((item) => {
+        item.classList.remove("activo");
+    });
+
+    chip.classList.add("activo");
+
+    aplicarFiltros();
 });
 
 contenedorProductos.addEventListener("click", (evento) => {
     const botonDetalle = evento.target.closest(".btn-detalle");
+    const botonFavorito = evento.target.closest(".btn-favorito");
 
     if (botonDetalle) {
         const id = Number(botonDetalle.dataset.id);
         abrirDetalle(id);
+    }
+
+    if (botonFavorito) {
+        const id = Number(botonFavorito.dataset.id);
+
+        if (favoritos.has(id)) {
+            favoritos.delete(id);
+        } else {
+            favoritos.add(id);
+        }
+
+        guardarFavoritos();
+        aplicarFiltros();
     }
 });
 
@@ -258,33 +346,57 @@ cerrarModal.addEventListener("click", () => {
     modal.classList.remove("activo");
 });
 
-const menuToggle = document.getElementById("menu-toggle");
-const navLinks = document.getElementById("nav-links");
-
-menuToggle.addEventListener("click", () => {
-    navLinks.classList.toggle("activo");
-
-    if (navLinks.classList.contains("activo")) {
-        menuToggle.textContent = "×";
-        menuToggle.setAttribute("aria-label", "Cerrar menú");
-    } else {
-        menuToggle.textContent = "☰";
-        menuToggle.setAttribute("aria-label", "Abrir menú");
-    }
-});
-
-navLinks.addEventListener("click", (evento) => {
-    if (evento.target.tagName === "A") {
-        navLinks.classList.remove("activo");
-        menuToggle.textContent = "☰";
-        menuToggle.setAttribute("aria-label", "Abrir menú");
-    }
-});
-
 modal.addEventListener("click", (evento) => {
     if (evento.target === modal) {
         modal.classList.remove("activo");
     }
 });
+
+document.addEventListener("keydown", (evento) => {
+    if (evento.key === "Escape") {
+        modal.classList.remove("activo");
+    }
+});
+
+window.addEventListener("scroll", () => {
+    if (window.scrollY > 500) {
+        btnSubir.classList.add("visible");
+    } else {
+        btnSubir.classList.remove("visible");
+    }
+});
+
+btnSubir.addEventListener("click", () => {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+    });
+});
+
+/* Menú hamburguesa */
+const menuToggle = document.getElementById("menu-toggle");
+const navLinks = document.getElementById("nav-links");
+
+if (menuToggle && navLinks) {
+    menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("activo");
+
+        if (navLinks.classList.contains("activo")) {
+            menuToggle.textContent = "×";
+            menuToggle.setAttribute("aria-label", "Cerrar menú");
+        } else {
+            menuToggle.textContent = "☰";
+            menuToggle.setAttribute("aria-label", "Abrir menú");
+        }
+    });
+
+    navLinks.addEventListener("click", (evento) => {
+        if (evento.target.tagName === "A") {
+            navLinks.classList.remove("activo");
+            menuToggle.textContent = "☰";
+            menuToggle.setAttribute("aria-label", "Abrir menú");
+        }
+    });
+}
 
 renderizarAbrigos(abrigos);

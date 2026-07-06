@@ -123,7 +123,17 @@
             <button id="btn-limpiar">Limpiar filtros</button>
         </div>
 
-        <p id="contador-productos" class="contador-productos"></p>
+        <div class="chips-categorias" id="chips-categorias">
+        <button class="chip activo" data-tipo="todos">Todos</button>
+        <button class="chip" data-tipo="Abrigo de Lana">Lana</button>
+        <button class="chip" data-tipo="Trench Coat">Trench</button>
+        <button class="chip" data-tipo="Abrigo Teddy">Teddy</button>
+        <button class="chip" data-tipo="Parka Larga">Parkas</button>
+        <button class="chip" data-tipo="Gabardina">Gabardinas</button>
+        <button class="chip" data-tipo="favoritos">Favoritos</button>
+    </div>
+
+    <p id="contador-productos" class="contador-productos"></p>
         <div class="productos" id="contenedor-productos"></div>
     </section>
 
@@ -168,6 +178,10 @@
     <a class="whatsapp-flotante" href="https://wa.me/569XXXXXXXX" target="_blank">
         WhatsApp
     </a>
+
+<button class="btn-subir" id="btn-subir" aria-label="Volver arriba">
+    ↑
+</button>
 
     <script src="script.js"></script>
 </body>
