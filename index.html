@@ -25,8 +25,10 @@
             <ul class="nav-links" id="nav-links">
                 <li><a href="#inicio">Inicio</a></li>
                 <li><a href="#catalogo">Abrigos</a></li>
+                <li><a href="#lives-tiktok">Lives TikTok</a></li>
                 <li><a href="#nosotros">Nosotros</a></li>
                 <li><a href="#como-comprar">Cómo comprar</a></li>
+                <li><a href="#ubicacion">Ubicación</a></li>
                 <li><a href="#contacto">Contacto</a></li>
             </ul>
         </nav>
@@ -98,7 +100,103 @@
         </div>
     </section>
 
-    <section id="catalogo" class="catalogo">
+    
+<section id="lives-tiktok" class="lives-tiktok">
+    <div class="live-contenedor">
+        <div class="live-info">
+            <span class="etiqueta-seccion">Ventas en vivo</span>
+
+            <h2>Próximos lives de venta por TikTok</h2>
+
+            <p>
+                Muy pronto realizaremos lives en TikTok para mostrar las prendas disponibles,
+                resolver dudas en vivo y vender abrigos seleccionados de BeaGi ModaCircular.
+            </p>
+
+            <div class="live-estado">
+                <span class="punto-live"></span>
+                <strong id="live-estado-texto">Fecha y hora por definir</strong>
+            </div>
+
+            <div class="live-detalles">
+                <div>
+                    <span>Día</span>
+                    <strong id="live-dia">Por definir</strong>
+                </div>
+
+                <div>
+                    <span>Hora</span>
+                    <strong id="live-hora">Por definir</strong>
+                </div>
+
+                <div>
+                    <span>Plataforma</span>
+                    <strong>TikTok Live</strong>
+                </div>
+            </div>
+
+            <div class="live-botones">
+                <a href="https://www.tiktok.com/" target="_blank" class="btn-principal">
+                    Ir a TikTok
+                </a>
+
+                <a id="btn-live-whatsapp" href="https://wa.me/569XXXXXXXX" target="_blank" class="btn-secundario">
+                    Avisarme por WhatsApp
+                </a>
+            </div>
+        </div>
+
+        <div class="live-card">
+            <div class="live-card-header">
+                <span>LIVE</span>
+                <strong>BeaGi ModaCircular</strong>
+            </div>
+
+            <h3>Cuenta regresiva</h3>
+
+            <div class="contador-live">
+                <div>
+                    <strong id="live-dias">--</strong>
+                    <span>Días</span>
+                </div>
+
+                <div>
+                    <strong id="live-horas">--</strong>
+                    <span>Horas</span>
+                </div>
+
+                <div>
+                    <strong id="live-minutos">--</strong>
+                    <span>Min</span>
+                </div>
+
+                <div>
+                    <strong id="live-segundos">--</strong>
+                    <span>Seg</span>
+                </div>
+            </div>
+
+            <p class="live-card-nota">
+                Cuando definamos el día y la hora, este contador se actualizará para mostrar cuánto falta para el próximo live.
+            </p>
+
+            <button class="btn-dinamica-live" id="btn-dinamica-live">
+                Ver dinámica del live
+            </button>
+
+            <div class="dinamica-live" id="dinamica-live">
+                <ul>
+                    <li>Mostraremos abrigos disponibles en vivo.</li>
+                    <li>Se podrán pedir medidas y más detalles por chat.</li>
+                    <li>Las prendas tendrán stock limitado.</li>
+                    <li>La compra o reserva se coordinará por WhatsApp.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="catalogo" class="catalogo">
         <div class="catalogo-header">
             <span class="etiqueta-seccion">Catálogo online</span>
             <h2>Catálogo de Abrigos</h2>
@@ -227,6 +325,69 @@
             <div class="faq-respuesta">
                 <p>Al consultar por WhatsApp se confirma si el abrigo sigue disponible y se entregan los datos finales.</p>
             </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="ubicacion" class="ubicacion">
+    <div class="seccion-header">
+        <span class="etiqueta-seccion">Encuéntranos</span>
+        <h2>Ubicación y atención</h2>
+        <p>Estamos en San Felipe, Chile. Consulta por WhatsApp para coordinar disponibilidad, entrega o retiro.</p>
+    </div>
+
+    <div class="ubicacion-contenedor">
+        <div class="ubicacion-info">
+            <div class="ubicacion-icono">📍</div>
+
+            <h3>BeaGi ModaCircular</h3>
+
+            <p>
+                <strong>Zona:</strong> San Felipe, Región de Valparaíso, Chile
+            </p>
+
+            <p>
+                <strong>Atención:</strong> Online por WhatsApp e Instagram
+            </p>
+
+            <p>
+                <strong>Horario referencial:</strong> Lunes a sábado
+            </p>
+
+            <p class="ubicacion-nota">
+                Antes de visitar o coordinar retiro, escríbenos para confirmar disponibilidad del abrigo.
+            </p>
+
+            <div class="ubicacion-botones">
+                <a 
+                    href="https://www.google.com/maps/search/?api=1&query=San+Felipe+Chile" 
+                    target="_blank" 
+                    class="btn-principal"
+                >
+                    Abrir en Google Maps
+                </a>
+
+                <a 
+                    href="https://wa.me/569XXXXXXXX" 
+                    target="_blank" 
+                    class="btn-secundario"
+                >
+                    Consultar por WhatsApp
+                </a>
+            </div>
+        </div>
+
+        <div class="mapa-card">
+            <iframe
+                src="https://www.google.com/maps?q=San%20Felipe,%20Chile&output=embed"
+                width="100%"
+                height="420"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
         </div>
     </div>
 </section>

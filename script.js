@@ -582,3 +582,99 @@ preguntasFaq.forEach((pregunta) => {
         item.classList.toggle("activo");
     });
 });
+
+
+
+/* ============================= */
+/* LIVES TIKTOK */
+/* ============================= */
+
+const liveConfig = {
+    fechaObjetivo: null,
+    diaTexto: "Por definir",
+    horaTexto: "Por definir",
+    tiktokUrl: "https://www.tiktok.com/",
+};
+
+const liveDia = document.getElementById("live-dia");
+const liveHora = document.getElementById("live-hora");
+const liveEstadoTexto = document.getElementById("live-estado-texto");
+const liveDias = document.getElementById("live-dias");
+const liveHoras = document.getElementById("live-horas");
+const liveMinutos = document.getElementById("live-minutos");
+const liveSegundos = document.getElementById("live-segundos");
+const btnLiveWhatsapp = document.getElementById("btn-live-whatsapp");
+const btnDinamicaLive = document.getElementById("btn-dinamica-live");
+const dinamicaLive = document.getElementById("dinamica-live");
+
+function configurarLiveTikTok() {
+    if (!liveDia || !liveHora) {
+        return;
+    }
+
+    liveDia.textContent = liveConfig.diaTexto;
+    liveHora.textContent = liveConfig.horaTexto;
+
+    const mensaje = encodeURIComponent(
+        "Hola, me gustaría que me avisen cuando definan el próximo live de TikTok de BeaGi ModaCircular."
+    );
+
+    if (btnLiveWhatsapp) {
+        btnLiveWhatsapp.href = `https://wa.me/${numeroWhatsApp}?text=${mensaje}`;
+    }
+
+    if (!liveConfig.fechaObjetivo) {
+        liveEstadoTexto.textContent = "Fecha y hora por definir";
+        liveDias.textContent = "--";
+        liveHoras.textContent = "--";
+        liveMinutos.textContent = "--";
+        liveSegundos.textContent = "--";
+        return;
+    }
+}
+
+function actualizarCuentaRegresivaLive() {
+    if (!liveConfig.fechaObjetivo) {
+        return;
+    }
+
+    const objetivo = new Date(liveConfig.fechaObjetivo).getTime();
+    const ahora = new Date().getTime();
+    const diferencia = objetivo - ahora;
+
+    if (diferencia <= 0) {
+        liveEstadoTexto.textContent = "El live ya debería haber comenzado";
+        liveDias.textContent = "00";
+        liveHoras.textContent = "00";
+        liveMinutos.textContent = "00";
+        liveSegundos.textContent = "00";
+        return;
+    }
+
+    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+    const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
+    const segundos = Math.floor((diferencia / 1000) % 60);
+
+    liveEstadoTexto.textContent = "Próximo live programado";
+    liveDias.textContent = String(dias).padStart(2, "0");
+    liveHoras.textContent = String(horas).padStart(2, "0");
+    liveMinutos.textContent = String(minutos).padStart(2, "0");
+    liveSegundos.textContent = String(segundos).padStart(2, "0");
+}
+
+if (btnDinamicaLive && dinamicaLive) {
+    btnDinamicaLive.addEventListener("click", () => {
+        dinamicaLive.classList.toggle("activo");
+
+        if (dinamicaLive.classList.contains("activo")) {
+            btnDinamicaLive.textContent = "Ocultar dinámica del live";
+        } else {
+            btnDinamicaLive.textContent = "Ver dinámica del live";
+        }
+    });
+}
+
+configurarLiveTikTok();
+actualizarCuentaRegresivaLive();
+setInterval(actualizarCuentaRegresivaLive, 1000);
