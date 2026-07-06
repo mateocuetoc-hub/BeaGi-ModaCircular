@@ -1,72 +1,6 @@
 const numeroWhatsApp = "569XXXXXXXX";
 
-const abrigos = [
-    {
-        id: 1,
-        nombre: "Abrigo Beige Clásico",
-        tipo: "Abrigo de Paño",
-        talla: "M",
-        estado: "Excelente estado",
-        precio: 25000,
-        imagen: "",
-        descripcion: "Abrigo elegante y versátil, ideal para outfits de invierno.",
-        destacado: true,
-    },
-    {
-        id: 2,
-        nombre: "Abrigo Negro Elegante",
-        tipo: "Abrigo Largo",
-        talla: "L",
-        estado: "Muy buen estado",
-        precio: 28000,
-        imagen: "",
-        descripcion: "Abrigo negro formal, perfecto para uso diario o eventos.",
-        destacado: true,
-    },
-    {
-        id: 3,
-        nombre: "Abrigo Café Casual",
-        tipo: "Abrigo Urbano",
-        talla: "S",
-        estado: "Buen estado",
-        precio: 22000,
-        imagen: "",
-        descripcion: "Abrigo cómodo, combinable y con estilo casual.",
-        destacado: false,
-    },
-];
-
-const tiposAbrigos = [
-    "Abrigo de Lana",
-    "Trench Coat",
-    "Abrigo Teddy",
-    "Parka Larga",
-    "Abrigo Oversize",
-    "Gabardina",
-    "Chaquetón",
-    "Abrigo de Paño",
-    "Blazer Largo",
-    "Abrigo Peludo",
-];
-
-const tallas = ["S", "M", "L", "XL"];
-const estados = ["Excelente estado", "Muy buen estado", "Buen estado", "Por revisar"];
-
-for (let i = 4; i <= 35; i++) {
-    const tipo = tiposAbrigos[(i - 4) % tiposAbrigos.length];
-
-    abrigos.push({
-        id: i,
-        nombre: `${tipo} ${i}`,
-        tipo: tipo,
-        talla: tallas[i % tallas.length],
-        estado: estados[i % estados.length],
-        precio: i % 5 === 0 ? null : 18000 + i * 1000,
-        imagen: "",
-        descripcion: `Espacio reservado para ${tipo.toLowerCase()}. Aquí luego agregaremos foto real, color, medidas y detalles.`,
-        destacado: i % 7 === 0,
-    });
-}
+const abrigos = window.productosBeaGi || [];
 
 const contenedorProductos = document.getElementById("contenedor-productos");
 const buscador = document.getElementById("buscador");
@@ -125,14 +59,16 @@ Precio: ${precioTexto}`;
 
 
 function obtenerDisponibilidad(abrigo) {
-    if (abrigo.id % 13 === 0) {
+    const disponibilidad = (abrigo.disponibilidad || "Disponible").toLowerCase();
+
+    if (disponibilidad.includes("vendido")) {
         return {
             texto: "Vendido",
             clase: "vendido",
         };
     }
 
-    if (abrigo.id % 7 === 0) {
+    if (disponibilidad.includes("reservado")) {
         return {
             texto: "Reservado",
             clase: "reservado",

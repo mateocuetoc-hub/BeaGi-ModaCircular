@@ -47,6 +47,7 @@ BeaGi-ModaCircular/
 ├── index.html
 ├── style.css
 ├── script.js
+├── productos.js
 ├── README.md
 └── img/
 
