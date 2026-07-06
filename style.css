@@ -805,3 +805,89 @@ body {
         text-align: center;
     }
 }
+
+/* Extender fondo rosado del inicio hasta después de la barra de información */
+.barra-info {
+    position: relative;
+    z-index: 5;
+    margin: -35px auto 80px;
+    isolation: isolate;
+}
+
+.barra-info::before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    bottom: -70px;
+    left: 50%;
+    width: 100vw;
+    transform: translateX(-50%);
+    background:
+        radial-gradient(circle at top left, rgba(249, 219, 231, 0.95), transparent 35%),
+        linear-gradient(135deg, #fff7f2 0%, #f9dbe7 45%, #f4b6c8 100%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* ============================= */
+/* ARREGLO VISUAL INICIO */
+/* ============================= */
+.header {
+    z-index: 1000;
+}
+
+.hero {
+    min-height: auto !important;
+    padding: 130px 8% 160px !important;
+    align-items: center;
+}
+
+.hero-texto h2 {
+    margin-top: 0;
+    font-size: clamp(36px, 5vw, 54px);
+}
+
+.hero-card {
+    align-self: center;
+}
+
+.barra-info {
+    margin: -105px auto 75px !important;
+    position: relative;
+    z-index: 10;
+}
+
+.barra-info::before {
+    display: none !important;
+}
+
+.catalogo {
+    padding-top: 45px !important;
+}
+
+html {
+    scroll-padding-top: 95px;
+}
+
+@media (max-width: 900px) {
+    .hero {
+        padding: 110px 24px 140px !important;
+    }
+
+    .barra-info {
+        margin: -90px 20px 60px !important;
+    }
+}
+
+/* Bajar un poco más la franja rosada del inicio */
+.hero {
+    padding-bottom: 230px !important;
+}
+
+.barra-info {
+    margin: -145px auto 95px !important;
+}
+
+.catalogo {
+    padding-top: 55px !important;
+}
