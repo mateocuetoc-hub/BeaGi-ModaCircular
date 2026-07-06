@@ -400,3 +400,162 @@ if (menuToggle && navLinks) {
 }
 
 renderizarAbrigos(abrigos);
+
+
+
+
+/* ============================= */
+/* PANEL DE FAVORITOS */
+/* ============================= */
+
+const btnFavoritosPanel = document.getElementById("btn-favoritos-panel");
+const favoritosContador = document.getElementById("favoritos-contador");
+const panelFavoritos = document.getElementById("panel-favoritos");
+const overlayPanel = document.getElementById("overlay-panel");
+const cerrarPanelFavoritos = document.getElementById("cerrar-panel-favoritos");
+const panelFavoritosBody = document.getElementById("panel-favoritos-body");
+const btnConsultarFavoritos = document.getElementById("btn-consultar-favoritos");
+const toast = document.getElementById("toast");
+
+let timeoutToast = null;
+
+function mostrarToast(mensaje) {
+    toast.textContent = mensaje;
+    toast.classList.add("activo");
+
+    clearTimeout(timeoutToast);
+
+    timeoutToast = setTimeout(() => {
+        toast.classList.remove("activo");
+    }, 2200);
+}
+
+function obtenerListaFavoritos() {
+    return abrigos.filter((abrigo) => favoritos.has(abrigo.id));
+}
+
+function crearMensajeFavoritos(lista) {
+    const detalle = lista
+        .map((abrigo, index) => {
+            return `${index + 1}. ${abrigo.nombre} - ${abrigo.tipo} - Talla ${abrigo.talla} - ${formatearPrecio(abrigo.precio)}`;
+        })
+        .join("\n");
+
+    const mensaje = `Hola, me interesan estos abrigos de BeaGi ModaCircular:\n\n${detalle}\n\n¿Me podrías dar más información?`;
+
+    return encodeURIComponent(mensaje);
+}
+
+function actualizarPanelFavoritos() {
+    const lista = obtenerListaFavoritos();
+
+    favoritosContador.textContent = lista.length;
+
+    if (lista.length === 0) {
+        panelFavoritosBody.innerHTML = `
+            <div class="panel-vacio">
+                <h3>Aún no tienes favoritos</h3>
+                <p>Marca el corazón de los abrigos que quieras revisar después.</p>
+            </div>
+        `;
+
+        btnConsultarFavoritos.classList.add("deshabilitado");
+        btnConsultarFavoritos.removeAttribute("href");
+        return;
+    }
+
+    panelFavoritosBody.innerHTML = "";
+
+    lista.forEach((abrigo) => {
+        const item = document.createElement("div");
+        item.classList.add("item-favorito");
+
+        item.innerHTML = `
+            <div class="item-favorito-img">Foto pendiente</div>
+
+            <div class="item-favorito-info">
+                <h3>${abrigo.nombre}</h3>
+                <p>${abrigo.tipo}</p>
+                <p>Talla ${abrigo.talla} · ${formatearPrecio(abrigo.precio)}</p>
+            </div>
+
+            <button class="quitar-favorito-panel" data-id="${abrigo.id}" aria-label="Quitar favorito">
+                ×
+            </button>
+        `;
+
+        panelFavoritosBody.appendChild(item);
+    });
+
+    btnConsultarFavoritos.classList.remove("deshabilitado");
+    btnConsultarFavoritos.href = `https://wa.me/${numeroWhatsApp}?text=${crearMensajeFavoritos(lista)}`;
+}
+
+function abrirPanelFavoritos() {
+    actualizarPanelFavoritos();
+    panelFavoritos.classList.add("activo");
+    overlayPanel.classList.add("activo");
+}
+
+function cerrarPanel() {
+    panelFavoritos.classList.remove("activo");
+    overlayPanel.classList.remove("activo");
+}
+
+btnFavoritosPanel.addEventListener("click", abrirPanelFavoritos);
+cerrarPanelFavoritos.addEventListener("click", cerrarPanel);
+overlayPanel.addEventListener("click", cerrarPanel);
+
+panelFavoritosBody.addEventListener("click", (evento) => {
+    const boton = evento.target.closest(".quitar-favorito-panel");
+
+    if (!boton) {
+        return;
+    }
+
+    const id = Number(boton.dataset.id);
+    const abrigo = abrigos.find((item) => item.id === id);
+
+    favoritos.delete(id);
+    guardarFavoritos();
+
+    aplicarFiltros();
+    actualizarPanelFavoritos();
+
+    if (abrigo) {
+        mostrarToast(`${abrigo.nombre} quitado de favoritos`);
+    }
+});
+
+contenedorProductos.addEventListener("click", (evento) => {
+    const botonFavorito = evento.target.closest(".btn-favorito");
+
+    if (!botonFavorito) {
+        return;
+    }
+
+    const id = Number(botonFavorito.dataset.id);
+    const abrigo = abrigos.find((item) => item.id === id);
+
+    setTimeout(() => {
+        actualizarPanelFavoritos();
+
+        if (!abrigo) {
+            return;
+        }
+
+        if (favoritos.has(id)) {
+            mostrarToast(`${abrigo.nombre} agregado a favoritos`);
+        } else {
+            mostrarToast(`${abrigo.nombre} quitado de favoritos`);
+        }
+    }, 0);
+});
+
+document.addEventListener("keydown", (evento) => {
+    if (evento.key === "Escape") {
+        cerrarPanel();
+    }
+});
+
+actualizarPanelFavoritos();
