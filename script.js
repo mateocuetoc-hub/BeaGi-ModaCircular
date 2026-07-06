@@ -72,8 +72,10 @@ const contenedorProductos = document.getElementById("contenedor-productos");
 const buscador = document.getElementById("buscador");
 const filtroTalla = document.getElementById("filtro-talla");
 const filtroPrecio = document.getElementById("filtro-precio");
+const ordenarProductos = document.getElementById("ordenar-productos");
 const btnLimpiar = document.getElementById("btn-limpiar");
 const contadorProductos = document.getElementById("contador-productos");
+const resumenCatalogo = document.getElementById("resumen-catalogo");
 const chipsCategorias = document.getElementById("chips-categorias");
 
 const modal = document.getElementById("modal-producto");
@@ -121,6 +123,92 @@ Precio: ${precioTexto}`;
     return encodeURIComponent(mensaje);
 }
 
+
+function obtenerDisponibilidad(abrigo) {
+    if (abrigo.id % 13 === 0) {
+        return {
+            texto: "Vendido",
+            clase: "vendido",
+        };
+    }
+
+    if (abrigo.id % 7 === 0) {
+        return {
+            texto: "Reservado",
+            clase: "reservado",
+        };
+    }
+
+    return {
+        texto: "Disponible",
+        clase: "disponible",
+    };
+}
+
+function actualizarResumenCatalogo(listaAbrigos) {
+    if (!resumenCatalogo) {
+        return;
+    }
+
+    const disponibles = listaAbrigos.filter((abrigo) => obtenerDisponibilidad(abrigo).clase === "disponible").length;
+    const reservados = listaAbrigos.filter((abrigo) => obtenerDisponibilidad(abrigo).clase === "reservado").length;
+    const vendidos = listaAbrigos.filter((abrigo) => obtenerDisponibilidad(abrigo).clase === "vendido").length;
+
+    resumenCatalogo.innerHTML = `
+        <div>
+            <strong>${disponibles}</strong>
+            <span>Disponibles</span>
+        </div>
+
+        <div>
+            <strong>${reservados}</strong>
+            <span>Reservados</span>
+        </div>
+
+        <div>
+            <strong>${vendidos}</strong>
+            <span>Vendidos</span>
+        </div>
+    `;
+}
+
+function ordenarLista(listaAbrigos) {
+    const opcion = ordenarProductos ? ordenarProductos.value : "destacados";
+    const copia = [...listaAbrigos];
+
+    if (opcion === "menor-precio") {
+        return copia.sort((a, b) => {
+            const precioA = a.precio === null ? Number.MAX_SAFE_INTEGER : a.precio;
+            const precioB = b.precio === null ? Number.MAX_SAFE_INTEGER : b.precio;
+            return precioA - precioB;
+        });
+    }
+
+    if (opcion === "mayor-precio") {
+        return copia.sort((a, b) => {
+            const precioA = a.precio === null ? -1 : a.precio;
+            const precioB = b.precio === null ? -1 : b.precio;
+            return precioB - precioA;
+        });
+    }
+
+    if (opcion === "nombre") {
+        return copia.sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+    }
+
+    return copia.sort((a, b) => {
+        if (a.destacado && !b.destacado) {
+            return -1;
+        }
+
+        if (!a.destacado && b.destacado) {
+            return 1;
+        }
+
+        return a.id - b.id;
+    });
+}
+
 function activarAnimacionesTarjetas() {
     const tarjetas = document.querySelectorAll(".producto");
 
@@ -143,6 +231,8 @@ function activarAnimacionesTarjetas() {
 function renderizarAbrigos(listaAbrigos) {
     contenedorProductos.innerHTML = "";
 
+    actualizarResumenCatalogo(listaAbrigos);
+
     contadorProductos.textContent = `Mostrando ${listaAbrigos.length} de ${abrigos.length} abrigos`;
 
     if (listaAbrigos.length === 0) {
@@ -162,6 +252,7 @@ function renderizarAbrigos(listaAbrigos) {
         const precioTexto = formatearPrecio(abrigo.precio);
         const mensajeWhatsApp = crearMensajeWhatsApp(abrigo);
         const esFavorito = favoritos.has(abrigo.id);
+        const disponibilidad = obtenerDisponibilidad(abrigo);
 
         producto.innerHTML = `
             <div class="producto-imagen">
@@ -176,6 +267,10 @@ function renderizarAbrigos(listaAbrigos) {
                         ? `<span class="badge-destacado">Destacado</span>`
                         : ""
                 }
+
+                <span class="badge-disponibilidad ${disponibilidad.clase}">
+                    ${disponibilidad.texto}
+                </span>
 
                 <button class="btn-favorito ${esFavorito ? "activo" : ""}" data-id="${abrigo.id}" aria-label="Agregar a favoritos">
                     ${esFavorito ? "♥" : "♡"}
@@ -257,7 +352,8 @@ function aplicarFiltros() {
         return coincideTexto && coincideTalla && coincidePrecio && coincideCategoria;
     });
 
-    renderizarAbrigos(resultado);
+    const resultadoOrdenado = ordenarLista(resultado);
+    renderizarAbrigos(resultadoOrdenado);
 }
 
 function abrirDetalle(id) {
@@ -286,10 +382,18 @@ buscador.addEventListener("input", aplicarFiltros);
 filtroTalla.addEventListener("change", aplicarFiltros);
 filtroPrecio.addEventListener("change", aplicarFiltros);
 
+if (ordenarProductos) {
+    ordenarProductos.addEventListener("change", aplicarFiltros);
+}
+
 btnLimpiar.addEventListener("click", () => {
     buscador.value = "";
     filtroTalla.value = "todos";
     filtroPrecio.value = "todos";
+
+    if (ordenarProductos) {
+        ordenarProductos.value = "destacados";
+    }
     categoriaActiva = "todos";
 
     document.querySelectorAll(".chip").forEach((chip) => {
@@ -298,7 +402,7 @@ btnLimpiar.addEventListener("click", () => {
 
     document.querySelector('.chip[data-tipo="todos"]').classList.add("activo");
 
-    renderizarAbrigos(abrigos);
+    renderizarAbrigos(ordenarLista(abrigos));
 });
 
 chipsCategorias.addEventListener("click", (evento) => {
