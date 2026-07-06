@@ -1933,3 +1933,452 @@ html {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+
+
+/* ============================= */
+/* MEJORAS RESPONSIVE CELULAR */
+/* ============================= */
+
+@media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    .header {
+        padding: 12px 16px;
+    }
+
+    .navbar {
+        width: 100%;
+    }
+
+    .marca {
+        max-width: 75%;
+    }
+
+    .marca h1 {
+        font-size: 16px;
+    }
+
+    .marca span {
+        display: none;
+    }
+
+    .logo-circulo {
+        width: 40px;
+        height: 40px;
+        font-size: 15px;
+        flex-shrink: 0;
+    }
+
+    .menu-toggle {
+        width: 42px;
+        height: 42px;
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+
+    .nav-links {
+        top: 58px;
+        right: 0;
+        width: 92vw;
+        padding: 14px;
+    }
+
+    .nav-links a {
+        padding: 14px 16px;
+        font-size: 15px;
+    }
+
+    .hero {
+        padding: 90px 20px 145px !important;
+        min-height: auto;
+    }
+
+    .hero-texto h2 {
+        font-size: 32px;
+        line-height: 1.15;
+        margin-bottom: 16px;
+    }
+
+    .hero-texto p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 22px;
+    }
+
+    .hero-etiqueta {
+        font-size: 13px;
+        padding: 8px 14px;
+        margin-bottom: 16px;
+    }
+
+    .hero-botones {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 24px;
+    }
+
+    .btn-principal,
+    .btn-secundario,
+    .btn-wsp {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        padding: 13px 18px;
+    }
+
+    .hero-datos {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .hero-datos div {
+        padding: 14px;
+    }
+
+    .hero-card {
+        padding: 26px 20px;
+        border-radius: 26px;
+    }
+
+    .hero-logo-grande {
+        width: 96px;
+        height: 96px;
+        font-size: 34px;
+        margin-bottom: 16px;
+    }
+
+    .hero-card h3 {
+        font-size: 24px;
+    }
+
+    .info-negocio {
+        padding: 14px;
+        font-size: 14px;
+    }
+
+    .barra-info {
+        margin: -95px 16px 45px !important;
+        padding: 14px;
+        border-radius: 22px;
+        gap: 10px;
+    }
+
+    .barra-info div {
+        padding: 14px 10px;
+    }
+
+    .barra-info strong {
+        font-size: 16px;
+    }
+
+    .barra-info span {
+        font-size: 13px;
+    }
+
+    .lives-tiktok,
+    .catalogo,
+    .como-comprar,
+    .faq,
+    .ubicacion,
+    .nosotros,
+    .contacto {
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+    }
+
+    .lives-tiktok,
+    .como-comprar,
+    .faq,
+    .ubicacion {
+        padding-top: 52px;
+        padding-bottom: 52px;
+    }
+
+    .live-info,
+    .live-card,
+    .ubicacion-info,
+    .mapa-card,
+    .producto,
+    .paso-card,
+    .faq-item {
+        border-radius: 22px;
+    }
+
+    .live-info,
+    .live-card,
+    .ubicacion-info {
+        padding: 24px 18px;
+    }
+
+    .live-info h2,
+    .seccion-header h2,
+    .catalogo h2,
+    .nosotros h2,
+    .contacto h2 {
+        font-size: 28px;
+        line-height: 1.2;
+    }
+
+    .seccion-header p,
+    .live-info p,
+    .nosotros p,
+    .contacto p {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .contador-live {
+        gap: 8px;
+    }
+
+    .contador-live div {
+        padding: 13px 6px;
+    }
+
+    .contador-live strong {
+        font-size: 24px;
+    }
+
+    .catalogo-controles {
+        padding: 14px;
+        gap: 10px;
+        border-radius: 20px;
+    }
+
+    .catalogo-controles input,
+    .catalogo-controles select,
+    .catalogo-controles button {
+        width: 100%;
+        font-size: 14px;
+        padding: 13px 14px;
+    }
+
+    .chips-categorias {
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        gap: 9px;
+    }
+
+    .chip {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    .contador-productos {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .productos {
+        gap: 20px;
+    }
+
+    .producto {
+        padding: 14px;
+    }
+
+    .producto img,
+    .imagen-placeholder {
+        height: 245px;
+        border-radius: 16px;
+    }
+
+    .producto h3 {
+        font-size: 20px;
+    }
+
+    .producto p {
+        font-size: 14px;
+    }
+
+    .precio {
+        font-size: 19px;
+    }
+
+    .producto-actions {
+        gap: 9px;
+    }
+
+    .btn-detalle,
+    .producto-actions .btn-wsp {
+        width: 100%;
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .btn-favorito {
+        width: 38px;
+        height: 38px;
+        font-size: 22px;
+        top: 10px;
+        right: 10px;
+    }
+
+    .badge-destacado {
+        top: 10px;
+        left: 10px;
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    .modal {
+        padding: 14px;
+    }
+
+    .modal-card {
+        border-radius: 24px;
+        padding: 18px;
+        gap: 18px;
+    }
+
+    .cerrar-modal {
+        top: 10px;
+        right: 12px;
+        z-index: 5;
+    }
+
+    .modal-info h2 {
+        font-size: 25px;
+    }
+
+    .modal-info p {
+        font-size: 15px;
+    }
+
+    .precio-modal {
+        font-size: 22px;
+    }
+
+    #modal-imagen img,
+    .modal-placeholder {
+        height: 250px;
+        border-radius: 18px;
+    }
+
+    .pasos-compra {
+        gap: 16px;
+    }
+
+    .paso-card {
+        padding: 22px 18px;
+    }
+
+    .faq-pregunta {
+        padding: 17px 16px;
+        font-size: 15px;
+        gap: 12px;
+    }
+
+    .faq-respuesta p {
+        padding: 0 16px 18px;
+        font-size: 14px;
+    }
+
+    .ubicacion-botones {
+        flex-direction: column;
+    }
+
+    .mapa-card {
+        padding: 8px;
+    }
+
+    .mapa-card iframe {
+        min-height: 300px;
+        border-radius: 18px;
+    }
+
+    .panel-favoritos {
+        width: 100vw;
+    }
+
+    .panel-favoritos-header {
+        padding: 22px 18px;
+    }
+
+    .panel-favoritos-header h2 {
+        font-size: 24px;
+    }
+
+    .panel-favoritos-body {
+        padding: 16px;
+    }
+
+    .item-favorito {
+        grid-template-columns: 58px 1fr auto;
+        gap: 10px;
+        padding: 12px;
+        border-radius: 18px;
+    }
+
+    .item-favorito-img {
+        width: 58px;
+        height: 58px;
+        border-radius: 14px;
+        font-size: 11px;
+    }
+
+    .item-favorito-info h3 {
+        font-size: 14px;
+    }
+
+    .item-favorito-info p {
+        font-size: 12px;
+    }
+
+    .whatsapp-flotante {
+        right: 12px;
+        bottom: 12px;
+        padding: 12px 15px;
+        font-size: 13px;
+    }
+
+    .btn-subir {
+        right: 12px;
+        bottom: 70px;
+        width: 43px;
+        height: 43px;
+        font-size: 22px;
+    }
+
+    .btn-favoritos-panel {
+        right: 12px;
+        bottom: 124px;
+        padding: 11px 14px;
+        font-size: 13px;
+    }
+
+    .toast {
+        bottom: 18px;
+        font-size: 14px;
+        padding: 12px 16px;
+    }
+
+    .footer {
+        padding: 18px 14px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 390px) {
+    .hero-texto h2 {
+        font-size: 29px;
+    }
+
+    .live-info h2,
+    .seccion-header h2,
+    .catalogo h2 {
+        font-size: 26px;
+    }
+
+    .producto img,
+    .imagen-placeholder {
+        height: 220px;
+    }
+
+    .btn-favoritos-panel {
+        max-width: 145px;
+    }
+}
