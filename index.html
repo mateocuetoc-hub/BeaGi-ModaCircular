@@ -30,9 +30,32 @@
     </section>
 
     <section id="catalogo" class="catalogo">
-        <h2>Catálogo de Abrigos</h2>
-        <p class="subtitulo">Elige tu abrigo favorito y consúltanos por WhatsApp.</p>
+        <div class="catalogo-header">
+            <span class="etiqueta-seccion">Catálogo online</span>
+            <h2>Catálogo de Abrigos</h2>
+            <p class="subtitulo">Busca, filtra y consulta tu abrigo favorito por WhatsApp.</p>
+        </div>
 
+        <div class="catalogo-controles">
+            <input type="text" id="buscador" placeholder="Buscar abrigo, color o tipo...">
+            <select id="filtro-talla">
+                <option value="todos">Todas las tallas</option>
+                <option value="S">Talla S</option>
+                <option value="M">Talla M</option>
+                <option value="L">Talla L</option>
+                <option value="XL">Talla XL</option>
+            </select>
+            <select id="filtro-precio">
+                <option value="todos">Todos los precios</option>
+                <option value="menos-20000">Menos de $20.000</option>
+                <option value="20000-30000">$20.000 a $30.000</option>
+                <option value="mas-30000">Más de $30.000</option>
+                <option value="consultar">Consultar</option>
+            </select>
+            <button id="btn-limpiar">Limpiar filtros</button>
+        </div>
+
+        <p id="contador-productos" class="contador-productos"></p>
         <div class="productos" id="contenedor-productos"></div>
     </section>
 
@@ -55,6 +78,28 @@
     <footer class="footer">
         <p>&copy; 2026 BeaGi ModaCircular - Todos los derechos reservados.</p>
     </footer>
+
+    <div class="modal" id="modal-producto">
+        <div class="modal-card">
+            <button class="cerrar-modal" id="cerrar-modal">×</button>
+            <div id="modal-imagen"></div>
+            <div class="modal-info">
+                <span class="modal-etiqueta">BeaGi ModaCircular</span>
+                <h2 id="modal-nombre"></h2>
+                <p id="modal-descripcion"></p>
+                <p><strong>Talla:</strong> <span id="modal-talla"></span></p>
+                <p><strong>Estado:</strong> <span id="modal-estado"></span></p>
+                <p class="precio-modal" id="modal-precio"></p>
+                <a id="modal-whatsapp" class="btn-wsp grande" target="_blank">
+                    Consultar este abrigo
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <a class="whatsapp-flotante" href="https://wa.me/569XXXXXXXX" target="_blank">
+        WhatsApp
+    </a>
 
     <script src="script.js"></script>
 </body>
