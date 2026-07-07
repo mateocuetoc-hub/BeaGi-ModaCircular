@@ -6,6 +6,7 @@ const contenedorProductos = document.getElementById("contenedor-productos");
 const buscador = document.getElementById("buscador");
 const filtroTalla = document.getElementById("filtro-talla");
 const filtroPrecio = document.getElementById("filtro-precio");
+const filtroDisponibilidad = document.getElementById("filtro-disponibilidad");
 const ordenarProductos = document.getElementById("ordenar-productos");
 const btnLimpiar = document.getElementById("btn-limpiar");
 const contadorProductos = document.getElementById("contador-productos");
@@ -211,6 +212,34 @@ function activarAnimacionesTarjetas() {
     tarjetas.forEach((tarjeta) => observador.observe(tarjeta));
 }
 
+function obtenerDescripcionFiltros(cantidad) {
+    const partes = [];
+
+    if (filtroDisponibilidad && filtroDisponibilidad.value !== "todos") {
+        const texto = filtroDisponibilidad.options[filtroDisponibilidad.selectedIndex].textContent.toLowerCase();
+        partes.push(texto);
+    }
+
+    if (filtroTalla && filtroTalla.value !== "todos") {
+        partes.push(`talla ${filtroTalla.value}`);
+    }
+
+    if (filtroPrecio && filtroPrecio.value !== "todos") {
+        const texto = filtroPrecio.options[filtroPrecio.selectedIndex].textContent.toLowerCase();
+        partes.push(texto);
+    }
+
+    if (buscador && buscador.value.trim() !== "") {
+        partes.push(`búsqueda: "${buscador.value.trim()}"`);
+    }
+
+    if (partes.length === 0) {
+        return `Mostrando ${cantidad} de ${abrigos.length} abrigos`;
+    }
+
+    return `Mostrando ${cantidad} abrigos · ${partes.join(" · ")}`;
+}
+
 function renderizarAbrigos(listaAbrigos) {
     if (!contenedorProductos) {
         return;
@@ -220,7 +249,7 @@ function renderizarAbrigos(listaAbrigos) {
     actualizarResumenCatalogo(listaAbrigos);
 
     if (contadorProductos) {
-        contadorProductos.textContent = `Mostrando ${listaAbrigos.length} de ${abrigos.length} abrigos`;
+        contadorProductos.textContent = obtenerDescripcionFiltros(listaAbrigos.length);
     }
 
     if (listaAbrigos.length === 0) {
@@ -305,6 +334,7 @@ function aplicarFiltros() {
     const texto = buscador ? buscador.value.toLowerCase() : "";
     const tallaSeleccionada = filtroTalla ? filtroTalla.value : "todos";
     const precioSeleccionado = filtroPrecio ? filtroPrecio.value : "todos";
+    const disponibilidadSeleccionada = filtroDisponibilidad ? filtroDisponibilidad.value : "todos";
 
     const resultado = abrigos.filter((abrigo) => {
         const coincideTexto =
@@ -336,6 +366,12 @@ function aplicarFiltros() {
             coincidePrecio = abrigo.precio === null;
         }
 
+        const disponibilidadProducto = obtenerDisponibilidad(abrigo).clase;
+
+        const coincideDisponibilidad =
+            disponibilidadSeleccionada === "todos" ||
+            disponibilidadProducto === disponibilidadSeleccionada;
+
         let coincideCategoria = true;
 
         if (categoriaActiva !== "todos" && categoriaActiva !== "favoritos") {
@@ -346,7 +382,7 @@ function aplicarFiltros() {
             coincideCategoria = favoritos.has(abrigo.id);
         }
 
-        return coincideTexto && coincideTalla && coincidePrecio && coincideCategoria;
+        return coincideTexto && coincideTalla && coincidePrecio && coincideDisponibilidad && coincideCategoria;
     });
 
     renderizarAbrigos(ordenarLista(resultado));
@@ -553,6 +589,7 @@ function cerrarPanel() {
 if (buscador) buscador.addEventListener("input", aplicarFiltros);
 if (filtroTalla) filtroTalla.addEventListener("change", aplicarFiltros);
 if (filtroPrecio) filtroPrecio.addEventListener("change", aplicarFiltros);
+if (filtroDisponibilidad) filtroDisponibilidad.addEventListener("change", aplicarFiltros);
 if (ordenarProductos) ordenarProductos.addEventListener("change", aplicarFiltros);
 
 if (btnLimpiar) {
@@ -560,6 +597,7 @@ if (btnLimpiar) {
         if (buscador) buscador.value = "";
         if (filtroTalla) filtroTalla.value = "todos";
         if (filtroPrecio) filtroPrecio.value = "todos";
+        if (filtroDisponibilidad) filtroDisponibilidad.value = "todos";
         if (ordenarProductos) ordenarProductos.value = "destacados";
 
         categoriaActiva = "todos";
