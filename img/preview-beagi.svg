@@ -1,0 +1,11 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#fff7f2"/>
+  <circle cx="1020" cy="120" r="190" fill="#f9dbe7"/>
+  <circle cx="140" cy="540" r="210" fill="#f4b6c8" opacity="0.75"/>
+  <rect x="100" y="90" width="1000" height="450" rx="46" fill="white" stroke="#f4b6c8" stroke-width="4"/>
+  <circle cx="600" cy="215" r="78" fill="#5c1f3a"/>
+  <text x="600" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="58" font-weight="700" fill="white">BG</text>
+  <text x="600" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="58" font-weight="700" fill="#5c1f3a">BeaGi ModaCircular</text>
+  <text x="600" y="398" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" fill="#8a2f55">Abrigos únicos de mujer</text>
+  <text x="600" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="25" fill="#6c5961">Moda circular · San Felipe · Consulta por WhatsApp</text>
+</svg>
