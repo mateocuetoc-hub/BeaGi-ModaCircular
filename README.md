@@ -8,7 +8,7 @@ Puedes ingresar a la página desde este link:
 
 https://mateocuetoc-hub.github.io/BeaGi-ModaCircular/
 
-> Si el link todavía no abre, falta activar GitHub Pages desde el repositorio.
+
 
 ## Descripción
 
