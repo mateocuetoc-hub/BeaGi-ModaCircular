@@ -6,9 +6,6 @@ Página web tipo catálogo para **BeaGi ModaCircular**, una tienda enfocada en a
 
 https://mateocuetoc-hub.github.io/BeaGi-ModaCircular/
 
-## Repositorio
-
-https://github.com/mateocuetoc-hub/BeaGi-ModaCircular
 
 ## Descripción
 
