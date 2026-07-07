@@ -882,3 +882,221 @@ configurarLiveTikTok();
 actualizarCuentaRegresivaLive();
 setInterval(actualizarCuentaRegresivaLive, 1000);
 configurarEnlacesSeguros();
+
+
+
+/* ============================= */
+/* ANIMACIONES INTERACTIVAS UX */
+/* ============================= */
+
+function configurarScrollReveal() {
+    const elementos = document.querySelectorAll(`
+        .hero-texto,
+        .hero-card,
+        .barra-info,
+        .live-info,
+        .live-card,
+        .novedades .seccion-header,
+        .novedades-top,
+        .novedad-card,
+        .catalogo-header,
+        .catalogo-controles,
+        .chips-categorias,
+        .resumen-catalogo,
+        .paso-card,
+        .faq-item,
+        .ubicacion-info,
+        .mapa-card,
+        .footer-contenido
+    `);
+
+    elementos.forEach((elemento) => {
+        elemento.classList.add("scroll-reveal");
+    });
+
+    const observador = new IntersectionObserver(
+        (entradas) => {
+            entradas.forEach((entrada) => {
+                if (entrada.isIntersecting) {
+                    entrada.target.classList.add("reveal-visible");
+                    observador.unobserve(entrada.target);
+                }
+            });
+        },
+        {
+            threshold: 0.12,
+        }
+    );
+
+    elementos.forEach((elemento) => observador.observe(elemento));
+}
+
+function configurarHeaderCompacto() {
+    const header = document.querySelector(".header");
+
+    if (!header) {
+        return;
+    }
+
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 80) {
+            header.classList.add("header-compact");
+        } else {
+            header.classList.remove("header-compact");
+        }
+    });
+}
+
+function configurarRippleBotones() {
+    const selectorBotones = `
+        .btn-principal,
+        .btn-secundario,
+        .btn-wsp,
+        .btn-detalle,
+        .chip,
+        .btn-favoritos-panel,
+        .whatsapp-flotante,
+        .btn-subir,
+        .menu-toggle,
+        .mobile-bottom-nav a,
+        .mobile-bottom-nav button
+    `;
+
+    document.addEventListener("click", (evento) => {
+        const boton = evento.target.closest(selectorBotones);
+
+        if (!boton) {
+            return;
+        }
+
+        const rect = boton.getBoundingClientRect();
+        const circulo = document.createElement("span");
+        const size = Math.max(rect.width, rect.height);
+        const x = evento.clientX - rect.left - size / 2;
+        const y = evento.clientY - rect.top - size / 2;
+
+        circulo.classList.add("ripple-effect");
+        circulo.style.width = `${size}px`;
+        circulo.style.height = `${size}px`;
+        circulo.style.left = `${x}px`;
+        circulo.style.top = `${y}px`;
+
+        boton.appendChild(circulo);
+
+        setTimeout(() => {
+            circulo.remove();
+        }, 650);
+    });
+}
+
+function configurarContadoresInicio() {
+    const contadores = document.querySelectorAll(".hero-datos strong");
+
+    if (contadores.length === 0) {
+        return;
+    }
+
+    const animarNumero = (elemento) => {
+        const textoOriginal = elemento.textContent.trim();
+        const numero = parseInt(textoOriginal.replace(/\D/g, ""), 10);
+
+        if (Number.isNaN(numero)) {
+            return;
+        }
+
+        const sufijo = textoOriginal.replace(/[0-9]/g, "");
+        let actual = 0;
+        const pasos = 35;
+        const incremento = numero / pasos;
+
+        elemento.classList.add("animando-contador");
+
+        const intervalo = setInterval(() => {
+            actual += incremento;
+
+            if (actual >= numero) {
+                elemento.textContent = `${numero}${sufijo}`;
+                clearInterval(intervalo);
+
+                setTimeout(() => {
+                    elemento.classList.remove("animando-contador");
+                }, 500);
+
+                return;
+            }
+
+            elemento.textContent = `${Math.floor(actual)}${sufijo}`;
+        }, 25);
+    };
+
+    const observador = new IntersectionObserver(
+        (entradas) => {
+            entradas.forEach((entrada) => {
+                if (entrada.isIntersecting) {
+                    contadores.forEach((contador) => animarNumero(contador));
+                    observador.disconnect();
+                }
+            });
+        },
+        {
+            threshold: 0.5,
+        }
+    );
+
+    const heroDatos = document.querySelector(".hero-datos");
+
+    if (heroDatos) {
+        observador.observe(heroDatos);
+    }
+}
+
+function configurarMenuActivoPorScroll() {
+    const enlaces = document.querySelectorAll(".nav-links a[href^='#']");
+    const secciones = [];
+
+    enlaces.forEach((enlace) => {
+        const id = enlace.getAttribute("href");
+        const seccion = document.querySelector(id);
+
+        if (seccion) {
+            secciones.push({
+                enlace,
+                seccion,
+            });
+        }
+    });
+
+    if (secciones.length === 0) {
+        return;
+    }
+
+    const observador = new IntersectionObserver(
+        (entradas) => {
+            entradas.forEach((entrada) => {
+                if (!entrada.isIntersecting) {
+                    return;
+                }
+
+                enlaces.forEach((enlace) => enlace.classList.remove("activo-link"));
+
+                const item = secciones.find((dato) => dato.seccion === entrada.target);
+
+                if (item) {
+                    item.enlace.classList.add("activo-link");
+                }
+            });
+        },
+        {
+            rootMargin: "-35% 0px -55% 0px",
+            threshold: 0,
+        }
+    );
+
+    secciones.forEach((dato) => observador.observe(dato.seccion));
+}
+
+configurarScrollReveal();
+configurarHeaderCompacto();
+configurarRippleBotones();
+configurarContadoresInicio();
+configurarMenuActivoPorScroll();

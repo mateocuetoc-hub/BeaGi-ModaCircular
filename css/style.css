@@ -3026,3 +3026,207 @@ html {
         margin: auto;
     }
 }
+
+
+
+/* ============================= */
+/* ANIMACIONES INTERACTIVAS UX */
+/* ============================= */
+
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.scroll-reveal.reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.header {
+    transition: padding 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.header.header-compact {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-shadow: 0 8px 24px rgba(92, 31, 58, 0.32);
+}
+
+.nav-links a.activo-link {
+    color: var(--rosado-claro);
+    position: relative;
+}
+
+.nav-links a.activo-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -7px;
+    width: 100%;
+    height: 3px;
+    border-radius: 999px;
+    background-color: var(--rosado-claro);
+}
+
+.hero-card {
+    animation: flotacionSuave 4.5s ease-in-out infinite;
+}
+
+@keyframes flotacionSuave {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.btn-principal,
+.btn-secundario,
+.btn-wsp,
+.btn-detalle,
+.chip,
+.btn-favoritos-panel,
+.whatsapp-flotante,
+.btn-subir,
+.menu-toggle,
+.mobile-bottom-nav a,
+.mobile-bottom-nav button {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: rippleClick 0.6s linear;
+    background-color: rgba(255, 255, 255, 0.45);
+    pointer-events: none;
+}
+
+@keyframes rippleClick {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.novedad-card,
+.producto,
+.paso-card,
+.faq-item,
+.mapa-card,
+.ubicacion-info {
+    will-change: transform;
+}
+
+.novedad-card:hover,
+.producto:hover,
+.paso-card:hover,
+.faq-item:hover {
+    transform: translateY(-8px);
+}
+
+.hero-datos strong.animando-contador {
+    animation: contadorPop 0.45s ease;
+}
+
+@keyframes contadorPop {
+    0% {
+        transform: scale(0.85);
+    }
+
+    60% {
+        transform: scale(1.08);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-links a.activo-link::after {
+        display: none;
+    }
+
+    .hero-card {
+        animation: none;
+    }
+
+    .scroll-reveal {
+        transform: translateY(18px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .scroll-reveal {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ============================= */
+/* FIX BOTONES FLOTANTES PC */
+/* ============================= */
+
+@media (min-width: 769px) {
+    .btn-favoritos-panel {
+        position: fixed !important;
+        right: 22px !important;
+        bottom: 150px !important;
+        left: auto !important;
+        top: auto !important;
+        z-index: 360 !important;
+    }
+
+    .whatsapp-flotante {
+        position: fixed !important;
+        right: 22px !important;
+        bottom: 22px !important;
+        left: auto !important;
+        top: auto !important;
+        z-index: 300 !important;
+    }
+
+    .btn-subir {
+        position: fixed !important;
+        right: 24px !important;
+        bottom: 88px !important;
+        left: auto !important;
+        top: auto !important;
+        z-index: 350 !important;
+    }
+}
+
+/* Mantener barra inferior en móvil y ocultar flotantes */
+@media (max-width: 768px) {
+    .whatsapp-flotante,
+    .btn-favoritos-panel {
+        display: none !important;
+    }
+
+    .btn-subir {
+        position: fixed !important;
+        right: 16px !important;
+        bottom: 92px !important;
+        z-index: 350 !important;
+    }
+}
