@@ -1100,3 +1100,59 @@ configurarHeaderCompacto();
 configurarRippleBotones();
 configurarContadoresInicio();
 configurarMenuActivoPorScroll();
+
+
+
+/* ============================= */
+/* MENÚ INTERACTIVO DESPLEGABLE */
+/* ============================= */
+
+function configurarDropdownsMenu() {
+    const dropdowns = document.querySelectorAll(".nav-dropdown");
+
+    dropdowns.forEach((dropdown) => {
+        const boton = dropdown.querySelector(".nav-dropdown-toggle");
+
+        if (!boton) {
+            return;
+        }
+
+        boton.addEventListener("click", (evento) => {
+            evento.stopPropagation();
+
+            dropdowns.forEach((item) => {
+                if (item !== dropdown) {
+                    item.classList.remove("abierto");
+                }
+            });
+
+            dropdown.classList.toggle("abierto");
+        });
+    });
+
+    document.addEventListener("click", () => {
+        dropdowns.forEach((dropdown) => {
+            dropdown.classList.remove("abierto");
+        });
+    });
+
+    document.addEventListener("keydown", (evento) => {
+        if (evento.key === "Escape") {
+            dropdowns.forEach((dropdown) => {
+                dropdown.classList.remove("abierto");
+            });
+        }
+    });
+
+    dropdowns.forEach((dropdown) => {
+        dropdown.addEventListener("click", (evento) => {
+            const link = evento.target.closest("a");
+
+            if (link) {
+                dropdown.classList.remove("abierto");
+            }
+        });
+    });
+}
+
+configurarDropdownsMenu();
