@@ -792,3 +792,17 @@ if (btnDinamicaLive && dinamicaLive) {
 configurarLiveTikTok();
 actualizarCuentaRegresivaLive();
 setInterval(actualizarCuentaRegresivaLive, 1000);
+
+
+
+/* ============================= */
+/* BARRA INFERIOR MÓVIL */
+/* ============================= */
+
+const mobileFavoritosBtn = document.getElementById("mobile-favoritos-btn");
+
+if (mobileFavoritosBtn && btnFavoritosPanel) {
+    mobileFavoritosBtn.addEventListener("click", () => {
+        btnFavoritosPanel.click();
+    });
+}

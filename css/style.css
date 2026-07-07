@@ -2555,3 +2555,180 @@ html {
         height: 58px;
     }
 }
+
+
+
+/* ============================= */
+/* MEJORAS UX GENERAL PC + MÓVIL */
+/* ============================= */
+
+@media (min-width: 1100px) {
+    .productos {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 1350px;
+    }
+
+    .catalogo-controles {
+        max-width: 1250px;
+        grid-template-columns: 2fr 1fr 1fr 1fr auto;
+    }
+
+    .producto img,
+    .imagen-placeholder {
+        height: 285px;
+    }
+
+    .producto {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .producto-actions {
+        margin-top: auto;
+    }
+}
+
+@media (min-width: 769px) {
+    .catalogo-controles {
+        position: sticky;
+        top: 92px;
+        z-index: 80;
+        backdrop-filter: blur(10px);
+    }
+
+    .producto {
+        min-height: 100%;
+    }
+
+    .producto h3 {
+        min-height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Barra inferior tipo app para celular */
+.mobile-bottom-nav {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 84px;
+    }
+
+    .mobile-bottom-nav {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        z-index: 950;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        background-color: rgba(255, 255, 255, 0.94);
+        border: 1px solid var(--rosado-claro);
+        border-radius: 24px;
+        padding: 9px;
+        box-shadow: 0 14px 35px rgba(92, 31, 58, 0.24);
+        backdrop-filter: blur(14px);
+    }
+
+    .mobile-bottom-nav a,
+    .mobile-bottom-nav button {
+        border: none;
+        background-color: transparent;
+        color: var(--vino);
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 12px;
+        border-radius: 18px;
+        padding: 9px 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+        transition: 0.25s;
+        font-family: inherit;
+    }
+
+    .mobile-bottom-nav a:hover,
+    .mobile-bottom-nav button:hover {
+        background-color: var(--rosado-claro);
+    }
+
+    .mobile-bottom-nav span {
+        font-size: 18px;
+        line-height: 1;
+    }
+
+    /* En móvil dejamos una sola navegación inferior para que no se vea apretado */
+    .whatsapp-flotante,
+    .btn-favoritos-panel {
+        display: none !important;
+    }
+
+    .btn-subir {
+        bottom: 92px !important;
+        right: 16px !important;
+        width: 42px;
+        height: 42px;
+    }
+
+    .catalogo-controles {
+        box-shadow: 0 8px 20px rgba(138, 47, 85, 0.1);
+    }
+
+    .productos {
+        grid-template-columns: 1fr;
+        max-width: 430px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .producto {
+        box-shadow: 0 8px 22px rgba(138, 47, 85, 0.13);
+    }
+
+    .producto-actions {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .producto-actions .btn-wsp,
+    .btn-detalle {
+        border-radius: 16px;
+    }
+
+    .modal-card {
+        margin-bottom: 72px;
+    }
+
+    .panel-favoritos {
+        padding-bottom: 78px;
+    }
+
+    .toast {
+        bottom: 96px !important;
+    }
+}
+
+@media (max-width: 430px) {
+    .mobile-bottom-nav {
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        border-radius: 20px;
+    }
+
+    .mobile-bottom-nav a,
+    .mobile-bottom-nav button {
+        font-size: 11px;
+        padding: 8px 4px;
+    }
+
+    .producto-actions {
+        grid-template-columns: 1fr;
+    }
+}
