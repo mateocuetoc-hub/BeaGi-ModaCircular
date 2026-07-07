@@ -1,4 +1,4 @@
-const numeroWhatsApp = "569XXXXXXXX";
+const numeroWhatsApp = "56945571689";
 
 const abrigos = window.productosBeaGi || [];
 
