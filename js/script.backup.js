@@ -1,6 +1,6 @@
-const beagiConfig = window.beagiConfig || {};
-const numeroWhatsApp = beagiConfig.whatsappNumero || "56945571689";
-const abrigos = Array.isArray(window.productosBeaGi) ? window.productosBeaGi : [];
+const numeroWhatsApp = "56945571689";
+
+const abrigos = window.productosBeaGi || [];
 
 const contenedorProductos = document.getElementById("contenedor-productos");
 const buscador = document.getElementById("buscador");
@@ -23,23 +23,8 @@ const modalPrecio = document.getElementById("modal-precio");
 const modalWhatsapp = document.getElementById("modal-whatsapp");
 
 const btnSubir = document.getElementById("btn-subir");
-const novedadesProductos = document.getElementById("novedades-productos");
-
-const btnFavoritosPanel = document.getElementById("btn-favoritos-panel");
-const favoritosContador = document.getElementById("favoritos-contador");
-const panelFavoritos = document.getElementById("panel-favoritos");
-const overlayPanel = document.getElementById("overlay-panel");
-const cerrarPanelFavoritos = document.getElementById("cerrar-panel-favoritos");
-const panelFavoritosBody = document.getElementById("panel-favoritos-body");
-const btnConsultarFavoritos = document.getElementById("btn-consultar-favoritos");
-const toast = document.getElementById("toast");
-
-const menuToggle = document.getElementById("menu-toggle");
-const navLinks = document.getElementById("nav-links");
-const mobileFavoritosBtn = document.getElementById("mobile-favoritos-btn");
 
 let categoriaActiva = "todos";
-let timeoutToast = null;
 
 const favoritosGuardados = JSON.parse(localStorage.getItem("favoritosBeaGi")) || [];
 const favoritos = new Set(favoritosGuardados);
@@ -61,7 +46,7 @@ function guardarFavoritos() {
 }
 
 function formatearPrecio(precio) {
-    if (precio === null || precio === undefined) {
+    if (precio === null) {
         return "Consultar";
     }
 
@@ -70,6 +55,25 @@ function formatearPrecio(precio) {
         currency: "CLP",
     });
 }
+
+function crearMensajeWhatsApp(abrigo) {
+    const precioTexto = formatearPrecio(abrigo.precio);
+    const disponibilidad = obtenerDisponibilidad(abrigo);
+
+    const mensaje = `Hola BeaGi ModaCircular, me interesa este abrigo:
+
+Producto: ${abrigo.nombre}
+Tipo: ${abrigo.tipo}
+Talla: ${abrigo.talla}
+Estado: ${abrigo.estado}
+Precio: ${precioTexto}
+Disponibilidad: ${disponibilidad.texto}
+
+¿Me podrías enviar más fotos, medidas y confirmar si sigue disponible?`;
+
+    return encodeURIComponent(mensaje);
+}
+
 
 function obtenerDisponibilidad(abrigo) {
     const disponibilidad = (abrigo.disponibilidad || "Disponible").toLowerCase();
@@ -92,46 +96,6 @@ function obtenerDisponibilidad(abrigo) {
         texto: "Disponible",
         clase: "disponible",
     };
-}
-
-function crearMensajeWhatsApp(abrigo) {
-    const precioTexto = formatearPrecio(abrigo.precio);
-    const disponibilidad = obtenerDisponibilidad(abrigo);
-
-    const mensaje = `Hola BeaGi ModaCircular, me interesa este abrigo:
-
-Producto: ${abrigo.nombre}
-Tipo: ${abrigo.tipo}
-Talla: ${abrigo.talla}
-Estado: ${abrigo.estado}
-Precio: ${precioTexto}
-Disponibilidad: ${disponibilidad.texto}
-
-¿Me podrías enviar más fotos, medidas y confirmar si sigue disponible?`;
-
-    return encodeURIComponent(mensaje);
-}
-
-function crearMensajeFavoritos(lista) {
-    const detalle = lista
-        .map((abrigo, index) => {
-            const disponibilidad = obtenerDisponibilidad(abrigo);
-
-            return `${index + 1}. ${abrigo.nombre}
-   Tipo: ${abrigo.tipo}
-   Talla: ${abrigo.talla}
-   Precio: ${formatearPrecio(abrigo.precio)}
-   Disponibilidad: ${disponibilidad.texto}`;
-        })
-        .join("\n\n");
-
-    const mensaje = `Hola BeaGi ModaCircular, me interesan estos abrigos:
-
-${detalle}
-
-¿Me podrías confirmar disponibilidad, medidas, más fotos y forma de compra?`;
-
-    return encodeURIComponent(mensaje);
 }
 
 function actualizarResumenCatalogo(listaAbrigos) {
@@ -186,8 +150,14 @@ function ordenarLista(listaAbrigos) {
     }
 
     return copia.sort((a, b) => {
-        if (a.destacado && !b.destacado) return -1;
-        if (!a.destacado && b.destacado) return 1;
+        if (a.destacado && !b.destacado) {
+            return -1;
+        }
+
+        if (!a.destacado && b.destacado) {
+            return 1;
+        }
+
         return a.id - b.id;
     });
 }
@@ -212,16 +182,11 @@ function activarAnimacionesTarjetas() {
 }
 
 function renderizarAbrigos(listaAbrigos) {
-    if (!contenedorProductos) {
-        return;
-    }
-
     contenedorProductos.innerHTML = "";
+
     actualizarResumenCatalogo(listaAbrigos);
 
-    if (contadorProductos) {
-        contadorProductos.textContent = `Mostrando ${listaAbrigos.length} de ${abrigos.length} abrigos`;
-    }
+    contadorProductos.textContent = `Mostrando ${listaAbrigos.length} de ${abrigos.length} abrigos`;
 
     if (listaAbrigos.length === 0) {
         contenedorProductos.innerHTML = `
@@ -288,7 +253,6 @@ function renderizarAbrigos(listaAbrigos) {
                     class="btn-wsp" 
                     href="https://wa.me/${numeroWhatsApp}?text=${mensajeWhatsApp}" 
                     target="_blank"
-                    rel="noopener noreferrer"
                 >
                     WhatsApp
                 </a>
@@ -302,9 +266,9 @@ function renderizarAbrigos(listaAbrigos) {
 }
 
 function aplicarFiltros() {
-    const texto = buscador ? buscador.value.toLowerCase() : "";
-    const tallaSeleccionada = filtroTalla ? filtroTalla.value : "todos";
-    const precioSeleccionado = filtroPrecio ? filtroPrecio.value : "todos";
+    const texto = buscador.value.toLowerCase();
+    const tallaSeleccionada = filtroTalla.value;
+    const precioSeleccionado = filtroPrecio.value;
 
     const resultado = abrigos.filter((abrigo) => {
         const coincideTexto =
@@ -349,13 +313,14 @@ function aplicarFiltros() {
         return coincideTexto && coincideTalla && coincidePrecio && coincideCategoria;
     });
 
-    renderizarAbrigos(ordenarLista(resultado));
+    const resultadoOrdenado = ordenarLista(resultado);
+    renderizarAbrigos(resultadoOrdenado);
 }
 
 function abrirDetalle(id) {
     const abrigo = abrigos.find((item) => item.id === id);
 
-    if (!abrigo || !modal) {
+    if (!abrigo) {
         return;
     }
 
@@ -400,83 +365,180 @@ function abrirDetalle(id) {
     modalTalla.textContent = abrigo.talla;
     modalEstado.textContent = abrigo.estado;
     modalPrecio.textContent = formatearPrecio(abrigo.precio);
+
     modalWhatsapp.href = `https://wa.me/${numeroWhatsApp}?text=${crearMensajeWhatsApp(abrigo)}`;
 
     modal.classList.add("activo");
 }
 
-function obtenerNovedades() {
-    const productosNuevos = abrigos.filter((abrigo) => abrigo.nuevo === true);
+buscador.addEventListener("input", aplicarFiltros);
+filtroTalla.addEventListener("change", aplicarFiltros);
+filtroPrecio.addEventListener("change", aplicarFiltros);
 
-    if (productosNuevos.length > 0) {
-        return productosNuevos.slice(0, 6);
-    }
-
-    return abrigos.filter((abrigo) => abrigo.destacado === true).slice(0, 6);
+if (ordenarProductos) {
+    ordenarProductos.addEventListener("change", aplicarFiltros);
 }
 
-function renderizarNovedades() {
-    if (!novedadesProductos) {
+btnLimpiar.addEventListener("click", () => {
+    buscador.value = "";
+    filtroTalla.value = "todos";
+    filtroPrecio.value = "todos";
+
+    if (ordenarProductos) {
+        ordenarProductos.value = "destacados";
+    }
+    categoriaActiva = "todos";
+
+    document.querySelectorAll(".chip").forEach((chip) => {
+        chip.classList.remove("activo");
+    });
+
+    document.querySelector('.chip[data-tipo="todos"]').classList.add("activo");
+
+    renderizarAbrigos(ordenarLista(abrigos));
+});
+
+chipsCategorias.addEventListener("click", (evento) => {
+    const chip = evento.target.closest(".chip");
+
+    if (!chip) {
         return;
     }
 
-    const novedades = obtenerNovedades();
-    novedadesProductos.innerHTML = "";
+    categoriaActiva = chip.dataset.tipo;
 
-    novedades.forEach((abrigo) => {
-        const imagenes = obtenerImagenes(abrigo);
-        const imagenPrincipal = imagenes[0] || "";
-        const precioTexto = formatearPrecio(abrigo.precio);
-        const disponibilidad = obtenerDisponibilidad(abrigo);
-        const mensajeWhatsApp = crearMensajeWhatsApp(abrigo);
+    document.querySelectorAll(".chip").forEach((item) => {
+        item.classList.remove("activo");
+    });
 
-        const card = document.createElement("article");
-        card.classList.add("novedad-card");
+    chip.classList.add("activo");
 
-        card.innerHTML = `
-            <div class="novedad-imagen">
-                ${
-                    imagenPrincipal
-                        ? `<img src="${imagenPrincipal}" alt="${abrigo.nombre}">`
-                        : `<div class="imagen-placeholder">Foto pendiente</div>`
-                }
+    aplicarFiltros();
+});
 
-                <span class="badge-nuevo">Nuevo ingreso</span>
-            </div>
+contenedorProductos.addEventListener("click", (evento) => {
+    const botonDetalle = evento.target.closest(".btn-detalle");
+    const botonFavorito = evento.target.closest(".btn-favorito");
 
-            <div class="novedad-info">
-                <h3>${abrigo.nombre}</h3>
-                <p class="novedad-meta">${abrigo.tipo} · Talla ${abrigo.talla}</p>
-                <p>${abrigo.estado}</p>
-                <p>Disponibilidad: <strong>${disponibilidad.texto}</strong></p>
-                <div class="novedad-precio">${precioTexto}</div>
+    if (botonDetalle) {
+        const id = Number(botonDetalle.dataset.id);
+        abrirDetalle(id);
+    }
 
-                <div class="novedad-actions">
-                    <button class="btn-detalle" data-id="${abrigo.id}">
-                        Ver detalle
-                    </button>
+    if (botonFavorito) {
+        const id = Number(botonFavorito.dataset.id);
 
-                    <a 
-                        class="btn-wsp" 
-                        href="https://wa.me/${numeroWhatsApp}?text=${mensajeWhatsApp}" 
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        WhatsApp
-                    </a>
-                </div>
-            </div>
-        `;
+        if (favoritos.has(id)) {
+            favoritos.delete(id);
+        } else {
+            favoritos.add(id);
+        }
 
-        novedadesProductos.appendChild(card);
+        guardarFavoritos();
+        aplicarFiltros();
+    }
+});
+
+modalImagen.addEventListener("click", (evento) => {
+    const miniatura = evento.target.closest(".miniatura-modal");
+
+    if (!miniatura) {
+        return;
+    }
+
+    const imagenPrincipal = document.getElementById("galeria-img-principal");
+
+    if (!imagenPrincipal) {
+        return;
+    }
+
+    imagenPrincipal.src = miniatura.dataset.imagen;
+
+    document.querySelectorAll(".miniatura-modal").forEach((item) => {
+        item.classList.remove("activa");
+    });
+
+    miniatura.classList.add("activa");
+});
+
+cerrarModal.addEventListener("click", () => {
+    modal.classList.remove("activo");
+});
+
+modal.addEventListener("click", (evento) => {
+    if (evento.target === modal) {
+        modal.classList.remove("activo");
+    }
+});
+
+document.addEventListener("keydown", (evento) => {
+    if (evento.key === "Escape") {
+        modal.classList.remove("activo");
+    }
+});
+
+window.addEventListener("scroll", () => {
+    if (window.scrollY > 500) {
+        btnSubir.classList.add("visible");
+    } else {
+        btnSubir.classList.remove("visible");
+    }
+});
+
+btnSubir.addEventListener("click", () => {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+    });
+});
+
+/* Menú hamburguesa */
+const menuToggle = document.getElementById("menu-toggle");
+const navLinks = document.getElementById("nav-links");
+
+if (menuToggle && navLinks) {
+    menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("activo");
+
+        if (navLinks.classList.contains("activo")) {
+            menuToggle.textContent = "×";
+            menuToggle.setAttribute("aria-label", "Cerrar menú");
+        } else {
+            menuToggle.textContent = "☰";
+            menuToggle.setAttribute("aria-label", "Abrir menú");
+        }
+    });
+
+    navLinks.addEventListener("click", (evento) => {
+        if (evento.target.tagName === "A") {
+            navLinks.classList.remove("activo");
+            menuToggle.textContent = "☰";
+            menuToggle.setAttribute("aria-label", "Abrir menú");
+        }
     });
 }
 
-function mostrarToast(mensaje) {
-    if (!toast) {
-        return;
-    }
+renderizarAbrigos(abrigos);
 
+
+
+
+/* ============================= */
+/* PANEL DE FAVORITOS */
+/* ============================= */
+
+const btnFavoritosPanel = document.getElementById("btn-favoritos-panel");
+const favoritosContador = document.getElementById("favoritos-contador");
+const panelFavoritos = document.getElementById("panel-favoritos");
+const overlayPanel = document.getElementById("overlay-panel");
+const cerrarPanelFavoritos = document.getElementById("cerrar-panel-favoritos");
+const panelFavoritosBody = document.getElementById("panel-favoritos-body");
+const btnConsultarFavoritos = document.getElementById("btn-consultar-favoritos");
+const toast = document.getElementById("toast");
+
+let timeoutToast = null;
+
+function mostrarToast(mensaje) {
     toast.textContent = mensaje;
     toast.classList.add("activo");
 
@@ -491,12 +553,33 @@ function obtenerListaFavoritos() {
     return abrigos.filter((abrigo) => favoritos.has(abrigo.id));
 }
 
-function actualizarPanelFavoritos() {
-    if (!panelFavoritosBody || !favoritosContador || !btnConsultarFavoritos) {
-        return;
-    }
+function crearMensajeFavoritos(lista) {
+    const detalle = lista
+        .map((abrigo, index) => {
+            const disponibilidad = obtenerDisponibilidad(abrigo);
 
+            return `${index + 1}. ${abrigo.nombre}
+   Tipo: ${abrigo.tipo}
+   Talla: ${abrigo.talla}
+   Precio: ${formatearPrecio(abrigo.precio)}
+   Disponibilidad: ${disponibilidad.texto}`;
+        })
+        .join("
+
+");
+
+    const mensaje = `Hola BeaGi ModaCircular, me interesan estos abrigos:
+
+${detalle}
+
+¿Me podrías confirmar disponibilidad, medidas, más fotos y forma de compra?`;
+
+    return encodeURIComponent(mensaje);
+}
+
+function actualizarPanelFavoritos() {
     const lista = obtenerListaFavoritos();
+
     favoritosContador.textContent = lista.length;
 
     if (lista.length === 0) {
@@ -550,223 +633,71 @@ function cerrarPanel() {
     overlayPanel.classList.remove("activo");
 }
 
-if (buscador) buscador.addEventListener("input", aplicarFiltros);
-if (filtroTalla) filtroTalla.addEventListener("change", aplicarFiltros);
-if (filtroPrecio) filtroPrecio.addEventListener("change", aplicarFiltros);
-if (ordenarProductos) ordenarProductos.addEventListener("change", aplicarFiltros);
+btnFavoritosPanel.addEventListener("click", abrirPanelFavoritos);
+cerrarPanelFavoritos.addEventListener("click", cerrarPanel);
+overlayPanel.addEventListener("click", cerrarPanel);
 
-if (btnLimpiar) {
-    btnLimpiar.addEventListener("click", () => {
-        if (buscador) buscador.value = "";
-        if (filtroTalla) filtroTalla.value = "todos";
-        if (filtroPrecio) filtroPrecio.value = "todos";
-        if (ordenarProductos) ordenarProductos.value = "destacados";
+panelFavoritosBody.addEventListener("click", (evento) => {
+    const boton = evento.target.closest(".quitar-favorito-panel");
 
-        categoriaActiva = "todos";
+    if (!boton) {
+        return;
+    }
 
-        document.querySelectorAll(".chip").forEach((chip) => {
-            chip.classList.remove("activo");
-        });
+    const id = Number(boton.dataset.id);
+    const abrigo = abrigos.find((item) => item.id === id);
 
-        const chipTodos = document.querySelector('.chip[data-tipo="todos"]');
+    favoritos.delete(id);
+    guardarFavoritos();
 
-        if (chipTodos) {
-            chipTodos.classList.add("activo");
-        }
+    aplicarFiltros();
+    actualizarPanelFavoritos();
 
-        renderizarAbrigos(ordenarLista(abrigos));
-    });
-}
+    if (abrigo) {
+        mostrarToast(`${abrigo.nombre} quitado de favoritos`);
+    }
+});
 
-if (chipsCategorias) {
-    chipsCategorias.addEventListener("click", (evento) => {
-        const chip = evento.target.closest(".chip");
+contenedorProductos.addEventListener("click", (evento) => {
+    const botonFavorito = evento.target.closest(".btn-favorito");
 
-        if (!chip) {
-            return;
-        }
+    if (!botonFavorito) {
+        return;
+    }
 
-        categoriaActiva = chip.dataset.tipo;
+    const id = Number(botonFavorito.dataset.id);
+    const abrigo = abrigos.find((item) => item.id === id);
 
-        document.querySelectorAll(".chip").forEach((item) => {
-            item.classList.remove("activo");
-        });
-
-        chip.classList.add("activo");
-        aplicarFiltros();
-    });
-}
-
-if (contenedorProductos) {
-    contenedorProductos.addEventListener("click", (evento) => {
-        const botonDetalle = evento.target.closest(".btn-detalle");
-        const botonFavorito = evento.target.closest(".btn-favorito");
-
-        if (botonDetalle) {
-            const id = Number(botonDetalle.dataset.id);
-            abrirDetalle(id);
-        }
-
-        if (botonFavorito) {
-            const id = Number(botonFavorito.dataset.id);
-            const abrigo = abrigos.find((item) => item.id === id);
-
-            if (favoritos.has(id)) {
-                favoritos.delete(id);
-                if (abrigo) mostrarToast(`${abrigo.nombre} quitado de favoritos`);
-            } else {
-                favoritos.add(id);
-                if (abrigo) mostrarToast(`${abrigo.nombre} agregado a favoritos`);
-            }
-
-            guardarFavoritos();
-            aplicarFiltros();
-            actualizarPanelFavoritos();
-        }
-    });
-}
-
-if (novedadesProductos) {
-    novedadesProductos.addEventListener("click", (evento) => {
-        const botonDetalle = evento.target.closest(".btn-detalle");
-
-        if (!botonDetalle) {
-            return;
-        }
-
-        const id = Number(botonDetalle.dataset.id);
-        abrirDetalle(id);
-    });
-}
-
-if (modalImagen) {
-    modalImagen.addEventListener("click", (evento) => {
-        const miniatura = evento.target.closest(".miniatura-modal");
-
-        if (!miniatura) {
-            return;
-        }
-
-        const imagenPrincipal = document.getElementById("galeria-img-principal");
-
-        if (!imagenPrincipal) {
-            return;
-        }
-
-        imagenPrincipal.src = miniatura.dataset.imagen;
-
-        document.querySelectorAll(".miniatura-modal").forEach((item) => {
-            item.classList.remove("activa");
-        });
-
-        miniatura.classList.add("activa");
-    });
-}
-
-if (cerrarModal) {
-    cerrarModal.addEventListener("click", () => {
-        modal.classList.remove("activo");
-    });
-}
-
-if (modal) {
-    modal.addEventListener("click", (evento) => {
-        if (evento.target === modal) {
-            modal.classList.remove("activo");
-        }
-    });
-}
-
-if (btnFavoritosPanel) {
-    btnFavoritosPanel.addEventListener("click", abrirPanelFavoritos);
-}
-
-if (cerrarPanelFavoritos) {
-    cerrarPanelFavoritos.addEventListener("click", cerrarPanel);
-}
-
-if (overlayPanel) {
-    overlayPanel.addEventListener("click", cerrarPanel);
-}
-
-if (panelFavoritosBody) {
-    panelFavoritosBody.addEventListener("click", (evento) => {
-        const boton = evento.target.closest(".quitar-favorito-panel");
-
-        if (!boton) {
-            return;
-        }
-
-        const id = Number(boton.dataset.id);
-        const abrigo = abrigos.find((item) => item.id === id);
-
-        favoritos.delete(id);
-        guardarFavoritos();
-
-        aplicarFiltros();
+    setTimeout(() => {
         actualizarPanelFavoritos();
 
-        if (abrigo) {
+        if (!abrigo) {
+            return;
+        }
+
+        if (favoritos.has(id)) {
+            mostrarToast(`${abrigo.nombre} agregado a favoritos`);
+        } else {
             mostrarToast(`${abrigo.nombre} quitado de favoritos`);
         }
-    });
-}
-
-if (mobileFavoritosBtn) {
-    mobileFavoritosBtn.addEventListener("click", abrirPanelFavoritos);
-}
+    }, 0);
+});
 
 document.addEventListener("keydown", (evento) => {
     if (evento.key === "Escape") {
-        if (modal) modal.classList.remove("activo");
         cerrarPanel();
     }
 });
 
-window.addEventListener("scroll", () => {
-    if (!btnSubir) {
-        return;
-    }
+actualizarPanelFavoritos();
 
-    if (window.scrollY > 500) {
-        btnSubir.classList.add("visible");
-    } else {
-        btnSubir.classList.remove("visible");
-    }
-});
 
-if (btnSubir) {
-    btnSubir.addEventListener("click", () => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
-    });
-}
 
-if (menuToggle && navLinks) {
-    menuToggle.addEventListener("click", () => {
-        navLinks.classList.toggle("activo");
 
-        if (navLinks.classList.contains("activo")) {
-            menuToggle.textContent = "×";
-            menuToggle.setAttribute("aria-label", "Cerrar menú");
-        } else {
-            menuToggle.textContent = "☰";
-            menuToggle.setAttribute("aria-label", "Abrir menú");
-        }
-    });
+/* ============================= */
+/* FAQ INTERACTIVO */
+/* ============================= */
 
-    navLinks.addEventListener("click", (evento) => {
-        if (evento.target.tagName === "A") {
-            navLinks.classList.remove("activo");
-            menuToggle.textContent = "☰";
-            menuToggle.setAttribute("aria-label", "Abrir menú");
-        }
-    });
-}
-
-/* FAQ */
 const preguntasFaq = document.querySelectorAll(".faq-pregunta");
 
 preguntasFaq.forEach((pregunta) => {
@@ -783,12 +714,17 @@ preguntasFaq.forEach((pregunta) => {
     });
 });
 
-/* Lives TikTok */
+
+
+/* ============================= */
+/* LIVES TIKTOK */
+/* ============================= */
+
 const liveConfig = {
     fechaObjetivo: null,
     diaTexto: "Por definir",
     horaTexto: "Por definir",
-    tiktokUrl: beagiConfig.tiktokUrl || "https://www.tiktok.com/",
+    tiktokUrl: "https://www.tiktok.com/",
 };
 
 const liveDia = document.getElementById("live-dia");
@@ -824,6 +760,7 @@ function configurarLiveTikTok() {
         liveHoras.textContent = "--";
         liveMinutos.textContent = "--";
         liveSegundos.textContent = "--";
+        return;
     }
 }
 
@@ -869,16 +806,113 @@ if (btnDinamicaLive && dinamicaLive) {
     });
 }
 
-function configurarEnlacesSeguros() {
-    document.querySelectorAll('a[target="_blank"]').forEach((link) => {
-        link.setAttribute("rel", "noopener noreferrer");
-    });
-}
-
-renderizarAbrigos(ordenarLista(abrigos));
-renderizarNovedades();
-actualizarPanelFavoritos();
 configurarLiveTikTok();
 actualizarCuentaRegresivaLive();
 setInterval(actualizarCuentaRegresivaLive, 1000);
-configurarEnlacesSeguros();
+
+
+
+/* ============================= */
+/* BARRA INFERIOR MÓVIL */
+/* ============================= */
+
+const mobileFavoritosBtn = document.getElementById("mobile-favoritos-btn");
+
+if (mobileFavoritosBtn && btnFavoritosPanel) {
+    mobileFavoritosBtn.addEventListener("click", () => {
+        btnFavoritosPanel.click();
+    });
+}
+
+
+
+/* ============================= */
+/* NOVEDADES / ÚLTIMOS INGRESOS */
+/* ============================= */
+
+const novedadesProductos = document.getElementById("novedades-productos");
+
+function obtenerNovedades() {
+    const productosNuevos = abrigos.filter((abrigo) => abrigo.nuevo === true);
+
+    if (productosNuevos.length > 0) {
+        return productosNuevos.slice(0, 6);
+    }
+
+    return abrigos
+        .filter((abrigo) => abrigo.destacado === true)
+        .slice(0, 6);
+}
+
+function renderizarNovedades() {
+    if (!novedadesProductos) {
+        return;
+    }
+
+    const novedades = obtenerNovedades();
+
+    novedadesProductos.innerHTML = "";
+
+    novedades.forEach((abrigo) => {
+        const imagenes = obtenerImagenes(abrigo);
+        const imagenPrincipal = imagenes[0] || "";
+        const precioTexto = formatearPrecio(abrigo.precio);
+        const disponibilidad = obtenerDisponibilidad(abrigo);
+        const mensajeWhatsApp = crearMensajeWhatsApp(abrigo);
+
+        const card = document.createElement("article");
+        card.classList.add("novedad-card");
+
+        card.innerHTML = `
+            <div class="novedad-imagen">
+                ${
+                    imagenPrincipal
+                        ? `<img src="${imagenPrincipal}" alt="${abrigo.nombre}">`
+                        : `<div class="imagen-placeholder">Foto pendiente</div>`
+                }
+
+                <span class="badge-nuevo">Nuevo ingreso</span>
+            </div>
+
+            <div class="novedad-info">
+                <h3>${abrigo.nombre}</h3>
+                <p class="novedad-meta">${abrigo.tipo} · Talla ${abrigo.talla}</p>
+                <p>${abrigo.estado}</p>
+                <p>Disponibilidad: <strong>${disponibilidad.texto}</strong></p>
+                <div class="novedad-precio">${precioTexto}</div>
+
+                <div class="novedad-actions">
+                    <button class="btn-detalle" data-id="${abrigo.id}">
+                        Ver detalle
+                    </button>
+
+                    <a 
+                        class="btn-wsp" 
+                        href="https://wa.me/${numeroWhatsApp}?text=${mensajeWhatsApp}" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                    >
+                        WhatsApp
+                    </a>
+                </div>
+            </div>
+        `;
+
+        novedadesProductos.appendChild(card);
+    });
+}
+
+if (novedadesProductos) {
+    novedadesProductos.addEventListener("click", (evento) => {
+        const botonDetalle = evento.target.closest(".btn-detalle");
+
+        if (!botonDetalle) {
+            return;
+        }
+
+        const id = Number(botonDetalle.dataset.id);
+        abrirDetalle(id);
+    });
+}
+
+renderizarNovedades();
