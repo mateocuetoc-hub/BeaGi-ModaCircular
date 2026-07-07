@@ -806,3 +806,96 @@ if (mobileFavoritosBtn && btnFavoritosPanel) {
         btnFavoritosPanel.click();
     });
 }
+
+
+
+/* ============================= */
+/* NOVEDADES / ÚLTIMOS INGRESOS */
+/* ============================= */
+
+const novedadesProductos = document.getElementById("novedades-productos");
+
+function obtenerNovedades() {
+    const productosNuevos = abrigos.filter((abrigo) => abrigo.nuevo === true);
+
+    if (productosNuevos.length > 0) {
+        return productosNuevos.slice(0, 6);
+    }
+
+    return abrigos
+        .filter((abrigo) => abrigo.destacado === true)
+        .slice(0, 6);
+}
+
+function renderizarNovedades() {
+    if (!novedadesProductos) {
+        return;
+    }
+
+    const novedades = obtenerNovedades();
+
+    novedadesProductos.innerHTML = "";
+
+    novedades.forEach((abrigo) => {
+        const imagenes = obtenerImagenes(abrigo);
+        const imagenPrincipal = imagenes[0] || "";
+        const precioTexto = formatearPrecio(abrigo.precio);
+        const disponibilidad = obtenerDisponibilidad(abrigo);
+        const mensajeWhatsApp = crearMensajeWhatsApp(abrigo);
+
+        const card = document.createElement("article");
+        card.classList.add("novedad-card");
+
+        card.innerHTML = `
+            <div class="novedad-imagen">
+                ${
+                    imagenPrincipal
+                        ? `<img src="${imagenPrincipal}" alt="${abrigo.nombre}">`
+                        : `<div class="imagen-placeholder">Foto pendiente</div>`
+                }
+
+                <span class="badge-nuevo">Nuevo ingreso</span>
+            </div>
+
+            <div class="novedad-info">
+                <h3>${abrigo.nombre}</h3>
+                <p class="novedad-meta">${abrigo.tipo} · Talla ${abrigo.talla}</p>
+                <p>${abrigo.estado}</p>
+                <p>Disponibilidad: <strong>${disponibilidad.texto}</strong></p>
+                <div class="novedad-precio">${precioTexto}</div>
+
+                <div class="novedad-actions">
+                    <button class="btn-detalle" data-id="${abrigo.id}">
+                        Ver detalle
+                    </button>
+
+                    <a 
+                        class="btn-wsp" 
+                        href="https://wa.me/${numeroWhatsApp}?text=${mensajeWhatsApp}" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                    >
+                        WhatsApp
+                    </a>
+                </div>
+            </div>
+        `;
+
+        novedadesProductos.appendChild(card);
+    });
+}
+
+if (novedadesProductos) {
+    novedadesProductos.addEventListener("click", (evento) => {
+        const botonDetalle = evento.target.closest(".btn-detalle");
+
+        if (!botonDetalle) {
+            return;
+        }
+
+        const id = Number(botonDetalle.dataset.id);
+        abrirDetalle(id);
+    });
+}
+
+renderizarNovedades();

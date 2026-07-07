@@ -2732,3 +2732,183 @@ html {
         grid-template-columns: 1fr;
     }
 }
+
+
+
+/* ============================= */
+/* NOVEDADES / ÚLTIMOS INGRESOS */
+/* ============================= */
+
+.novedades {
+    padding: 75px 40px;
+    background:
+        radial-gradient(circle at top left, rgba(249, 219, 231, 0.75), transparent 35%),
+        linear-gradient(135deg, #ffffff 0%, #fff7f2 55%, #f9dbe7 100%);
+}
+
+.novedades-top {
+    max-width: 1150px;
+    margin: 0 auto 28px;
+    background-color: white;
+    border: 1px solid var(--rosado-claro);
+    border-radius: 24px;
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 10px 25px rgba(138, 47, 85, 0.11);
+}
+
+.novedades-top strong {
+    display: block;
+    color: var(--vino);
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.novedades-top span {
+    color: #6c5961;
+    font-size: 14px;
+}
+
+.novedades-link {
+    width: auto;
+    white-space: nowrap;
+}
+
+.novedades-grid {
+    max-width: 1150px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.novedad-card {
+    background-color: white;
+    border-radius: 26px;
+    overflow: hidden;
+    border: 1px solid var(--rosado-claro);
+    box-shadow: 0 12px 30px rgba(138, 47, 85, 0.13);
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.novedad-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 38px rgba(138, 47, 85, 0.22);
+}
+
+.novedad-imagen {
+    position: relative;
+    height: 260px;
+    overflow: hidden;
+}
+
+.novedad-imagen img,
+.novedad-imagen .imagen-placeholder {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    margin-bottom: 0;
+    object-fit: cover;
+}
+
+.badge-nuevo {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: linear-gradient(135deg, var(--rosado-oscuro), var(--vino));
+    color: white;
+    padding: 7px 13px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: bold;
+    box-shadow: 0 6px 16px rgba(47, 37, 40, 0.2);
+}
+
+.novedad-info {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.novedad-info h3 {
+    color: var(--vino);
+    font-size: 21px;
+    margin-bottom: 8px;
+}
+
+.novedad-meta {
+    color: var(--rosado-oscuro);
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.novedad-info p {
+    color: #6c5961;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.novedad-precio {
+    color: var(--vino);
+    font-size: 22px;
+    font-weight: bold;
+    margin: 8px 0 14px;
+}
+
+.novedad-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: auto;
+}
+
+@media (max-width: 950px) {
+    .novedades-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .novedades {
+        padding: 55px 18px;
+    }
+
+    .novedades-top {
+        flex-direction: column;
+        text-align: center;
+        border-radius: 22px;
+        padding: 18px;
+    }
+
+    .novedades-link {
+        width: 100%;
+    }
+
+    .novedades-grid {
+        grid-template-columns: 1fr;
+        max-width: 430px;
+        gap: 20px;
+    }
+
+    .novedad-imagen {
+        height: 235px;
+    }
+
+    .novedad-info {
+        padding: 18px;
+    }
+
+    .novedad-info h3 {
+        font-size: 20px;
+    }
+
+    .novedad-actions {
+        grid-template-columns: 1fr;
+    }
+}
