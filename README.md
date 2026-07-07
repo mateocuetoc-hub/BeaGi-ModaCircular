@@ -180,6 +180,12 @@ Luego de hacer push, GitHub Pages actualiza la página online automáticamente e
 - Agregar SEO y vista previa bonita al compartir el link.
 - Optimizar imágenes para mejorar velocidad de carga.
 
+## Información de ubicación
+
+Dirección de tienda: 121 Pje. Los Espinos, San Felipe, Valparaíso, Chile
+
+La página incluye una sección de ubicación con Google Maps y botón para abrir la dirección directamente.
+
 ## Estado del proyecto
 
 Proyecto en desarrollo.
