@@ -1194,3 +1194,26 @@ function configurarDropdownsMenu() {
 }
 
 configurarDropdownsMenu();
+
+/* ============================= */
+/* FAVORITOS DESDE MENÚ MÓVIL */
+/* ============================= */
+
+const navFavoritosMobile = document.getElementById("nav-favoritos-mobile");
+
+if (navFavoritosMobile) {
+    navFavoritosMobile.addEventListener("click", () => {
+        if (navLinks) {
+            navLinks.classList.remove("activo");
+        }
+
+        if (menuToggle) {
+            menuToggle.textContent = "☰";
+            menuToggle.setAttribute("aria-label", "Abrir menú");
+        }
+
+        if (typeof abrirPanelFavoritos === "function") {
+            abrirPanelFavoritos();
+        }
+    });
+}

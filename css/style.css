@@ -3451,3 +3451,176 @@ html {
     border-radius: 999px;
     box-shadow: 0 6px 16px rgba(138, 47, 85, 0.08);
 }
+
+/* ============================= */
+/* FIX MENÚ MÓVIL: FAVORITOS + CONTACTO */
+/* ============================= */
+
+.nav-mobile-favoritos-item {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .nav-mobile-favoritos-item {
+        display: block;
+        width: 100%;
+    }
+
+    .nav-favoritos-mobile {
+        width: 100%;
+        border: 2px solid var(--rosado-claro);
+        background-color: #fff7f2;
+        color: var(--vino);
+        padding: 16px;
+        border-radius: 18px;
+        font-size: 17px;
+        font-weight: 900;
+        font-family: inherit;
+        cursor: pointer;
+        text-align: center;
+        box-shadow: 0 8px 18px rgba(138, 47, 85, 0.1);
+        transition: 0.25s;
+    }
+
+    .nav-favoritos-mobile:hover {
+        background-color: var(--rosado-claro);
+        transform: translateY(-2px);
+    }
+
+    .nav-links a.nav-cta,
+    .nav-links a.nav-cta.activo-link {
+        background: linear-gradient(135deg, var(--rosado-oscuro), var(--vino)) !important;
+        color: white !important;
+        text-align: center !important;
+        font-weight: 900 !important;
+        border-radius: 18px !important;
+        padding: 16px !important;
+        box-shadow: 0 8px 20px rgba(92, 31, 58, 0.22);
+    }
+
+    .nav-links a.nav-cta:hover {
+        background: linear-gradient(135deg, var(--vino), var(--rosado-oscuro)) !important;
+        color: white !important;
+    }
+
+    .nav-links {
+        max-height: calc(100vh - 115px);
+        overflow-y: auto;
+    }
+}
+
+/* ============================= */
+/* FIX PANEL FAVORITOS MÓVIL */
+/* ============================= */
+
+/* El panel debe quedar por encima del header */
+.overlay-panel {
+    z-index: 2400 !important;
+}
+
+.panel-favoritos {
+    z-index: 2500 !important;
+}
+
+/* Mejor experiencia en celular */
+@media (max-width: 768px) {
+    .panel-favoritos {
+        width: 100vw !important;
+        height: 100dvh !important;
+        max-height: 100dvh !important;
+        background-color: #fff7f2;
+        padding-bottom: 0 !important;
+    }
+
+    .panel-favoritos-header {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        padding: 20px 18px !important;
+        min-height: 86px;
+        background: linear-gradient(135deg, var(--vino), var(--rosado-oscuro));
+        box-shadow: 0 8px 22px rgba(92, 31, 58, 0.25);
+    }
+
+    .panel-favoritos-header h2 {
+        font-size: 26px !important;
+        margin: 2px 0 0;
+        color: white;
+    }
+
+    .panel-favoritos-header span {
+        color: rgba(255, 255, 255, 0.85);
+    }
+
+    #cerrar-panel-favoritos {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 52px !important;
+        height: 52px !important;
+        min-width: 52px;
+        border-radius: 50%;
+        background-color: #fff7f2 !important;
+        color: var(--vino) !important;
+        font-size: 34px !important;
+        font-weight: 900;
+        box-shadow: 0 8px 22px rgba(47, 37, 40, 0.22);
+    }
+
+    .panel-favoritos-body {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        padding: 18px 14px 18px !important;
+    }
+
+    .item-favorito {
+        grid-template-columns: 70px 1fr 40px !important;
+        gap: 12px !important;
+        padding: 14px !important;
+        border-radius: 22px !important;
+        margin-bottom: 14px;
+    }
+
+    .item-favorito-img {
+        width: 70px !important;
+        height: 70px !important;
+        border-radius: 16px !important;
+        font-size: 12px !important;
+    }
+
+    .item-favorito-info h3 {
+        font-size: 15px !important;
+        line-height: 1.2;
+        margin-bottom: 5px;
+    }
+
+    .item-favorito-info p {
+        font-size: 12px !important;
+        line-height: 1.25;
+    }
+
+    .quitar-favorito-panel {
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 18px;
+    }
+
+    .panel-favoritos-footer {
+        position: sticky;
+        bottom: 0;
+        z-index: 4;
+        padding: 16px 18px calc(16px + env(safe-area-inset-bottom)) !important;
+        background-color: white;
+        border-top: 1px solid var(--rosado-claro);
+        box-shadow: 0 -8px 22px rgba(138, 47, 85, 0.08);
+    }
+
+    .btn-consultar-favoritos {
+        width: 100%;
+        border-radius: 999px;
+        padding: 15px 18px !important;
+        font-size: 17px;
+        line-height: 1.25;
+    }
+}
