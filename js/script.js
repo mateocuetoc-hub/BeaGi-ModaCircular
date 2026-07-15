@@ -1266,6 +1266,8 @@ function obtenerPaginaPorHash(hash) {
     return "inicio";
 }
 
+let paginaMovilActiva = obtenerPaginaPorHash(window.location.hash);
+
 function crearSwitcherMovil() {
     if (document.getElementById("mobile-section-switcher")) {
         return;
@@ -1322,6 +1324,8 @@ function activarPaginaMovil(pageId, moverArriba = true) {
 
     const page = mobilePagesConfig.find((item) => item.id === pageId) || mobilePagesConfig[0];
 
+    paginaMovilActiva = page.id;
+
     document.querySelectorAll(".mobile-page-section").forEach((elemento) => {
         elemento.classList.remove("mobile-section-active");
         elemento.classList.add("mobile-section-hidden");
@@ -1337,10 +1341,7 @@ function activarPaginaMovil(pageId, moverArriba = true) {
     });
 
     if (moverArriba) {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
+        window.scrollTo(0, 0);
     }
 }
 
@@ -1407,16 +1408,28 @@ function configurarModoAppMovil() {
         activarPaginaMovil(pageId);
     });
 
+    const mediaMovil = window.matchMedia("(max-width: 768px)");
+
     const aplicarModoSegunPantalla = () => {
-        if (esVistaMovilBeaGi()) {
-            activarPaginaMovil(obtenerPaginaPorHash(window.location.hash), false);
+        if (mediaMovil.matches) {
+            activarPaginaMovil(paginaMovilActiva, false);
         } else {
             desactivarModoMovilSecciones();
         }
     };
 
     aplicarModoSegunPantalla();
-    window.addEventListener("resize", aplicarModoSegunPantalla);
+
+    /*
+    Solo reaccionamos cuando realmente se cruza el límite
+    entre celular y escritorio. Ya no reaccionamos cuando
+    la barra del navegador móvil aparece o desaparece.
+    */
+    if (mediaMovil.addEventListener) {
+        mediaMovil.addEventListener("change", aplicarModoSegunPantalla);
+    } else {
+        mediaMovil.addListener(aplicarModoSegunPantalla);
+    }
 }
 
 configurarModoAppMovil();
