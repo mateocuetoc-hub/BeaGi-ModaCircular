@@ -1405,7 +1405,22 @@ function configurarModoAppMovil() {
             menuToggle.setAttribute("aria-label", "Abrir menú");
         }
 
-        activarPaginaMovil(pageId);
+        activarPaginaMovil(pageId, false);
+
+        /*
+        Después de mostrar la sección correcta, desplazamos
+        hasta el elemento exacto que se presionó.
+        */
+        requestAnimationFrame(() => {
+            const destino = document.querySelector(hash);
+
+            if (destino) {
+                destino.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
+            }
+        });
     });
 
     const mediaMovil = window.matchMedia("(max-width: 768px)");
