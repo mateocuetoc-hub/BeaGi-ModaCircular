@@ -1217,3 +1217,206 @@ if (navFavoritosMobile) {
         }
     });
 }
+
+/* ============================= */
+/* MODO APP MÓVIL POR SECCIONES */
+/* ============================= */
+
+const mobilePagesConfig = [
+    {
+        id: "inicio",
+        label: "Inicio",
+        selectors: ["#inicio", ".barra-info"],
+    },
+    {
+        id: "catalogo",
+        label: "Catálogo",
+        selectors: ["#novedades", "#catalogo"],
+    },
+    {
+        id: "lives",
+        label: "Lives",
+        selectors: ["#lives-tiktok"],
+    },
+    {
+        id: "comprar",
+        label: "Comprar",
+        selectors: ["#nosotros", "#como-comprar", ".faq"],
+    },
+    {
+        id: "ubicacion",
+        label: "Ubicación",
+        selectors: ["#ubicacion", "#contacto"],
+    },
+];
+
+function esVistaMovilBeaGi() {
+    return window.matchMedia("(max-width: 768px)").matches;
+}
+
+function obtenerPaginaPorHash(hash) {
+    const limpio = hash.replace("#", "");
+
+    if (["inicio"].includes(limpio)) return "inicio";
+    if (["novedades", "catalogo"].includes(limpio)) return "catalogo";
+    if (["lives-tiktok"].includes(limpio)) return "lives";
+    if (["nosotros", "como-comprar"].includes(limpio)) return "comprar";
+    if (["ubicacion", "contacto"].includes(limpio)) return "ubicacion";
+
+    return "inicio";
+}
+
+function crearSwitcherMovil() {
+    if (document.getElementById("mobile-section-switcher")) {
+        return;
+    }
+
+    const header = document.querySelector(".header");
+
+    if (!header) {
+        return;
+    }
+
+    const switcher = document.createElement("nav");
+    switcher.id = "mobile-section-switcher";
+    switcher.className = "mobile-section-switcher";
+    switcher.setAttribute("aria-label", "Secciones principales");
+
+    switcher.innerHTML = mobilePagesConfig
+        .map((page) => `
+            <button class="mobile-switch-btn" type="button" data-mobile-page="${page.id}">
+                ${page.label}
+            </button>
+        `)
+        .join("");
+
+    header.insertAdjacentElement("afterend", switcher);
+}
+
+function obtenerElementosPaginaMovil(page) {
+    const elementos = [];
+
+    page.selectors.forEach((selector) => {
+        document.querySelectorAll(selector).forEach((elemento) => {
+            elementos.push(elemento);
+        });
+    });
+
+    return elementos;
+}
+
+function prepararSeccionesMoviles() {
+    mobilePagesConfig.forEach((page) => {
+        obtenerElementosPaginaMovil(page).forEach((elemento) => {
+            elemento.classList.add("mobile-page-section");
+        });
+    });
+}
+
+function activarPaginaMovil(pageId, moverArriba = true) {
+    if (!esVistaMovilBeaGi()) {
+        return;
+    }
+
+    document.body.classList.add("mobile-page-mode");
+
+    const page = mobilePagesConfig.find((item) => item.id === pageId) || mobilePagesConfig[0];
+
+    document.querySelectorAll(".mobile-page-section").forEach((elemento) => {
+        elemento.classList.remove("mobile-section-active");
+        elemento.classList.add("mobile-section-hidden");
+    });
+
+    obtenerElementosPaginaMovil(page).forEach((elemento) => {
+        elemento.classList.remove("mobile-section-hidden");
+        elemento.classList.add("mobile-section-active");
+    });
+
+    document.querySelectorAll(".mobile-switch-btn").forEach((boton) => {
+        boton.classList.toggle("activo", boton.dataset.mobilePage === page.id);
+    });
+
+    if (moverArriba) {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    }
+}
+
+function desactivarModoMovilSecciones() {
+    document.body.classList.remove("mobile-page-mode");
+
+    document.querySelectorAll(".mobile-page-section").forEach((elemento) => {
+        elemento.classList.remove("mobile-section-hidden", "mobile-section-active");
+    });
+
+    document.querySelectorAll(".mobile-switch-btn").forEach((boton) => {
+        boton.classList.remove("activo");
+    });
+}
+
+function configurarModoAppMovil() {
+    crearSwitcherMovil();
+    prepararSeccionesMoviles();
+
+    const switcher = document.getElementById("mobile-section-switcher");
+
+    if (switcher) {
+        switcher.addEventListener("click", (evento) => {
+            const boton = evento.target.closest(".mobile-switch-btn");
+
+            if (!boton) {
+                return;
+            }
+
+            activarPaginaMovil(boton.dataset.mobilePage);
+        });
+    }
+
+    document.addEventListener("click", (evento) => {
+        const link = evento.target.closest('a[href^="#"]');
+
+        if (!link || !esVistaMovilBeaGi()) {
+            return;
+        }
+
+        const hash = link.getAttribute("href");
+
+        if (!hash || hash === "#") {
+            return;
+        }
+
+        const pageId = obtenerPaginaPorHash(hash);
+
+        if (!pageId) {
+            return;
+        }
+
+        evento.preventDefault();
+
+        if (navLinks) {
+            navLinks.classList.remove("activo");
+        }
+
+        if (menuToggle) {
+            menuToggle.textContent = "☰";
+            menuToggle.setAttribute("aria-label", "Abrir menú");
+        }
+
+        activarPaginaMovil(pageId);
+    });
+
+    const aplicarModoSegunPantalla = () => {
+        if (esVistaMovilBeaGi()) {
+            activarPaginaMovil(obtenerPaginaPorHash(window.location.hash), false);
+        } else {
+            desactivarModoMovilSecciones();
+        }
+    };
+
+    aplicarModoSegunPantalla();
+    window.addEventListener("resize", aplicarModoSegunPantalla);
+}
+
+configurarModoAppMovil();

@@ -3624,3 +3624,98 @@ html {
         line-height: 1.25;
     }
 }
+
+/* ============================= */
+/* MODO APP MÓVIL POR SECCIONES */
+/* ============================= */
+
+.mobile-section-switcher {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    body.mobile-page-mode {
+        background-color: var(--crema);
+    }
+
+    .mobile-section-switcher {
+        position: sticky;
+        top: 66px;
+        z-index: 930;
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 10px 12px;
+        background-color: rgba(255, 247, 242, 0.96);
+        border-bottom: 1px solid var(--rosado-claro);
+        box-shadow: 0 8px 18px rgba(92, 31, 58, 0.08);
+        backdrop-filter: blur(12px);
+        scrollbar-width: none;
+    }
+
+    .mobile-section-switcher::-webkit-scrollbar {
+        display: none;
+    }
+
+    .mobile-switch-btn {
+        border: 1px solid var(--rosado-claro);
+        background-color: white;
+        color: var(--vino);
+        padding: 10px 15px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 900;
+        white-space: nowrap;
+        cursor: pointer;
+        box-shadow: 0 5px 14px rgba(138, 47, 85, 0.08);
+        transition: 0.25s;
+    }
+
+    .mobile-switch-btn.activo {
+        background: linear-gradient(135deg, var(--rosado-oscuro), var(--vino));
+        color: white;
+        border-color: var(--rosado-oscuro);
+        transform: translateY(-1px);
+    }
+
+    body.mobile-page-mode .mobile-section-hidden {
+        display: none !important;
+    }
+
+    body.mobile-page-mode .mobile-section-active {
+        display: block;
+        animation: aparecerSeccionMovil 0.28s ease;
+    }
+
+    @keyframes aparecerSeccionMovil {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    body.mobile-page-mode .hero {
+        padding-top: 55px !important;
+    }
+
+    body.mobile-page-mode .catalogo,
+    body.mobile-page-mode .novedades,
+    body.mobile-page-mode .lives-tiktok,
+    body.mobile-page-mode .como-comprar,
+    body.mobile-page-mode .faq,
+    body.mobile-page-mode .ubicacion,
+    body.mobile-page-mode .contacto,
+    body.mobile-page-mode .nosotros {
+        padding-top: 38px !important;
+    }
+
+    body.mobile-page-mode .barra-info {
+        margin-top: -70px !important;
+        margin-bottom: 38px !important;
+    }
+}
