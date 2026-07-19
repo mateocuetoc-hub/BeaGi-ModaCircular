@@ -3819,3 +3819,260 @@ html {
         padding-bottom: calc(16px + env(safe-area-inset-bottom));
     }
 }
+
+
+/* ============================= */
+/* MODAL PRODUCTO MÓVIL CORREGIDO */
+/* ============================= */
+
+body.modal-abierto {
+    overflow: hidden !important;
+}
+
+@media (max-width: 768px) {
+    .modal {
+        position: fixed !important;
+        inset: 0 !important;
+        z-index: 5000 !important;
+        padding: 0 !important;
+        align-items: stretch !important;
+        justify-content: stretch !important;
+        overflow: hidden !important;
+        background-color: rgba(47, 37, 40, 0.72) !important;
+    }
+
+    .modal-card {
+        display: block !important;
+        width: 100vw !important;
+        max-width: none !important;
+        height: 100dvh !important;
+        max-height: 100dvh !important;
+        margin: 0 !important;
+        padding:
+            calc(78px + env(safe-area-inset-top))
+            18px
+            calc(28px + env(safe-area-inset-bottom)) !important;
+        border-radius: 0 !important;
+        overflow-y: auto !important;
+        overscroll-behavior: contain;
+        box-shadow: none !important;
+    }
+
+    .cerrar-modal {
+        position: fixed !important;
+        top: calc(16px + env(safe-area-inset-top)) !important;
+        right: 16px !important;
+        z-index: 5100 !important;
+        width: 50px !important;
+        height: 50px !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50% !important;
+        background-color: var(--vino) !important;
+        color: white !important;
+        font-size: 32px !important;
+        line-height: 1;
+        box-shadow: 0 8px 24px rgba(47, 37, 40, 0.3);
+    }
+
+    #modal-imagen {
+        margin-bottom: 24px;
+    }
+
+    #modal-imagen img,
+    .modal-placeholder,
+    .galeria-principal img {
+        width: 100% !important;
+        height: 290px !important;
+        border-radius: 22px !important;
+        object-fit: cover;
+    }
+
+    .modal-info {
+        display: block !important;
+        padding-bottom: 20px;
+    }
+
+    .modal-etiqueta {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .modal-info h2 {
+        padding-right: 0 !important;
+        font-size: 27px !important;
+        line-height: 1.2;
+        margin-bottom: 16px;
+    }
+
+    .modal-info p {
+        font-size: 16px !important;
+        line-height: 1.6;
+        margin-bottom: 12px;
+    }
+
+    .precio-modal {
+        font-size: 25px !important;
+        margin: 18px 0 !important;
+    }
+
+    .modal-info .btn-wsp {
+        display: block !important;
+        width: 100% !important;
+        margin: 20px 0 0 !important;
+        padding: 16px 18px !important;
+        text-align: center;
+        border-radius: 18px !important;
+    }
+}
+
+
+/* ============================= */
+/* HEADER INTERACTIVO DEL MODAL */
+/* ============================= */
+
+.modal-mobile-bar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .modal-card {
+        padding:
+            0
+            18px
+            calc(28px + env(safe-area-inset-bottom))
+            !important;
+
+        background:
+            linear-gradient(
+                180deg,
+                #fff7f2 0%,
+                #ffffff 220px
+            ) !important;
+
+        scroll-padding-top: 90px;
+    }
+
+    .modal-mobile-bar {
+        position: sticky;
+        top: 0;
+        z-index: 5060;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+
+        min-height: 82px;
+        margin: 0 -18px 20px;
+        padding:
+            calc(22px + env(safe-area-inset-top))
+            76px
+            15px
+            18px;
+
+        color: white;
+        background:
+            radial-gradient(
+                circle at top right,
+                rgba(255, 255, 255, 0.2),
+                transparent 40%
+            ),
+            linear-gradient(
+                135deg,
+                var(--vino),
+                var(--rosado-oscuro)
+            );
+
+        box-shadow: 0 10px 28px rgba(92, 31, 58, 0.28);
+        border-radius: 0 0 24px 24px;
+    }
+
+    .modal-mobile-handle {
+        position: absolute;
+        top: calc(8px + env(safe-area-inset-top));
+        left: 50%;
+        transform: translateX(-50%);
+
+        width: 42px;
+        height: 5px;
+        border-radius: 999px;
+        background-color: rgba(255, 255, 255, 0.65);
+    }
+
+    .modal-mobile-title {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        min-width: 0;
+    }
+
+    .modal-mobile-title small {
+        font-size: 12px;
+        opacity: 0.8;
+    }
+
+    .modal-mobile-title strong {
+        font-size: 18px;
+        line-height: 1.1;
+    }
+
+    .modal-mobile-hint {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        font-size: 12px;
+        font-weight: bold;
+        white-space: nowrap;
+        opacity: 0.9;
+    }
+
+    .modal-mobile-hint b {
+        display: inline-block;
+        font-size: 17px;
+        animation: flechaModal 1.4s ease-in-out infinite;
+    }
+
+    .cerrar-modal {
+        top: calc(16px + env(safe-area-inset-top)) !important;
+        right: 15px !important;
+
+        width: 48px !important;
+        height: 48px !important;
+
+        background-color: white !important;
+        color: var(--vino) !important;
+        border: 2px solid rgba(92, 31, 58, 0.12) !important;
+
+        box-shadow: 0 8px 22px rgba(47, 37, 40, 0.28);
+        transition: transform 0.2s ease !important;
+    }
+
+    .cerrar-modal:active {
+        transform: scale(0.88) rotate(6deg);
+    }
+
+    #modal-imagen {
+        margin-top: 0 !important;
+        margin-bottom: 24px !important;
+    }
+
+    #modal-imagen img,
+    .modal-placeholder,
+    .galeria-principal img {
+        box-shadow: 0 12px 30px rgba(138, 47, 85, 0.14);
+    }
+}
+
+@keyframes flechaModal {
+    0%,
+    100% {
+        transform: translateY(-2px);
+    }
+
+    50% {
+        transform: translateY(4px);
+    }
+}
