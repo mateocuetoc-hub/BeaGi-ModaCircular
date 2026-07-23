@@ -42,8 +42,27 @@ const mobileFavoritosBtn = document.getElementById("mobile-favoritos-btn");
 let categoriaActiva = "todos";
 let timeoutToast = null;
 
-const favoritosGuardados = JSON.parse(localStorage.getItem("favoritosBeaGi")) || [];
-const favoritos = new Set(favoritosGuardados);
+function cargarFavoritos() {
+    try {
+        const datosGuardados = localStorage.getItem("favoritosBeaGi");
+        const favoritosGuardados = JSON.parse(datosGuardados || "[]");
+
+        return Array.isArray(favoritosGuardados)
+            ? favoritosGuardados
+            : [];
+    } catch (error) {
+        console.warn(
+            "No fue posible cargar los favoritos guardados:",
+            error
+        );
+
+        localStorage.removeItem("favoritosBeaGi");
+
+        return [];
+    }
+}
+
+const favoritos = new Set(cargarFavoritos());
 
 function obtenerImagenes(abrigo) {
     if (Array.isArray(abrigo.imagenes) && abrigo.imagenes.length > 0) {
@@ -439,6 +458,13 @@ function abrirDetalle(id) {
     modalWhatsapp.href = `https://wa.me/${numeroWhatsApp}?text=${crearMensajeWhatsApp(abrigo)}`;
 
     modal.classList.add("activo");
+    document.body.classList.add("modal-abierto");
+
+    const tarjetaModal = modal.querySelector(".modal-card");
+
+    if (tarjetaModal) {
+        tarjetaModal.scrollTop = 0;
+    }
 }
 
 function obtenerNovedades() {
@@ -704,6 +730,7 @@ if (modalImagen) {
 if (cerrarModal) {
     cerrarModal.addEventListener("click", () => {
         modal.classList.remove("activo");
+        document.body.classList.remove("modal-abierto");
     });
 }
 
@@ -711,6 +738,7 @@ if (modal) {
     modal.addEventListener("click", (evento) => {
         if (evento.target === modal) {
             modal.classList.remove("activo");
+        document.body.classList.remove("modal-abierto");
         }
     });
 }
@@ -757,6 +785,7 @@ if (mobileFavoritosBtn) {
 document.addEventListener("keydown", (evento) => {
     if (evento.key === "Escape") {
         if (modal) modal.classList.remove("activo");
+        document.body.classList.remove("modal-abierto");
         cerrarPanel();
     }
 });
