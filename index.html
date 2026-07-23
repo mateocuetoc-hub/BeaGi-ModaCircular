@@ -223,7 +223,11 @@
                 Cuando definamos el día y la hora, este contador se actualizará para mostrar cuánto falta para el próximo live.
             </p>
 
-            <button class="btn-dinamica-live" id="btn-dinamica-live">
+            <button
+                class="btn-dinamica-live"
+                id="btn-dinamica-live"
+                type="button"
+            >
                 Ver dinámica del live
             </button>
 
@@ -511,8 +515,14 @@
     </footer>
 
 
-    <div class="modal" id="modal-producto">
-        <div class="modal-card">
+    <div
+        class="modal"
+        id="modal-producto"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-nombre"
+    >
+        <div class="modal-card" tabindex="-1">
 
             <div class="modal-mobile-bar">
                 <span class="modal-mobile-handle"></span>
@@ -527,7 +537,14 @@
                 </span>
             </div>
 
-            <button class="cerrar-modal" id="cerrar-modal">×</button>
+            <button
+                class="cerrar-modal"
+                id="cerrar-modal"
+                type="button"
+                aria-label="Cerrar detalle del abrigo"
+            >
+                ×
+            </button>
             <div id="modal-imagen"></div>
             <div class="modal-info">
                 <span class="modal-etiqueta">BeaGi ModaCircular</span>
@@ -547,7 +564,12 @@
         WhatsApp
     </a>
 
-<button class="btn-favoritos-panel" id="btn-favoritos-panel" aria-label="Ver favoritos">
+<button
+    class="btn-favoritos-panel"
+    id="btn-favoritos-panel"
+    type="button"
+    aria-label="Ver favoritos"
+>
     ♡ Favoritos <span id="favoritos-contador">0</span>
 </button>
 
@@ -560,7 +582,13 @@
             <h2>Mis favoritos</h2>
         </div>
 
-        <button id="cerrar-panel-favoritos" aria-label="Cerrar favoritos">×</button>
+        <button
+            id="cerrar-panel-favoritos"
+            type="button"
+            aria-label="Cerrar favoritos"
+        >
+            ×
+        </button>
     </div>
 
     <div class="panel-favoritos-body" id="panel-favoritos-body">
@@ -575,7 +603,12 @@
 
 <div class="toast" id="toast"></div>
 
-<button class="btn-subir" id="btn-subir" aria-label="Volver arriba">
+<button
+    class="btn-subir"
+    id="btn-subir"
+    type="button"
+    aria-label="Volver arriba"
+>
     ↑
 </button>
 
