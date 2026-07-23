@@ -943,8 +943,12 @@ renderizarAbrigos(ordenarLista(abrigos));
 renderizarNovedades();
 actualizarPanelFavoritos();
 configurarLiveTikTok();
-actualizarCuentaRegresivaLive();
-setInterval(actualizarCuentaRegresivaLive, 1000);
+
+if (liveConfig.fechaObjetivo) {
+    actualizarCuentaRegresivaLive();
+    setInterval(actualizarCuentaRegresivaLive, 1000);
+}
+
 configurarEnlacesSeguros();
 
 
