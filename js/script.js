@@ -37,7 +37,7 @@ const toast = document.getElementById("toast");
 
 const menuToggle = document.getElementById("menu-toggle");
 const navLinks = document.getElementById("nav-links");
-const mobileFavoritosBtn = document.getElementById("mobile-favoritos-btn");
+
 
 let categoriaActiva = "todos";
 let timeoutToast = null;
@@ -778,9 +778,6 @@ if (panelFavoritosBody) {
     });
 }
 
-if (mobileFavoritosBtn) {
-    mobileFavoritosBtn.addEventListener("click", abrirPanelFavoritos);
-}
 
 document.addEventListener("keydown", (evento) => {
     if (evento.key === "Escape") {
