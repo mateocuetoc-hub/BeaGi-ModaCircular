@@ -4518,3 +4518,99 @@ body.modal-abierto {
         padding: 12px 14px;
     }
 }
+
+/* ===================================== */
+/* SECCIONES INDEPENDIENTES EN ESCRITORIO */
+/* ===================================== */
+
+@media (min-width: 769px) {
+    body.desktop-page-mode .desktop-section-hidden {
+        display: none !important;
+    }
+
+    body.desktop-page-mode .desktop-section-active {
+        animation: aparecerSeccionEscritorio 0.35s ease;
+    }
+
+    body.desktop-page-mode #lives-tiktok,
+    body.desktop-page-mode #preguntas-frecuentes {
+        min-height: calc(100vh - 90px);
+        padding-top: 110px;
+        padding-bottom: 90px;
+    }
+}
+
+@media (max-width: 768px) {
+    .solo-escritorio {
+        display: none !important;
+    }
+}
+
+@keyframes aparecerSeccionEscritorio {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================= */
+/* PERFIL DE TIKTOK EN ESCRITORIO */
+/* ============================= */
+
+@media (min-width: 769px) {
+    .perfil-tiktok-escritorio {
+        width: min(1180px, calc(100% - 80px));
+        margin: 48px auto 0;
+        padding: 34px;
+        display: grid;
+        grid-template-columns:
+            minmax(270px, 0.72fr)
+            minmax(0, 1.28fr);
+        align-items: center;
+        gap: 38px;
+        background:
+            radial-gradient(
+                circle at top left,
+                rgba(249, 219, 231, 0.9),
+                transparent 45%
+            ),
+            white;
+        border: 1px solid rgba(138, 47, 85, 0.13);
+        border-radius: 30px;
+        box-shadow: 0 18px 48px rgba(92, 31, 58, 0.14);
+    }
+
+    .perfil-tiktok-texto h3 {
+        margin: 15px 0 14px;
+        color: var(--vino);
+        font-size: 32px;
+    }
+
+    .perfil-tiktok-texto p {
+        margin-bottom: 24px;
+        color: #66545c;
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    .perfil-tiktok-embed {
+        min-width: 0;
+        padding: 16px;
+        display: flex;
+        justify-content: center;
+        background-color: #fff7f2;
+        border-radius: 24px;
+        overflow: hidden;
+    }
+
+    .perfil-tiktok-embed .tiktok-embed {
+        width: 100% !important;
+        max-width: 720px !important;
+        margin: 0 !important;
+    }
+}

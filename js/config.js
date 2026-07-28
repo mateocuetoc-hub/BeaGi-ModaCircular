@@ -6,6 +6,6 @@ window.beagiConfig = {
     direccionPublica: "121 Pje. Los Espinos, San Felipe, Valparaíso, Chile",
     zonaPublica: "San Felipe, Valparaíso, Chile",
     mapsQuery: "121 Pje. Los Espinos, San Felipe, Valparaíso, Chile",
-    tiktokUrl: "https://www.tiktok.com/",
+    tiktokUrl: "https://www.tiktok.com/@javieraparraguez_17",
     instagramUrl: ""
 };

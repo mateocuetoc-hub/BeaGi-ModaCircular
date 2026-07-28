@@ -1721,3 +1721,188 @@ function configurarModoAppMovil() {
 }
 
 configurarModoAppMovil();
+
+/* ===================================== */
+/* SECCIONES INDEPENDIENTES EN ESCRITORIO */
+/* ===================================== */
+
+const desktopPagesConfig = [
+    {
+        id: "inicio",
+        selectors: [
+            "#inicio",
+            ".barra-info",
+            "#novedades",
+            "#confecciones",
+            "#catalogo",
+            "#nosotros",
+            "#como-comprar",
+            "#ubicacion",
+            "#contacto",
+        ],
+    },
+    {
+        id: "lives",
+        selectors: ["#lives-tiktok"],
+    },
+    {
+        id: "preguntas",
+        selectors: ["#preguntas-frecuentes"],
+    },
+];
+
+function esVistaEscritorioBeaGi() {
+    return window.matchMedia("(min-width: 769px)").matches;
+}
+
+function obtenerVistaEscritorioPorHash(hash) {
+    const id = hash.replace("#", "");
+
+    if (id === "lives-tiktok") {
+        return "lives";
+    }
+
+    if (id === "preguntas-frecuentes") {
+        return "preguntas";
+    }
+
+    return "inicio";
+}
+
+function obtenerElementosVistaEscritorio(vista) {
+    const elementos = [];
+
+    vista.selectors.forEach((selector) => {
+        document.querySelectorAll(selector).forEach((elemento) => {
+            elementos.push(elemento);
+        });
+    });
+
+    return elementos;
+}
+
+function prepararVistasEscritorio() {
+    desktopPagesConfig.forEach((vista) => {
+        obtenerElementosVistaEscritorio(vista).forEach((elemento) => {
+            elemento.classList.add("desktop-page-section");
+        });
+    });
+}
+
+function activarVistaEscritorio(vistaId) {
+    if (!esVistaEscritorioBeaGi()) {
+        return;
+    }
+
+    document.body.classList.add("desktop-page-mode");
+
+    const vista =
+        desktopPagesConfig.find((item) => item.id === vistaId) ||
+        desktopPagesConfig[0];
+
+    document
+        .querySelectorAll(".desktop-page-section")
+        .forEach((elemento) => {
+            elemento.classList.add("desktop-section-hidden");
+            elemento.classList.remove("desktop-section-active");
+        });
+
+    obtenerElementosVistaEscritorio(vista).forEach((elemento) => {
+        elemento.classList.remove("desktop-section-hidden");
+        elemento.classList.add("desktop-section-active");
+    });
+}
+
+function desactivarVistasEscritorio() {
+    document.body.classList.remove("desktop-page-mode");
+
+    document
+        .querySelectorAll(".desktop-page-section")
+        .forEach((elemento) => {
+            elemento.classList.remove(
+                "desktop-section-hidden",
+                "desktop-section-active"
+            );
+        });
+}
+
+function navegarEscritorio(hash, actualizarUrl = true) {
+    const vistaId = obtenerVistaEscritorioPorHash(hash);
+
+    activarVistaEscritorio(vistaId);
+
+    if (actualizarUrl && window.location.hash !== hash) {
+        history.pushState(null, "", hash);
+    }
+
+    requestAnimationFrame(() => {
+        const destino = document.querySelector(hash);
+
+        if (destino) {
+            destino.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        } else {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
+        }
+    });
+}
+
+function configurarVistasEscritorio() {
+    prepararVistasEscritorio();
+
+    document.addEventListener("click", (evento) => {
+        const enlace = evento.target.closest('a[href^="#"]');
+
+        if (!enlace || !esVistaEscritorioBeaGi()) {
+            return;
+        }
+
+        const hash = enlace.getAttribute("href");
+
+        if (!hash || hash === "#") {
+            return;
+        }
+
+        evento.preventDefault();
+        navegarEscritorio(hash);
+    });
+
+    window.addEventListener("popstate", () => {
+        if (!esVistaEscritorioBeaGi()) {
+            return;
+        }
+
+        navegarEscritorio(window.location.hash || "#inicio", false);
+    });
+
+    const mediaEscritorio = window.matchMedia("(min-width: 769px)");
+
+    const aplicarModoEscritorio = () => {
+        if (mediaEscritorio.matches) {
+            navegarEscritorio(
+                window.location.hash || "#inicio",
+                false
+            );
+        } else {
+            desactivarVistasEscritorio();
+        }
+    };
+
+    aplicarModoEscritorio();
+
+    if (mediaEscritorio.addEventListener) {
+        mediaEscritorio.addEventListener(
+            "change",
+            aplicarModoEscritorio
+        );
+    } else {
+        mediaEscritorio.addListener(aplicarModoEscritorio);
+    }
+}
+
+configurarVistasEscritorio();
