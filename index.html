@@ -49,7 +49,8 @@
 
                 <ul class="nav-dropdown-menu">
                     <li><a href="#novedades">Novedades</a></li>
-                    <li><a href="#catalogo">Catálogo</a></li>
+                    <li><a href="#confecciones">Confecciones</a></li>
+                    <li><a href="#catalogo">Catálogo de abrigos</a></li>
                     <li><a href="#lives-tiktok">Lives TikTok</a></li>
                 </ul>
             </li>
@@ -266,6 +267,62 @@
     </div>
 
     <div class="novedades-grid" id="novedades-productos"></div>
+</section>
+
+<section id="confecciones" class="catalogo confecciones">
+    <div class="catalogo-header">
+        <span class="etiqueta-seccion">Hecho por BeaGi</span>
+
+        <h2>Confecciones BeaGi</h2>
+
+        <p class="subtitulo">
+            Descubre nuestros accesorios confeccionados a mano,
+            pensados para darle un detalle único a tu estilo.
+        </p>
+    </div>
+
+    <div
+        class="chips-categorias"
+        id="chips-confecciones"
+        aria-label="Filtrar confecciones"
+    >
+        <button
+            class="chip chip-confeccion activo"
+            type="button"
+            data-confeccion="todos"
+        >
+            Todos
+        </button>
+
+        <button
+            class="chip chip-confeccion"
+            type="button"
+            data-confeccion="Puños removibles"
+        >
+            Puños removibles
+        </button>
+
+        <button
+            class="chip chip-confeccion"
+            type="button"
+            data-confeccion="Portalabiales"
+        >
+            Portalabiales
+        </button>
+    </div>
+
+    <p
+        id="contador-confecciones"
+        class="contador-productos"
+        aria-live="polite"
+    >
+        Preparando confecciones...
+    </p>
+
+    <div
+        class="productos"
+        id="contenedor-confecciones"
+    ></div>
 </section>
 
 <section id="catalogo" class="catalogo">
@@ -614,6 +671,7 @@
 
     <script src="js/config.js"></script>
     <script src="js/productos.js"></script>
+    <script src="js/confecciones.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>

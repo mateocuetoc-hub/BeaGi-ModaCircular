@@ -4076,3 +4076,445 @@ body.modal-abierto {
         transform: translateY(4px);
     }
 }
+
+/* ============================= */
+/* CONFECCIONES BEAGI */
+/* ============================= */
+
+.confecciones {
+    padding: 80px 40px;
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(249, 219, 231, 0.9),
+            transparent 38%
+        ),
+        linear-gradient(135deg, #fff7f2 0%, #ffffff 55%, #f9dbe7 100%);
+}
+
+.confecciones-header {
+    margin-bottom: 42px;
+}
+
+.confecciones-grid {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px;
+}
+
+.confeccion-card {
+    min-width: 0;
+    overflow: hidden;
+    background-color: var(--blanco);
+    border: 1px solid var(--rosado-claro);
+    border-radius: 30px;
+    box-shadow: 0 14px 35px rgba(92, 31, 58, 0.13);
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.confeccion-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 20px 45px rgba(92, 31, 58, 0.2);
+}
+
+.confeccion-visual {
+    position: relative;
+    min-height: 280px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    isolation: isolate;
+}
+
+.confeccion-visual::before,
+.confeccion-visual::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.confeccion-visual::before {
+    width: 240px;
+    height: 240px;
+    top: -95px;
+    right: -65px;
+    background-color: rgba(255, 255, 255, 0.22);
+}
+
+.confeccion-visual::after {
+    width: 180px;
+    height: 180px;
+    bottom: -80px;
+    left: -45px;
+    border: 28px solid rgba(255, 255, 255, 0.18);
+}
+
+.confeccion-punos .confeccion-visual {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(92, 31, 58, 0.94),
+            rgba(217, 108, 148, 0.82)
+        );
+}
+
+.confeccion-portalabiales .confeccion-visual {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(217, 108, 148, 0.9),
+            rgba(244, 182, 200, 0.9)
+        );
+}
+
+.confeccion-distintivo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 9px 15px;
+    color: var(--vino);
+    background-color: rgba(255, 255, 255, 0.92);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.3px;
+    box-shadow: 0 7px 18px rgba(92, 31, 58, 0.13);
+}
+
+.confeccion-iniciales {
+    color: var(--blanco);
+    font-size: clamp(72px, 9vw, 112px);
+    font-weight: 900;
+    letter-spacing: -5px;
+    line-height: 1;
+    text-shadow: 0 10px 25px rgba(92, 31, 58, 0.24);
+    transform: rotate(-4deg);
+}
+
+.confeccion-contenido {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.confeccion-categoria {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: var(--rosado-oscuro);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.confeccion-contenido h3 {
+    margin-bottom: 12px;
+    color: var(--vino);
+    font-size: 29px;
+    line-height: 1.15;
+}
+
+.confeccion-contenido p {
+    min-height: 78px;
+    margin-bottom: 22px;
+    color: #6c5961;
+    font-size: 16px;
+    line-height: 1.65;
+}
+
+.confeccion-contenido .btn-principal {
+    margin-top: auto;
+}
+
+/* Adaptación para tablet */
+
+@media (max-width: 900px) {
+    .confecciones-grid {
+        grid-template-columns: 1fr;
+        max-width: 650px;
+    }
+
+    .confeccion-card {
+        display: grid;
+        grid-template-columns: minmax(240px, 0.85fr) 1.15fr;
+    }
+
+    .confeccion-visual {
+        min-height: 100%;
+    }
+
+    .confeccion-contenido p {
+        min-height: auto;
+    }
+}
+
+/* Adaptación para celular */
+
+@media (max-width: 600px) {
+    .confecciones {
+        padding: 55px 18px;
+    }
+
+    .confecciones-header {
+        margin-bottom: 28px;
+    }
+
+    .confecciones-grid {
+        gap: 22px;
+    }
+
+    .confeccion-card {
+        display: block;
+        border-radius: 24px;
+    }
+
+    .confeccion-visual {
+        min-height: 215px;
+    }
+
+    .confeccion-distintivo {
+        top: 15px;
+        left: 15px;
+        padding: 8px 13px;
+        font-size: 12px;
+    }
+
+    .confeccion-iniciales {
+        font-size: 82px;
+    }
+
+    .confeccion-contenido {
+        padding: 24px 20px 25px;
+    }
+
+    .confeccion-contenido h3 {
+        font-size: 25px;
+    }
+
+    .confeccion-contenido p {
+        margin-bottom: 20px;
+        font-size: 15px;
+    }
+
+    .confeccion-contenido .btn-principal {
+        width: 100%;
+        padding: 14px 18px;
+        text-align: center;
+    }
+}
+
+/* ============================= */
+/* MODAL DE DETALLE TIPO BOUTIQUE */
+/* ============================= */
+
+.modal {
+    background-color: rgba(38, 22, 29, 0.74);
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+}
+
+.cerrar-modal {
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    line-height: 1;
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.cerrar-modal:hover {
+    background-color: var(--rosado-suave);
+    transform: rotate(90deg) scale(1.05);
+}
+
+/* Información del producto */
+
+#modal-descripcion {
+    color: #66545c;
+    line-height: 1.7;
+}
+
+.modal-info > p:not(#modal-descripcion):not(.precio-modal) {
+    margin-bottom: 10px;
+    padding: 11px 14px;
+    color: #59474f;
+    background-color: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(138, 47, 85, 0.11);
+    border-radius: 13px;
+}
+
+.modal-info .btn-wsp {
+    width: 100%;
+    padding: 15px 20px;
+    text-align: center;
+    border-radius: 16px;
+    box-shadow: 0 10px 22px rgba(37, 211, 102, 0.22);
+}
+
+/* Diseño para computador y tablet horizontal */
+
+@media (min-width: 769px) {
+    .modal {
+        padding: 28px;
+    }
+
+    .modal-card {
+        width: min(980px, calc(100vw - 56px));
+        max-height: calc(100dvh - 56px);
+        padding: 0;
+        gap: 0;
+        grid-template-columns:
+            minmax(0, 1.08fr)
+            minmax(330px, 0.92fr);
+        align-items: stretch;
+        overflow: hidden;
+        border: 1px solid rgba(138, 47, 85, 0.12);
+        border-radius: 30px;
+        box-shadow: 0 28px 75px rgba(35, 17, 26, 0.38);
+    }
+
+    #modal-imagen {
+        min-width: 0;
+        padding: 18px;
+        overflow-y: auto;
+        background:
+            radial-gradient(
+                circle at top left,
+                rgba(249, 219, 231, 0.95),
+                transparent 42%
+            ),
+            linear-gradient(145deg, #fff7f2, #fbeaf0);
+    }
+
+    .galeria-principal {
+        margin-bottom: 12px;
+    }
+
+    #modal-imagen .galeria-principal img,
+    #modal-imagen > .modal-placeholder {
+        width: 100%;
+        height: clamp(340px, 55vh, 500px);
+        object-fit: cover;
+        object-position: center;
+        border-radius: 22px;
+        box-shadow: 0 12px 30px rgba(92, 31, 58, 0.15);
+    }
+
+    .galeria-miniaturas {
+        display: flex;
+        grid-template-columns: none;
+        gap: 10px;
+        margin-top: 12px;
+        padding: 2px 2px 5px;
+        overflow-x: auto;
+    }
+
+    #modal-imagen .miniatura-modal {
+        flex: 0 0 76px;
+        width: 76px;
+        height: 76px;
+        border-radius: 13px;
+    }
+
+    /* Corrige las miniaturas gigantes */
+
+    #modal-imagen .miniatura-modal img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 11px;
+    }
+
+    .modal-info {
+        min-width: 0;
+        justify-content: flex-start;
+        padding: 62px 38px 32px;
+        overflow-y: auto;
+        background:
+            radial-gradient(
+                circle at bottom right,
+                rgba(249, 219, 231, 0.55),
+                transparent 42%
+            ),
+            #ffffff;
+    }
+
+    .modal-etiqueta {
+        align-self: flex-start;
+        margin-bottom: 14px;
+        padding: 7px 12px;
+        color: var(--rosado-oscuro);
+        background-color: var(--rosado-claro);
+        border-radius: 999px;
+        font-size: 12px;
+        letter-spacing: 0.3px;
+    }
+
+    .modal-info h2 {
+        padding-right: 25px;
+        font-size: clamp(28px, 3vw, 36px);
+        line-height: 1.12;
+    }
+
+    #modal-descripcion {
+        margin-bottom: 19px;
+    }
+
+    .precio-modal {
+        margin: 13px 0 15px;
+        font-size: 27px;
+    }
+
+    .cerrar-modal {
+        top: 17px;
+        right: 17px;
+        width: 40px;
+        height: 40px;
+        background-color: white;
+        border: 1px solid rgba(138, 47, 85, 0.14);
+        box-shadow: 0 7px 20px rgba(92, 31, 58, 0.17);
+    }
+}
+
+/* Miniaturas y fotografías en celular */
+
+@media (max-width: 768px) {
+    #modal-imagen .galeria-principal img {
+        height: clamp(300px, 48vh, 430px) !important;
+        object-position: center;
+    }
+
+    #modal-imagen .galeria-miniaturas {
+        display: flex;
+        grid-template-columns: none;
+        gap: 9px;
+        padding: 2px 1px 6px;
+        overflow-x: auto;
+    }
+
+    #modal-imagen .miniatura-modal {
+        flex: 0 0 68px;
+        width: 68px;
+        height: 68px;
+    }
+
+    #modal-imagen .miniatura-modal img {
+        width: 100%;
+        height: 100% !important;
+        object-fit: cover;
+        border-radius: 11px;
+    }
+
+    .modal-info > p:not(#modal-descripcion):not(.precio-modal) {
+        padding: 12px 14px;
+    }
+}

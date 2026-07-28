@@ -1,6 +1,11 @@
 const beagiConfig = window.beagiConfig || {};
 const numeroWhatsApp = beagiConfig.whatsappNumero || "56945571689";
 const abrigos = Array.isArray(window.productosBeaGi) ? window.productosBeaGi : [];
+const confecciones = Array.isArray(window.confeccionesBeaGi)
+    ? window.confeccionesBeaGi
+    : [];
+
+const productosTienda = [...abrigos, ...confecciones];
 
 const contenedorProductos = document.getElementById("contenedor-productos");
 const buscador = document.getElementById("buscador");
@@ -12,6 +17,15 @@ const btnLimpiar = document.getElementById("btn-limpiar");
 const contadorProductos = document.getElementById("contador-productos");
 const resumenCatalogo = document.getElementById("resumen-catalogo");
 const chipsCategorias = document.getElementById("chips-categorias");
+const contenedorConfecciones = document.getElementById(
+    "contenedor-confecciones"
+);
+const contadorConfecciones = document.getElementById(
+    "contador-confecciones"
+);
+const chipsConfecciones = document.getElementById(
+    "chips-confecciones"
+);
 
 const modal = document.getElementById("modal-producto");
 const cerrarModal = document.getElementById("cerrar-modal");
@@ -40,6 +54,7 @@ const navLinks = document.getElementById("nav-links");
 
 
 let categoriaActiva = "todos";
+let confeccionActiva = "todos";
 let timeoutToast = null;
 
 function cargarFavoritos() {
@@ -349,6 +364,151 @@ function renderizarAbrigos(listaAbrigos) {
     activarAnimacionesTarjetas();
 }
 
+function renderizarConfecciones(listaConfecciones) {
+    if (!contenedorConfecciones) {
+        return;
+    }
+
+    contenedorConfecciones.innerHTML = "";
+
+    if (contadorConfecciones) {
+        contadorConfecciones.textContent =
+            `Mostrando ${listaConfecciones.length} de ` +
+            `${confecciones.length} confecciones`;
+    }
+
+    if (listaConfecciones.length === 0) {
+        contenedorConfecciones.innerHTML = `
+            <div class="sin-resultados">
+                <h3>No encontramos confecciones en esta categoría</h3>
+                <p>Prueba seleccionando otra opción.</p>
+            </div>
+        `;
+        return;
+    }
+
+    const listaOrdenada = [...listaConfecciones].sort((a, b) => {
+        if (a.destacado && !b.destacado) return -1;
+        if (!a.destacado && b.destacado) return 1;
+
+        return a.id - b.id;
+    });
+
+    listaOrdenada.forEach((confeccion) => {
+        const producto = document.createElement("article");
+        producto.classList.add("producto");
+
+        const precioTexto = formatearPrecio(confeccion.precio);
+        const mensajeWhatsApp = crearMensajeWhatsApp(confeccion);
+        const esFavorito = favoritos.has(confeccion.id);
+        const disponibilidad = obtenerDisponibilidad(confeccion);
+        const imagenes = obtenerImagenes(confeccion);
+        const imagenPrincipal = imagenes[0] || "";
+
+        producto.innerHTML = `
+            <div class="producto-imagen">
+                ${
+                    imagenPrincipal
+                        ? `
+                            <img
+                                src="${imagenPrincipal}"
+                                alt="${confeccion.nombre}"
+                            >
+                        `
+                        : `
+                            <div class="imagen-placeholder">
+                                Foto pendiente
+                            </div>
+                        `
+                }
+
+                ${
+                    confeccion.destacado
+                        ? `
+                            <span class="badge-destacado">
+                                Destacado
+                            </span>
+                        `
+                        : ""
+                }
+
+                ${
+                    imagenes.length > 1
+                        ? `
+                            <span class="badge-fotos">
+                                ${imagenes.length} fotos
+                            </span>
+                        `
+                        : ""
+                }
+
+                <span
+                    class="badge-disponibilidad ${disponibilidad.clase}"
+                >
+                    ${disponibilidad.texto}
+                </span>
+
+                <button
+                    class="btn-favorito ${esFavorito ? "activo" : ""}"
+                    type="button"
+                    data-id="${confeccion.id}"
+                    aria-label="${
+                        esFavorito
+                            ? "Quitar de favoritos"
+                            : "Agregar a favoritos"
+                    }"
+                >
+                    ${esFavorito ? "♥" : "♡"}
+                </button>
+            </div>
+
+            <h3>${confeccion.nombre}</h3>
+
+            <p class="tipo-producto">
+                ${confeccion.tipo}
+            </p>
+
+            <p>${confeccion.talla}</p>
+            <p>Estado: ${confeccion.estado}</p>
+            <p class="precio">${precioTexto}</p>
+
+            <div class="producto-actions">
+                <button
+                    class="btn-detalle"
+                    type="button"
+                    data-id="${confeccion.id}"
+                >
+                    Ver detalle
+                </button>
+
+                <a
+                    class="btn-wsp"
+                    href="https://wa.me/${numeroWhatsApp}?text=${mensajeWhatsApp}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    WhatsApp
+                </a>
+            </div>
+        `;
+
+        contenedorConfecciones.appendChild(producto);
+    });
+
+    activarAnimacionesTarjetas();
+}
+
+function aplicarFiltroConfecciones() {
+    const resultado = confecciones.filter((confeccion) => {
+        return (
+            confeccionActiva === "todos" ||
+            confeccion.tipo === confeccionActiva
+        );
+    });
+
+    renderizarConfecciones(resultado);
+}
+
 function aplicarFiltros() {
     const texto = buscador ? buscador.value.toLowerCase() : "";
     const tallaSeleccionada = filtroTalla ? filtroTalla.value : "todos";
@@ -408,7 +568,7 @@ function aplicarFiltros() {
 }
 
 function abrirDetalle(id) {
-    const abrigo = abrigos.find((item) => item.id === id);
+    const abrigo = productosTienda.find((item) => item.id === id);
 
     if (!abrigo || !modal) {
         return;
@@ -456,6 +616,24 @@ function abrirDetalle(id) {
     modalEstado.textContent = abrigo.estado;
     modalPrecio.textContent = formatearPrecio(abrigo.precio);
     modalWhatsapp.href = `https://wa.me/${numeroWhatsApp}?text=${crearMensajeWhatsApp(abrigo)}`;
+
+    const esConfeccion = confecciones.some(
+        (item) => item.id === abrigo.id
+    );
+
+    const tituloModalMovil = modal.querySelector(
+        ".modal-mobile-title strong"
+    );
+
+    if (tituloModalMovil) {
+        tituloModalMovil.textContent = esConfeccion
+            ? "Detalle de la confección"
+            : "Detalle del abrigo";
+    }
+
+    modalWhatsapp.textContent = esConfeccion
+        ? "Consultar esta confección"
+        : "Consultar este abrigo";
 
     modal.classList.add("activo");
     document.body.classList.add("modal-abierto");
@@ -550,7 +728,9 @@ function mostrarToast(mensaje) {
 }
 
 function obtenerListaFavoritos() {
-    return abrigos.filter((abrigo) => favoritos.has(abrigo.id));
+    return productosTienda.filter((producto) =>
+        favoritos.has(producto.id)
+    );
 }
 
 function actualizarPanelFavoritos() {
@@ -690,6 +870,67 @@ if (contenedorProductos) {
     });
 }
 
+if (chipsConfecciones) {
+    chipsConfecciones.addEventListener("click", (evento) => {
+        const chip = evento.target.closest(".chip-confeccion");
+
+        if (!chip) {
+            return;
+        }
+
+        confeccionActiva = chip.dataset.confeccion;
+
+        chipsConfecciones
+            .querySelectorAll(".chip-confeccion")
+            .forEach((item) => {
+                item.classList.remove("activo");
+            });
+
+        chip.classList.add("activo");
+        aplicarFiltroConfecciones();
+    });
+}
+
+if (contenedorConfecciones) {
+    contenedorConfecciones.addEventListener("click", (evento) => {
+        const botonDetalle = evento.target.closest(".btn-detalle");
+        const botonFavorito = evento.target.closest(".btn-favorito");
+
+        if (botonDetalle) {
+            abrirDetalle(Number(botonDetalle.dataset.id));
+        }
+
+        if (botonFavorito) {
+            const id = Number(botonFavorito.dataset.id);
+            const confeccion = confecciones.find(
+                (item) => item.id === id
+            );
+
+            if (favoritos.has(id)) {
+                favoritos.delete(id);
+
+                if (confeccion) {
+                    mostrarToast(
+                        `${confeccion.nombre} quitado de favoritos`
+                    );
+                }
+            } else {
+                favoritos.add(id);
+
+                if (confeccion) {
+                    mostrarToast(
+                        `${confeccion.nombre} agregado a favoritos`
+                    );
+                }
+            }
+
+            guardarFavoritos();
+            aplicarFiltroConfecciones();
+            actualizarPanelFavoritos();
+        }
+    });
+}
+
 if (novedadesProductos) {
     novedadesProductos.addEventListener("click", (evento) => {
         const botonDetalle = evento.target.closest(".btn-detalle");
@@ -764,12 +1005,13 @@ if (panelFavoritosBody) {
         }
 
         const id = Number(boton.dataset.id);
-        const abrigo = abrigos.find((item) => item.id === id);
+        const abrigo = productosTienda.find((item) => item.id === id);
 
         favoritos.delete(id);
         guardarFavoritos();
 
         aplicarFiltros();
+        aplicarFiltroConfecciones();
         actualizarPanelFavoritos();
 
         if (abrigo) {
@@ -940,6 +1182,7 @@ function configurarEnlacesSeguros() {
 }
 
 renderizarAbrigos(ordenarLista(abrigos));
+renderizarConfecciones(confecciones);
 renderizarNovedades();
 actualizarPanelFavoritos();
 configurarLiveTikTok();
