@@ -3683,7 +3683,6 @@ html {
     }
 
     body.mobile-page-mode .mobile-section-active {
-        display: block;
         animation: aparecerSeccionMovil 0.28s ease;
     }
 
@@ -4612,5 +4611,25 @@ body.modal-abierto {
         width: 100% !important;
         max-width: 720px !important;
         margin: 0 !important;
+    }
+}
+
+/* ================================= */
+/* NAVEGACIÓN MÓVIL UNIFICADA */
+/* ================================= */
+
+@media (max-width: 768px) {
+    .mobile-section-switcher {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        overflow-x: visible;
+        gap: 8px;
+    }
+
+    .mobile-switch-btn {
+        width: 100%;
+        min-width: 0;
+        padding: 10px 6px;
+        text-align: center;
     }
 }

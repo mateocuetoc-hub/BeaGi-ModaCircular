@@ -1499,12 +1499,17 @@ const mobilePagesConfig = [
     {
         id: "inicio",
         label: "Inicio",
-        selectors: ["#inicio", ".barra-info"],
-    },
-    {
-        id: "catalogo",
-        label: "Catálogo",
-        selectors: ["#novedades", "#catalogo"],
+        selectors: [
+            "#inicio",
+            ".barra-info",
+            "#novedades",
+            "#confecciones",
+            "#catalogo",
+            "#nosotros",
+            "#como-comprar",
+            "#ubicacion",
+            "#contacto",
+        ],
     },
     {
         id: "lives",
@@ -1512,14 +1517,9 @@ const mobilePagesConfig = [
         selectors: ["#lives-tiktok"],
     },
     {
-        id: "comprar",
-        label: "Comprar",
-        selectors: ["#nosotros", "#como-comprar", ".faq"],
-    },
-    {
-        id: "ubicacion",
-        label: "Ubicación",
-        selectors: ["#ubicacion", "#contacto"],
+        id: "preguntas",
+        label: "Preguntas",
+        selectors: ["#preguntas-frecuentes"],
     },
 ];
 
@@ -1530,11 +1530,28 @@ function esVistaMovilBeaGi() {
 function obtenerPaginaPorHash(hash) {
     const limpio = hash.replace("#", "");
 
-    if (["inicio"].includes(limpio)) return "inicio";
-    if (["novedades", "catalogo"].includes(limpio)) return "catalogo";
-    if (["lives-tiktok"].includes(limpio)) return "lives";
-    if (["nosotros", "como-comprar"].includes(limpio)) return "comprar";
-    if (["ubicacion", "contacto"].includes(limpio)) return "ubicacion";
+    if (
+        [
+            "inicio",
+            "novedades",
+            "confecciones",
+            "catalogo",
+            "nosotros",
+            "como-comprar",
+            "ubicacion",
+            "contacto",
+        ].includes(limpio)
+    ) {
+        return "inicio";
+    }
+
+    if (limpio === "lives-tiktok") {
+        return "lives";
+    }
+
+    if (limpio === "preguntas-frecuentes") {
+        return "preguntas";
+    }
 
     return "inicio";
 }
