@@ -1,5 +1,4 @@
 // Configuración general de BeaGi ModaCircular
-// Cambia estos datos cuando tengas información oficial actualizada.
 
 window.beagiConfig = {
     whatsappNumero: "56945571689",
@@ -7,5 +6,6 @@ window.beagiConfig = {
     zonaPublica: "San Felipe, Valparaíso, Chile",
     mapsQuery: "121 Pje. Los Espinos, San Felipe, Valparaíso, Chile",
     tiktokUrl: "https://www.tiktok.com/@javieraparraguez_17",
-    instagramUrl: ""
+    instagramUrl: "",
+    apiProductosUrl: "http://localhost:8080/api/productos"
 };

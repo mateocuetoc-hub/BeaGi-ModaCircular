@@ -1,11 +1,21 @@
 const beagiConfig = window.beagiConfig || {};
 const numeroWhatsApp = beagiConfig.whatsappNumero || "56945571689";
-const abrigos = Array.isArray(window.productosBeaGi) ? window.productosBeaGi : [];
+
+const apiProductosUrl =
+    beagiConfig.apiProductosUrl ||
+    "http://localhost:8080/api/productos";
+
+const abrigosLocales = Array.isArray(window.productosBeaGi)
+    ? window.productosBeaGi
+    : [];
+
+let abrigos = [...abrigosLocales];
+
 const confecciones = Array.isArray(window.confeccionesBeaGi)
     ? window.confeccionesBeaGi
     : [];
 
-const productosTienda = [...abrigos, ...confecciones];
+let productosTienda = [...abrigos, ...confecciones];
 
 const contenedorProductos = document.getElementById("contenedor-productos");
 const buscador = document.getElementById("buscador");
@@ -89,6 +99,77 @@ function obtenerImagenes(abrigo) {
     }
 
     return [];
+}
+
+function adaptarProductoApi(producto) {
+    const imagenes = Array.isArray(producto.imagenes)
+        ? [...producto.imagenes]
+            .sort((a, b) => (a.orden ?? 0) - (b.orden ?? 0))
+            .map((imagen) => imagen.url)
+            .filter((url) =>
+                typeof url === "string" && url.trim() !== ""
+            )
+        : [];
+
+    const stock = Number(producto.stock ?? 0);
+    const estaDisponible =
+        producto.disponible === true && stock > 0;
+
+    return {
+        id: Number(producto.id),
+        nombre: producto.nombre,
+        tipo: producto.categoria?.nombre || "Sin categoría",
+        talla: "Por confirmar",
+        estado: estaDisponible
+            ? `Disponible · Stock: ${stock}`
+            : "Sin stock",
+        precio:
+            producto.precio === null ||
+            producto.precio === undefined
+                ? null
+                : Number(producto.precio),
+        disponibilidad: estaDisponible
+            ? "Disponible"
+            : "Vendido",
+        imagen: imagenes[0] || "",
+        imagenes,
+        descripcion:
+            producto.descripcion || "Sin descripción disponible.",
+        destacado: false,
+        nuevo: false,
+        stock
+    };
+}
+
+async function cargarAbrigosDesdeApi() {
+    try {
+        const respuesta = await fetch(apiProductosUrl, {
+            headers: {
+                Accept: "application/json"
+            }
+        });
+
+        if (!respuesta.ok) {
+            throw new Error(
+                `La API respondió con estado ${respuesta.status}`
+            );
+        }
+
+        const productosApi = await respuesta.json();
+
+        if (!Array.isArray(productosApi)) {
+            throw new Error("La respuesta de productos no es una lista");
+        }
+
+        return productosApi.map(adaptarProductoApi);
+    } catch (error) {
+        console.warn(
+            "No fue posible cargar la API. Se usará el catálogo local:",
+            error
+        );
+
+        return [...abrigosLocales];
+    }
 }
 
 function guardarFavoritos() {
@@ -1181,10 +1262,25 @@ function configurarEnlacesSeguros() {
     });
 }
 
-renderizarAbrigos(ordenarLista(abrigos));
-renderizarConfecciones(confecciones);
-renderizarNovedades();
-actualizarPanelFavoritos();
+async function inicializarCatalogo() {
+    if (contenedorProductos) {
+        contenedorProductos.innerHTML = `
+            <div class="sin-resultados">
+                <h3>Cargando catálogo...</h3>
+            </div>
+        `;
+    }
+
+    abrigos = await cargarAbrigosDesdeApi();
+    productosTienda = [...abrigos, ...confecciones];
+
+    renderizarAbrigos(ordenarLista(abrigos));
+    renderizarConfecciones(confecciones);
+    renderizarNovedades();
+    actualizarPanelFavoritos();
+}
+
+inicializarCatalogo();
 configurarLiveTikTok();
 
 if (liveConfig.fechaObjetivo) {
