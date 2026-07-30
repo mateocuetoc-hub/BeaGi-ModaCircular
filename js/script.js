@@ -44,6 +44,8 @@ const modalNombre = document.getElementById("modal-nombre");
 const modalDescripcion = document.getElementById("modal-descripcion");
 const modalTalla = document.getElementById("modal-talla");
 const modalEstado = document.getElementById("modal-estado");
+const modalStockFila = document.getElementById("modal-stock-fila");
+const modalStock = document.getElementById("modal-stock");
 const modalPrecio = document.getElementById("modal-precio");
 const modalWhatsapp = document.getElementById("modal-whatsapp");
 
@@ -111,18 +113,20 @@ function adaptarProductoApi(producto) {
             )
         : [];
 
-    const stock = Number(producto.stock ?? 0);
+    const stockRecibido = Number(producto.stock);
+    const stock = Number.isFinite(stockRecibido)
+        ? Math.max(stockRecibido, 0)
+        : 0;
+
     const estaDisponible =
         producto.disponible === true && stock > 0;
 
     return {
         id: Number(producto.id),
-        nombre: producto.nombre,
+        nombre: producto.nombre || "Producto sin nombre",
         tipo: producto.categoria?.nombre || "Sin categoría",
-        talla: "Por confirmar",
-        estado: estaDisponible
-            ? `Disponible · Stock: ${stock}`
-            : "Sin stock",
+        talla: producto.talla || "Sin talla informada",
+        estado: producto.estado || "Sin estado informado",
         precio:
             producto.precio === null ||
             producto.precio === undefined
@@ -135,8 +139,8 @@ function adaptarProductoApi(producto) {
         imagenes,
         descripcion:
             producto.descripcion || "Sin descripción disponible.",
-        destacado: false,
-        nuevo: false,
+        destacado: producto.destacado === true,
+        nuevo: producto.nuevo === true,
         stock
     };
 }
@@ -185,6 +189,16 @@ function formatearPrecio(precio) {
         style: "currency",
         currency: "CLP",
     });
+}
+
+function formatearStock(stock) {
+    if (!Number.isFinite(stock)) {
+        return "";
+    }
+
+    return stock === 1
+        ? "1 unidad"
+        : `${stock} unidades`;
 }
 
 function obtenerDisponibilidad(abrigo) {
@@ -382,6 +396,7 @@ function renderizarAbrigos(listaAbrigos) {
         producto.classList.add("producto");
 
         const precioTexto = formatearPrecio(abrigo.precio);
+        const stockTexto = formatearStock(abrigo.stock);
         const mensajeWhatsApp = crearMensajeWhatsApp(abrigo);
         const esFavorito = favoritos.has(abrigo.id);
         const disponibilidad = obtenerDisponibilidad(abrigo);
@@ -421,6 +436,9 @@ function renderizarAbrigos(listaAbrigos) {
             <p class="tipo-producto">${abrigo.tipo}</p>
             <p>Talla: ${abrigo.talla}</p>
             <p>Estado: ${abrigo.estado}</p>
+            ${stockTexto
+                ? `<p class="stock-producto">Stock: <strong>${stockTexto}</strong></p>`
+                : ""}
             <p class="precio">${precioTexto}</p>
 
             <div class="producto-actions">
@@ -695,6 +713,14 @@ function abrirDetalle(id) {
     modalDescripcion.textContent = abrigo.descripcion;
     modalTalla.textContent = abrigo.talla;
     modalEstado.textContent = abrigo.estado;
+
+    const stockTexto = formatearStock(abrigo.stock);
+
+    if (modalStockFila && modalStock) {
+        modalStock.textContent = stockTexto;
+        modalStockFila.hidden = stockTexto === "";
+    }
+
     modalPrecio.textContent = formatearPrecio(abrigo.precio);
     modalWhatsapp.href = `https://wa.me/${numeroWhatsApp}?text=${crearMensajeWhatsApp(abrigo)}`;
 
@@ -748,6 +774,7 @@ function renderizarNovedades() {
         const imagenes = obtenerImagenes(abrigo);
         const imagenPrincipal = imagenes[0] || "";
         const precioTexto = formatearPrecio(abrigo.precio);
+        const stockTexto = formatearStock(abrigo.stock);
         const disponibilidad = obtenerDisponibilidad(abrigo);
         const mensajeWhatsApp = crearMensajeWhatsApp(abrigo);
 
@@ -770,6 +797,9 @@ function renderizarNovedades() {
                 <p class="novedad-meta">${abrigo.tipo} · Talla ${abrigo.talla}</p>
                 <p>${abrigo.estado}</p>
                 <p>Disponibilidad: <strong>${disponibilidad.texto}</strong></p>
+                ${stockTexto
+                    ? `<p>Stock: <strong>${stockTexto}</strong></p>`
+                    : ""}
                 <div class="novedad-precio">${precioTexto}</div>
 
                 <div class="novedad-actions">
