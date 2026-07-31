@@ -124,7 +124,215 @@
                                 de los productos publicados.
                             </p>
                         </div>
+
+                        <button
+                            id="boton-nuevo-producto"
+                            class="boton-nuevo-producto"
+                            type="button"
+                            aria-expanded="false"
+                            aria-controls="contenedor-formulario-producto"
+                        >
+                            + Nuevo producto
+                        </button>
                     </header>
+
+                    <section
+                        id="contenedor-formulario-producto"
+                        class="tarjeta-formulario-producto"
+                        aria-labelledby="titulo-formulario-producto"
+                        hidden
+                    >
+                        <header class="cabecera-formulario-producto">
+                            <div>
+                                <span class="seccion-etiqueta">Nuevo registro</span>
+
+                                <h3 id="titulo-formulario-producto">
+                                    Crear producto
+                                </h3>
+
+                                <p>
+                                    Completa la información que aparecerá en el catálogo.
+                                </p>
+                            </div>
+
+                            <button
+                                id="boton-cancelar-producto"
+                                class="boton-cerrar-formulario"
+                                type="button"
+                                aria-label="Cerrar formulario"
+                            >
+                                ×
+                            </button>
+                        </header>
+
+                        <form
+                            id="formulario-producto"
+                            class="formulario-producto"
+                        >
+                            <div class="cuadricula-formulario">
+                                <div class="campo campo-completo">
+                                    <label for="producto-nombre">
+                                        Nombre
+                                    </label>
+
+                                    <input
+                                        id="producto-nombre"
+                                        name="nombre"
+                                        type="text"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="campo campo-completo">
+                                    <label for="producto-descripcion">
+                                        Descripción
+                                        <span class="campo-opcional">(opcional)</span>
+                                    </label>
+
+                                    <textarea
+                                        id="producto-descripcion"
+                                        name="descripcion"
+                                        rows="4"
+                                    ></textarea>
+                                </div>
+
+                                <div class="campo">
+                                    <label for="producto-precio">
+                                        Precio
+                                    </label>
+
+                                    <input
+                                        id="producto-precio"
+                                        name="precio"
+                                        type="number"
+                                        min="0"
+                                        step="1"
+                                        inputmode="numeric"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="campo">
+                                    <label for="producto-stock">
+                                        Stock
+                                    </label>
+
+                                    <input
+                                        id="producto-stock"
+                                        name="stock"
+                                        type="number"
+                                        min="0"
+                                        step="1"
+                                        inputmode="numeric"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="campo">
+                                    <label for="producto-categoria">
+                                        Categoría
+                                    </label>
+
+                                    <select
+                                        id="producto-categoria"
+                                        name="categoriaId"
+                                        required
+                                    >
+                                        <option value="">
+                                            Selecciona una categoría
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="campo">
+                                    <label for="producto-talla">
+                                        Talla
+                                        <span class="campo-opcional">(opcional)</span>
+                                    </label>
+
+                                    <input
+                                        id="producto-talla"
+                                        name="talla"
+                                        type="text"
+                                    >
+                                </div>
+
+                                <div class="campo campo-completo">
+                                    <label for="producto-estado">
+                                        Estado
+                                        <span class="campo-opcional">(opcional)</span>
+                                    </label>
+
+                                    <input
+                                        id="producto-estado"
+                                        name="estado"
+                                        type="text"
+                                        placeholder="Ejemplo: Como nuevo"
+                                    >
+                                </div>
+                            </div>
+
+                            <fieldset class="opciones-producto">
+                                <legend>Publicación</legend>
+
+                                <label class="opcion-producto">
+                                    <input
+                                        id="producto-disponible"
+                                        name="disponible"
+                                        type="checkbox"
+                                        checked
+                                    >
+
+                                    <span>Disponible para comprar</span>
+                                </label>
+
+                                <label class="opcion-producto">
+                                    <input
+                                        id="producto-nuevo"
+                                        name="nuevo"
+                                        type="checkbox"
+                                    >
+
+                                    <span>Marcar como nuevo</span>
+                                </label>
+
+                                <label class="opcion-producto">
+                                    <input
+                                        id="producto-destacado"
+                                        name="destacado"
+                                        type="checkbox"
+                                    >
+
+                                    <span>Mostrar como destacado</span>
+                                </label>
+                            </fieldset>
+
+                            <div class="acciones-formulario-producto">
+                                <button
+                                    id="boton-descartar-producto"
+                                    class="boton-secundario"
+                                    type="button"
+                                >
+                                    Cancelar
+                                </button>
+
+                                <button
+                                    id="boton-guardar-producto"
+                                    class="boton-guardar-producto"
+                                    type="submit"
+                                >
+                                    Crear producto
+                                </button>
+                            </div>
+
+                            <p
+                                id="mensaje-formulario-producto"
+                                class="mensaje-formulario-producto"
+                                role="status"
+                                aria-live="polite"
+                            ></p>
+                        </form>
+                    </section>
 
                     <div
                         id="resumen-productos"

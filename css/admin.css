@@ -646,6 +646,284 @@ button:disabled {
     clip-path: inset(50%);
 }
 
+.boton-nuevo-producto,
+.boton-guardar-producto {
+    min-height: 44px;
+    padding: 11px 18px;
+
+    color: #ffffff;
+    font: inherit;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    background: var(--color-primario-oscuro);
+    border: 1px solid var(--color-primario-oscuro);
+    border-radius: 11px;
+
+    transition:
+        transform 160ms ease,
+        background-color 160ms ease,
+        border-color 160ms ease;
+}
+
+.boton-nuevo-producto:hover,
+.boton-guardar-producto:hover {
+    background: var(--color-primario);
+    border-color: var(--color-primario);
+    transform: translateY(-1px);
+}
+
+.boton-nuevo-producto:disabled,
+.boton-guardar-producto:disabled {
+    opacity: 0.62;
+    cursor: wait;
+    transform: none;
+}
+
+.tarjeta-formulario-producto {
+    padding: 26px;
+    margin-bottom: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(246, 237, 232, 0.58),
+            rgba(255, 255, 255, 0.96)
+        );
+    border: 1px solid var(--color-borde);
+    border-radius: 18px;
+}
+
+.tarjeta-formulario-producto[hidden] {
+    display: none;
+}
+
+.cabecera-formulario-producto {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+
+    margin-bottom: 24px;
+}
+
+.cabecera-formulario-producto h3 {
+    margin-top: 4px;
+
+    color: var(--color-texto);
+    font-size: 1.35rem;
+}
+
+.cabecera-formulario-producto p {
+    margin-top: 7px;
+
+    color: var(--color-texto-suave);
+    line-height: 1.55;
+}
+
+.boton-cerrar-formulario {
+    display: grid;
+    place-items: center;
+
+    width: 38px;
+    height: 38px;
+    padding: 0;
+
+    flex: 0 0 auto;
+
+    color: var(--color-texto-suave);
+    font-size: 1.65rem;
+    line-height: 1;
+
+    cursor: pointer;
+
+    background: #ffffff;
+    border: 1px solid var(--color-borde);
+    border-radius: 50%;
+
+    transition:
+        color 160ms ease,
+        background-color 160ms ease,
+        border-color 160ms ease;
+}
+
+.boton-cerrar-formulario:hover {
+    color: #ffffff;
+    background: var(--color-primario-oscuro);
+    border-color: var(--color-primario-oscuro);
+}
+
+.formulario-producto {
+    display: grid;
+    gap: 24px;
+}
+
+.cuadricula-formulario {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 19px;
+}
+
+.campo-completo {
+    grid-column: 1 / -1;
+}
+
+.campo-opcional {
+    color: var(--color-texto-suave);
+    font-size: 0.78rem;
+    font-weight: 500;
+}
+
+.formulario-producto .campo textarea,
+.formulario-producto .campo select {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+
+    color: var(--color-texto);
+    font: inherit;
+
+    background: #ffffff;
+    border: 1px solid var(--color-borde);
+    border-radius: 11px;
+    outline: none;
+
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        background-color 160ms ease;
+}
+
+.formulario-producto .campo textarea {
+    min-height: 108px;
+    resize: vertical;
+}
+
+.formulario-producto .campo select {
+    cursor: pointer;
+}
+
+.formulario-producto .campo textarea:hover,
+.formulario-producto .campo select:hover {
+    border-color: var(--color-acento);
+}
+
+.formulario-producto .campo textarea:focus,
+.formulario-producto .campo select:focus {
+    background: #ffffff;
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 4px rgba(154, 102, 83, 0.12);
+}
+
+.opciones-producto {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+
+    padding: 0;
+    margin: 0;
+
+    border: 0;
+}
+
+.opciones-producto legend {
+    width: 100%;
+    margin-bottom: 12px;
+
+    color: var(--color-texto);
+    font-size: 0.9rem;
+    font-weight: 750;
+}
+
+.opcion-producto {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-height: 50px;
+    padding: 12px 13px;
+
+    color: var(--color-texto);
+    font-size: 0.88rem;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    background: #ffffff;
+    border: 1px solid var(--color-borde);
+    border-radius: 11px;
+
+    transition:
+        background-color 160ms ease,
+        border-color 160ms ease;
+}
+
+.opcion-producto:hover {
+    background: var(--color-fondo);
+    border-color: var(--color-acento);
+}
+
+.opcion-producto input {
+    width: 18px;
+    height: 18px;
+
+    flex: 0 0 auto;
+
+    cursor: pointer;
+    accent-color: var(--color-primario-oscuro);
+}
+
+.acciones-formulario-producto {
+    display: flex;
+    justify-content: flex-end;
+    gap: 11px;
+}
+
+.boton-secundario {
+    min-height: 44px;
+    padding: 11px 18px;
+
+    color: var(--color-primario-oscuro);
+    font: inherit;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    background: #ffffff;
+    border: 1px solid var(--color-acento);
+    border-radius: 11px;
+
+    transition:
+        color 160ms ease,
+        background-color 160ms ease,
+        border-color 160ms ease;
+}
+
+.boton-secundario:hover {
+    color: #ffffff;
+    background: var(--color-primario-oscuro);
+    border-color: var(--color-primario-oscuro);
+}
+
+.mensaje-formulario-producto {
+    min-height: 22px;
+    margin: -12px 0 0;
+
+    color: var(--color-texto-suave);
+    font-size: 0.88rem;
+    font-weight: 650;
+    text-align: right;
+}
+
+.mensaje-formulario-producto.es-error {
+    color: var(--color-error);
+}
+
+.mensaje-formulario-producto.es-exito {
+    color: var(--color-exito);
+}
+
 @media (max-width: 720px) {
     .encabezado-seccion {
         margin-bottom: 22px;

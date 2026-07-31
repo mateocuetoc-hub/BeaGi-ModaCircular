@@ -51,6 +51,34 @@
         "#cuerpo-tabla-productos"
     );
 
+    const botonNuevoProducto = document.querySelector(
+        "#boton-nuevo-producto"
+    );
+    const contenedorFormularioProducto = document.querySelector(
+        "#contenedor-formulario-producto"
+    );
+    const formularioProducto = document.querySelector(
+        "#formulario-producto"
+    );
+    const botonCancelarProducto = document.querySelector(
+        "#boton-cancelar-producto"
+    );
+    const botonDescartarProducto = document.querySelector(
+        "#boton-descartar-producto"
+    );
+    const botonGuardarProducto = document.querySelector(
+        "#boton-guardar-producto"
+    );
+    const mensajeFormularioProducto = document.querySelector(
+        "#mensaje-formulario-producto"
+    );
+    const campoProductoNombre = document.querySelector(
+        "#producto-nombre"
+    );
+    const campoProductoCategoria = document.querySelector(
+        "#producto-categoria"
+    );
+
     const formateadorPrecio = new Intl.NumberFormat("es-CL", {
         style: "currency",
         currency: "CLP",
@@ -404,6 +432,334 @@
         }
     }
 
+    function mostrarMensajeFormularioProducto(
+        texto,
+        tipo = ""
+    ) {
+        mensajeFormularioProducto.textContent = texto;
+
+        mensajeFormularioProducto.classList.remove(
+            "es-error",
+            "es-exito"
+        );
+
+        if (tipo) {
+            mensajeFormularioProducto.classList.add(
+                `es-${tipo}`
+            );
+        }
+    }
+
+    function cambiarEstadoCreacionProducto(estaCreando) {
+        botonGuardarProducto.disabled = estaCreando;
+
+        botonGuardarProducto.textContent = estaCreando
+            ? "Creando producto..."
+            : "Crear producto";
+    }
+
+    async function cargarCategoriasProducto() {
+        campoProductoCategoria.disabled = true;
+        campoProductoCategoria.replaceChildren(
+            new Option("Cargando categorías...", "")
+        );
+
+        try {
+            const respuesta = await fetch(
+                `${apiBaseUrl}/categorias`,
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json"
+                    },
+                    cache: "no-store"
+                }
+            );
+
+            if (!respuesta.ok) {
+                throw new Error(`HTTP ${respuesta.status}`);
+            }
+
+            const categorias = await respuesta.json();
+
+            if (!Array.isArray(categorias)) {
+                throw new Error(
+                    "La respuesta de categorías no es una lista."
+                );
+            }
+
+            categorias.sort((categoriaA, categoriaB) => {
+                return String(categoriaA.nombre).localeCompare(
+                    String(categoriaB.nombre),
+                    "es",
+                    {
+                        sensitivity: "base"
+                    }
+                );
+            });
+
+            const textoOpcionInicial = categorias.length > 0
+                ? "Selecciona una categoría"
+                : "No hay categorías registradas";
+
+            const opcionInicial = new Option(
+                textoOpcionInicial,
+                ""
+            );
+
+            opcionInicial.disabled = true;
+            opcionInicial.selected = true;
+
+            const fragmento = document.createDocumentFragment();
+
+            fragmento.append(opcionInicial);
+
+            categorias.forEach((categoria) => {
+                const opcion = new Option(
+                    categoria.nombre,
+                    String(categoria.id)
+                );
+
+                fragmento.append(opcion);
+            });
+
+            campoProductoCategoria.replaceChildren(fragmento);
+            campoProductoCategoria.disabled =
+                categorias.length === 0;
+
+            if (categorias.length === 0) {
+                mostrarMensajeFormularioProducto(
+                    "Primero debes registrar al menos una categoría.",
+                    "error"
+                );
+
+                return false;
+            }
+
+            return true;
+        } catch (error) {
+            console.error(
+                "Error al cargar las categorías:",
+                error
+            );
+
+            campoProductoCategoria.replaceChildren(
+                new Option(
+                    "No fue posible cargar las categorías",
+                    ""
+                )
+            );
+
+            mostrarMensajeFormularioProducto(
+                "No fue posible cargar las categorías.",
+                "error"
+            );
+
+            return false;
+        }
+    }
+
+    async function abrirFormularioProducto() {
+        contenedorFormularioProducto.hidden = false;
+
+        botonNuevoProducto.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+        mostrarMensajeFormularioProducto("");
+
+        const categoriasCargadas =
+            await cargarCategoriasProducto();
+
+        contenedorFormularioProducto.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+        if (categoriasCargadas) {
+            campoProductoNombre.focus();
+        }
+    }
+
+    function cerrarFormularioProducto() {
+        formularioProducto.reset();
+
+        contenedorFormularioProducto.hidden = true;
+
+        botonNuevoProducto.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+        cambiarEstadoCreacionProducto(false);
+        mostrarMensajeFormularioProducto("");
+    }
+
+    async function leerDetalleError(respuesta) {
+        const tipoContenido =
+            respuesta.headers.get("content-type") || "";
+
+        try {
+            if (tipoContenido.includes("application/json")) {
+                const datosError = await respuesta.json();
+
+                return (
+                    datosError.mensaje ||
+                    datosError.message ||
+                    datosError.detail ||
+                    ""
+                );
+            }
+
+            return (await respuesta.text()).trim();
+        } catch {
+            return "";
+        }
+    }
+
+    async function crearProducto(evento) {
+        evento.preventDefault();
+
+        if (!formularioProducto.checkValidity()) {
+            formularioProducto.reportValidity();
+
+            return;
+        }
+
+        const datosFormulario =
+            new FormData(formularioProducto);
+
+        const nombre = String(
+            datosFormulario.get("nombre") || ""
+        ).trim();
+
+        const descripcion = String(
+            datosFormulario.get("descripcion") || ""
+        ).trim();
+
+        const precio = Number(
+            datosFormulario.get("precio")
+        );
+
+        const stock = Number(
+            datosFormulario.get("stock")
+        );
+
+        const categoriaId = Number(
+            datosFormulario.get("categoriaId")
+        );
+
+        const talla = String(
+            datosFormulario.get("talla") || ""
+        ).trim();
+
+        const estado = String(
+            datosFormulario.get("estado") || ""
+        ).trim();
+
+        if (
+            !nombre ||
+            !Number.isFinite(precio) ||
+            precio < 0 ||
+            !Number.isInteger(stock) ||
+            stock < 0 ||
+            !Number.isInteger(categoriaId) ||
+            categoriaId <= 0
+        ) {
+            mostrarMensajeFormularioProducto(
+                "Revisa el nombre, precio, stock y categoría.",
+                "error"
+            );
+
+            return;
+        }
+
+        const producto = {
+            nombre,
+            descripcion: descripcion || null,
+            precio,
+            stock,
+            disponible:
+                datosFormulario.get("disponible") !== null,
+            nuevo:
+                datosFormulario.get("nuevo") !== null,
+            destacado:
+                datosFormulario.get("destacado") !== null,
+            categoriaId,
+            talla: talla || null,
+            estado: estado || null
+        };
+
+        cambiarEstadoCreacionProducto(true);
+
+        mostrarMensajeFormularioProducto(
+            "Guardando producto..."
+        );
+
+        try {
+            const respuesta = await fetch(
+                `${apiBaseUrl}/productos`,
+                {
+                    method: "POST",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: autorizacionAdmin
+                    },
+                    body: JSON.stringify(producto)
+                }
+            );
+
+            if (
+                respuesta.status === 401 ||
+                respuesta.status === 403
+            ) {
+                mostrarMensajeFormularioProducto(
+                    "La sesión administrativa no es válida. Vuelve a iniciar sesión.",
+                    "error"
+                );
+
+                return;
+            }
+
+            if (!respuesta.ok) {
+                const detalleError =
+                    await leerDetalleError(respuesta);
+
+                throw new Error(
+                    detalleError ||
+                    `HTTP ${respuesta.status}`
+                );
+            }
+
+            const productoCreado = await respuesta.json();
+
+            formularioProducto.reset();
+
+            mostrarMensajeFormularioProducto(
+                `"${productoCreado.nombre || nombre}" fue creado correctamente.`,
+                "exito"
+            );
+
+            await cargarProductos();
+
+            campoProductoNombre.focus();
+        } catch (error) {
+            console.error(
+                "Error al crear el producto:",
+                error
+            );
+
+            mostrarMensajeFormularioProducto(
+                "No fue posible crear el producto. Revisa los datos e inténtalo nuevamente.",
+                "error"
+            );
+        } finally {
+            cambiarEstadoCreacionProducto(false);
+        }
+    }
+
     function abrirPanel(usuario) {
         formularioLogin.reset();
 
@@ -418,6 +774,8 @@
 
     function cerrarSesion() {
         autorizacionAdmin = "";
+
+        cerrarFormularioProducto();
 
         panelAdministrativo.hidden = true;
         seccionLogin.hidden = false;
@@ -511,6 +869,31 @@
             cambiarSeccion(boton.dataset.seccion);
         });
     });
+
+    botonNuevoProducto.addEventListener("click", () => {
+        if (contenedorFormularioProducto.hidden) {
+            abrirFormularioProducto();
+
+            return;
+        }
+
+        cerrarFormularioProducto();
+    });
+
+    botonCancelarProducto.addEventListener(
+        "click",
+        cerrarFormularioProducto
+    );
+
+    botonDescartarProducto.addEventListener(
+        "click",
+        cerrarFormularioProducto
+    );
+
+    formularioProducto.addEventListener(
+        "submit",
+        crearProducto
+    );
 
     botonCerrarSesion.addEventListener("click", cerrarSesion);
 })();
