@@ -1,9 +1,7 @@
 const beagiConfig = window.beagiConfig || {};
 const numeroWhatsApp = beagiConfig.whatsappNumero || "56945571689";
 
-const apiProductosUrl =
-    beagiConfig.apiProductosUrl ||
-    "http://localhost:8080/api/productos";
+const apiProductosUrl = beagiConfig.apiProductosUrl;
 
 const abrigosLocales = Array.isArray(window.productosBeaGi)
     ? window.productosBeaGi

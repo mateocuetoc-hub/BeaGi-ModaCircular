@@ -7,5 +7,5 @@ window.beagiConfig = {
     mapsQuery: "121 Pje. Los Espinos, San Felipe, Valparaíso, Chile",
     tiktokUrl: "https://www.tiktok.com/@javieraparraguez_17",
     instagramUrl: "",
-    apiProductosUrl: "http://localhost:8080/api/productos"
+    apiProductosUrl: "https://beagi-backend.onrender.com/api/productos"
 };
