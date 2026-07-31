@@ -107,12 +107,111 @@
             </nav>
 
             <section class="contenido-admin">
-                <h2>Bienvenida al panel</h2>
+                <section
+                    id="seccion-productos"
+                    class="seccion-admin"
+                    data-contenido-seccion="productos"
+                    aria-labelledby="titulo-productos"
+                >
+                    <header class="encabezado-seccion">
+                        <div>
+                            <span class="seccion-etiqueta">Catálogo</span>
 
-                <p>
-                    Desde aquí podrás administrar los productos, las categorías
-                    y los pedidos de BeaGi.
-                </p>
+                            <h2 id="titulo-productos">Productos</h2>
+
+                            <p>
+                                Revisa el catálogo, el stock y la disponibilidad
+                                de los productos publicados.
+                            </p>
+                        </div>
+                    </header>
+
+                    <div
+                        id="resumen-productos"
+                        class="resumen-productos"
+                        aria-label="Resumen del catálogo"
+                        hidden
+                    >
+                        <article class="dato-resumen">
+                            <span>Total</span>
+                            <strong id="total-productos">0</strong>
+                        </article>
+
+                        <article class="dato-resumen">
+                            <span>Disponibles</span>
+                            <strong id="productos-disponibles">0</strong>
+                        </article>
+
+                        <article class="dato-resumen">
+                            <span>Sin stock</span>
+                            <strong id="productos-sin-stock">0</strong>
+                        </article>
+                    </div>
+
+                    <div
+                        id="estado-productos"
+                        class="estado-productos"
+                        role="status"
+                        aria-live="polite"
+                    >
+                        Cargando productos...
+                    </div>
+
+                    <div
+                        id="contenedor-tabla-productos"
+                        class="contenedor-tabla-productos"
+                        hidden
+                    >
+                        <table class="tabla-productos">
+                            <caption class="solo-lectores">
+                                Productos registrados en BeaGi
+                            </caption>
+
+                            <thead>
+                                <tr>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">Categoría</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Stock</th>
+                                    <th scope="col">Estado</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="cuerpo-tabla-productos"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section
+                    id="seccion-categorias"
+                    class="seccion-admin"
+                    data-contenido-seccion="categorias"
+                    aria-labelledby="titulo-categorias"
+                    hidden
+                >
+                    <h2 id="titulo-categorias">Categorías</h2>
+
+                    <p>
+                        La administración de categorías estará disponible
+                        próximamente.
+                    </p>
+                </section>
+
+                <section
+                    id="seccion-pedidos"
+                    class="seccion-admin"
+                    data-contenido-seccion="pedidos"
+                    aria-labelledby="titulo-pedidos"
+                    hidden
+                >
+                    <h2 id="titulo-pedidos">Pedidos</h2>
+
+                    <p>
+                        La administración de pedidos estará disponible
+                        próximamente.
+                    </p>
+                </section>
             </section>
         </section>
 
