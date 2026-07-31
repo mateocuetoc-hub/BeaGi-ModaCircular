@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>Administración | BeaGi Moda Circular</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+    <main class="admin-layout">
+
+        <section
+            id="seccion-login"
+            class="tarjeta-login"
+            aria-labelledby="titulo-login"
+        >
+            <a class="volver-tienda" href="index.html">
+                ← Volver a la tienda
+            </a>
+
+            <div class="marca-admin">
+                <span class="marca-etiqueta">BeaGi</span>
+
+                <h1 id="titulo-login">
+                    Panel administrativo
+                </h1>
+
+                <p>
+                    Ingresa tus credenciales para administrar la tienda.
+                </p>
+            </div>
+
+            <form id="formulario-login" class="formulario-login">
+                <div class="campo">
+                    <label for="usuario">Usuario</label>
+
+                    <input
+                        id="usuario"
+                        name="usuario"
+                        type="text"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label for="contrasena">Contraseña</label>
+
+                    <input
+                        id="contrasena"
+                        name="contrasena"
+                        type="password"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <button id="boton-ingresar" type="submit">
+                    Ingresar
+                </button>
+
+                <p
+                    id="mensaje-login"
+                    class="mensaje-login"
+                    role="alert"
+                    aria-live="polite"
+                ></p>
+            </form>
+        </section>
+
+        <section id="panel-administrativo" class="panel-admin" hidden>
+            <header class="cabecera-admin">
+                <div>
+                    <span class="marca-etiqueta">BeaGi</span>
+                    <h1>Administración de la tienda</h1>
+                </div>
+
+                <div class="acciones-sesion">
+                    <span id="estado-sesion">Sesión activa</span>
+
+                    <button id="boton-cerrar-sesion" type="button">
+                        Cerrar sesión
+                    </button>
+                </div>
+            </header>
+
+            <nav class="navegacion-admin" aria-label="Secciones administrativas">
+                <button type="button" data-seccion="productos">
+                    Productos
+                </button>
+
+                <button type="button" data-seccion="categorias">
+                    Categorías
+                </button>
+
+                <button type="button" data-seccion="pedidos">
+                    Pedidos
+                </button>
+            </nav>
+
+            <section class="contenido-admin">
+                <h2>Bienvenida al panel</h2>
+
+                <p>
+                    Desde aquí podrás administrar los productos, las categorías
+                    y los pedidos de BeaGi.
+                </p>
+            </section>
+        </section>
+
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
