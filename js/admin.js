@@ -259,8 +259,9 @@
         );
 
         if (esEliminar) {
-            boton.disabled = true;
-            boton.title = "Disponible próximamente";
+            boton.addEventListener("click", async () => {
+                await eliminarProducto(producto, boton);
+            });
         } else {
             boton.addEventListener("click", () => {
                 abrirFormularioEdicionProducto(producto);
@@ -454,6 +455,103 @@
                 "No fue posible cargar los productos. Inténtalo nuevamente.",
                 true
             );
+        }
+    }
+
+    async function eliminarProducto(producto, boton) {
+        const idProducto = producto.id;
+        const nombreProducto = producto.nombre || "este producto";
+
+        if (
+            idProducto === null ||
+            idProducto === undefined ||
+            idProducto === ""
+        ) {
+            mostrarEstadoProductos(
+                "No fue posible identificar el producto.",
+                true
+            );
+
+            return;
+        }
+
+        const confirmado = window.confirm(
+            `¿Seguro que deseas eliminar "${nombreProducto}"?\n\n` +
+            "Esta acción no se puede deshacer."
+        );
+
+        if (!confirmado) {
+            return;
+        }
+
+        boton.disabled = true;
+        boton.textContent = "Eliminando...";
+
+        mostrarEstadoProductos(`Eliminando "${nombreProducto}"...`);
+
+        try {
+            const respuesta = await fetch(
+                `${apiBaseUrl}/productos/${idProducto}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: autorizacionAdmin
+                    }
+                }
+            );
+
+            if (
+                respuesta.status === 401 ||
+                respuesta.status === 403
+            ) {
+                mostrarEstadoProductos(
+                    "La sesión administrativa no es válida. Vuelve a iniciar sesión.",
+                    true
+                );
+
+                return;
+            }
+
+            if (respuesta.status === 404) {
+                await cargarProductos();
+
+                mostrarEstadoProductos(
+                    `"${nombreProducto}" ya no existe.`,
+                    true
+                );
+
+                return;
+            }
+
+            if (!respuesta.ok) {
+                throw new Error(`HTTP ${respuesta.status}`);
+            }
+
+            if (
+                productoEnEdicionId !== null &&
+                String(productoEnEdicionId) === String(idProducto)
+            ) {
+                cerrarFormularioProducto();
+            }
+
+            await cargarProductos();
+
+            mostrarEstadoProductos(
+                `"${nombreProducto}" fue eliminado correctamente.`
+            );
+        } catch (error) {
+            console.error("Error al eliminar el producto:", error);
+
+            mostrarEstadoProductos(
+                "No fue posible eliminar el producto. Inténtalo nuevamente.",
+                true
+            );
+        } finally {
+            if (boton.isConnected) {
+                boton.disabled = false;
+                boton.textContent = "Eliminar";
+            }
         }
     }
 
