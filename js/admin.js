@@ -79,6 +79,21 @@
         "#producto-categoria"
     );
 
+    const etiquetaFormularioProducto =
+        contenedorFormularioProducto.querySelector(
+            ".seccion-etiqueta"
+        );
+
+    const tituloFormularioProducto =
+        contenedorFormularioProducto.querySelector(
+            "#titulo-formulario-producto"
+        );
+
+    const descripcionFormularioProducto =
+        contenedorFormularioProducto.querySelector(
+            ".cabecera-formulario-producto p"
+        );
+
     const formateadorPrecio = new Intl.NumberFormat("es-CL", {
         style: "currency",
         currency: "CLP",
@@ -86,6 +101,7 @@
     });
 
     let autorizacionAdmin = "";
+    let productoEnEdicionId = null;
 
     if (
         !seccionLogin ||
@@ -231,16 +247,25 @@
 
     function crearBotonAccion(texto, tipo, producto) {
         const boton = document.createElement("button");
+        const esEliminar = tipo === "eliminar";
 
         boton.type = "button";
-        boton.className = `boton-accion-producto ${tipo}`.trim();
+        boton.className =
+            `boton-accion-producto ${tipo}`.trim();
         boton.textContent = texto;
-        boton.disabled = true;
-        boton.title = "Disponible próximamente";
         boton.setAttribute(
             "aria-label",
             `${texto} ${producto.nombre || "producto"}`
         );
+
+        if (esEliminar) {
+            boton.disabled = true;
+            boton.title = "Disponible próximamente";
+        } else {
+            boton.addEventListener("click", () => {
+                abrirFormularioEdicionProducto(producto);
+            });
+        }
 
         return boton;
     }
@@ -450,11 +475,21 @@
         }
     }
 
-    function cambiarEstadoCreacionProducto(estaCreando) {
-        botonGuardarProducto.disabled = estaCreando;
+    function cambiarEstadoCreacionProducto(estaGuardando) {
+        const estaEditando = productoEnEdicionId !== null;
 
-        botonGuardarProducto.textContent = estaCreando
-            ? "Creando producto..."
+        botonGuardarProducto.disabled = estaGuardando;
+
+        if (estaGuardando) {
+            botonGuardarProducto.textContent = estaEditando
+                ? "Guardando cambios..."
+                : "Creando producto...";
+
+            return;
+        }
+
+        botonGuardarProducto.textContent = estaEditando
+            ? "Guardar cambios"
             : "Crear producto";
     }
 
@@ -582,8 +617,77 @@
         }
     }
 
+    async function abrirFormularioEdicionProducto(producto) {
+        productoEnEdicionId = producto.id;
+
+        formularioProducto.reset();
+        contenedorFormularioProducto.hidden = false;
+
+        botonNuevoProducto.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+        etiquetaFormularioProducto.textContent =
+            "Editando registro";
+
+        tituloFormularioProducto.textContent =
+            "Editar producto";
+
+        descripcionFormularioProducto.textContent =
+            "Modifica la información del producto seleccionado.";
+
+        botonGuardarProducto.textContent =
+            "Guardar cambios";
+
+        mostrarMensajeFormularioProducto("");
+
+        const categoriasCargadas =
+            await cargarCategoriasProducto();
+
+        if (!categoriasCargadas) {
+            return;
+        }
+
+        const campos = formularioProducto.elements;
+
+        campos.nombre.value = producto.nombre || "";
+        campos.descripcion.value = producto.descripcion || "";
+        campos.precio.value = producto.precio ?? "";
+        campos.stock.value = producto.stock ?? "";
+        campos.categoriaId.value = String(
+            producto.categoria?.id || ""
+        );
+        campos.talla.value = producto.talla || "";
+        campos.estado.value = producto.estado || "";
+        campos.disponible.checked =
+            Boolean(producto.disponible);
+        campos.nuevo.checked =
+            Boolean(producto.nuevo);
+        campos.destacado.checked =
+            Boolean(producto.destacado);
+
+        contenedorFormularioProducto.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+        campoProductoNombre.focus();
+    }
+
     function cerrarFormularioProducto() {
         formularioProducto.reset();
+
+        productoEnEdicionId = null;
+
+        etiquetaFormularioProducto.textContent =
+            "Nuevo registro";
+
+        tituloFormularioProducto.textContent =
+            "Crear producto";
+
+        descripcionFormularioProducto.textContent =
+            "Completa la información que aparecerá en el catálogo.";
 
         contenedorFormularioProducto.hidden = true;
 
@@ -691,17 +795,29 @@
             estado: estado || null
         };
 
+        const estaEditando = productoEnEdicionId !== null;
+        const idProducto = productoEnEdicionId;
+
+        
+        
+
+        
+
         cambiarEstadoCreacionProducto(true);
 
         mostrarMensajeFormularioProducto(
-            "Guardando producto..."
+            estaEditando
+                ? "Guardando cambios..."
+                : "Guardando producto..."
         );
 
         try {
             const respuesta = await fetch(
-                `${apiBaseUrl}/productos`,
+                estaEditando
+                    ? `${apiBaseUrl}/productos/${idProducto}`
+                    : `${apiBaseUrl}/productos`,
                 {
-                    method: "POST",
+                    method: estaEditando ? "PUT" : "POST",
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
@@ -733,12 +849,24 @@
                 );
             }
 
-            const productoCreado = await respuesta.json();
+            const productoGuardado = await respuesta.json();
 
             formularioProducto.reset();
+            productoEnEdicionId = null;
+
+            etiquetaFormularioProducto.textContent =
+                "Nuevo registro";
+
+            tituloFormularioProducto.textContent =
+                "Crear producto";
+
+            descripcionFormularioProducto.textContent =
+                "Completa la información que aparecerá en el catálogo.";
 
             mostrarMensajeFormularioProducto(
-                `"${productoCreado.nombre || nombre}" fue creado correctamente.`,
+                `"${productoGuardado.nombre || nombre}" se ${
+                    estaEditando ? "actualizó" : "creó"
+                } correctamente.`,
                 "exito"
             );
 
@@ -747,12 +875,16 @@
             campoProductoNombre.focus();
         } catch (error) {
             console.error(
-                "Error al crear el producto:",
+                `Error al ${
+                    estaEditando ? "actualizar" : "crear"
+                } el producto:`,
                 error
             );
 
             mostrarMensajeFormularioProducto(
-                "No fue posible crear el producto. Revisa los datos e inténtalo nuevamente.",
+                `No fue posible ${
+                    estaEditando ? "actualizar" : "crear"
+                } el producto. Revisa los datos e inténtalo nuevamente.`,
                 "error"
             );
         } finally {
