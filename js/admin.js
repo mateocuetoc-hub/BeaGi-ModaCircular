@@ -78,6 +78,12 @@
     const campoProductoCategoria = document.querySelector(
         "#producto-categoria"
     );
+    const campoProductoImagenes = document.querySelector(
+        "#producto-imagenes"
+    );
+    const vistaPreviaImagenesProducto = document.querySelector(
+        "#vista-previa-imagenes-producto"
+    );
 
     const etiquetaFormularioProducto =
         contenedorFormularioProducto.querySelector(
@@ -820,6 +826,51 @@
         }
     }
 
+    async function subirImagenesProducto(productoId, archivos) {
+        if (archivos.length === 0) {
+            return [];
+        }
+
+        const datosImagenes = new FormData();
+
+        archivos.forEach((archivo) => {
+            datosImagenes.append("archivos", archivo);
+        });
+
+        const respuesta = await fetch(
+            `${apiBaseUrl}/productos/${productoId}/imagenes/archivos`,
+            {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    Authorization: autorizacionAdmin
+                },
+                body: datosImagenes
+            }
+        );
+
+        if (
+            respuesta.status === 401 ||
+            respuesta.status === 403
+        ) {
+            throw new Error(
+                "La sesión administrativa no es válida."
+            );
+        }
+
+        if (!respuesta.ok) {
+            const detalleError =
+                await leerDetalleError(respuesta);
+
+            throw new Error(
+                detalleError ||
+                `No se pudieron subir las imágenes (HTTP ${respuesta.status}).`
+            );
+        }
+
+        return respuesta.json();
+    }
+
     async function crearProducto(evento) {
         evento.preventDefault();
 
@@ -831,6 +882,22 @@
 
         const datosFormulario =
             new FormData(formularioProducto);
+
+        const archivosImagenes = Array.from(
+            campoProductoImagenes.files || []
+        );
+
+        const errorImagenes =
+            validarImagenesSeleccionadas(archivosImagenes);
+
+        if (errorImagenes) {
+            mostrarMensajeFormularioProducto(
+                errorImagenes,
+                "error"
+            );
+
+            return;
+        }
 
         const nombre = String(
             datosFormulario.get("nombre") || ""
@@ -949,7 +1016,37 @@
 
             const productoGuardado = await respuesta.json();
 
+            const productoIdGuardado =
+                productoGuardado.id ?? idProducto;
+
+            if (
+                archivosImagenes.length > 0 &&
+                productoIdGuardado == null
+            ) {
+                throw new Error(
+                    "El servidor guardó el producto, pero no devolvió su identificador."
+                );
+            }
+
+            if (archivosImagenes.length > 0) {
+                try {
+                    await subirImagenesProducto(
+                        productoIdGuardado,
+                        archivosImagenes
+                    );
+                } catch (errorImagenes) {
+                    productoEnEdicionId = productoIdGuardado;
+
+                    throw new Error(
+                        `El producto se guardó, pero falló la subida de imágenes: ${
+                            errorImagenes.message
+                        }`
+                    );
+                }
+            }
+
             formularioProducto.reset();
+            limpiarVistaPreviaImagenes();
             productoEnEdicionId = null;
 
             etiquetaFormularioProducto.textContent =
@@ -1093,6 +1190,95 @@
             cambiarEstadoCarga(false);
         }
     });
+
+    let urlsVistaPreviaImagenes = [];
+
+    function limpiarVistaPreviaImagenes() {
+        urlsVistaPreviaImagenes.forEach((url) => {
+            URL.revokeObjectURL(url);
+        });
+
+        urlsVistaPreviaImagenes = [];
+        vistaPreviaImagenesProducto.replaceChildren();
+    }
+
+    function validarImagenesSeleccionadas(archivos) {
+        const tiposPermitidos = new Set([
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ]);
+
+        const extensionPermitida = /\.(jpe?g|png|webp)$/i;
+        const tamanoMaximo = 8 * 1024 * 1024;
+
+        if (archivos.length > 5) {
+            return "Puedes seleccionar como máximo 5 imágenes.";
+        }
+
+        for (const archivo of archivos) {
+            const formatoValido =
+                tiposPermitidos.has(archivo.type) ||
+                extensionPermitida.test(archivo.name);
+
+            if (!formatoValido) {
+                return `"${archivo.name}" no es JPG, PNG ni WebP.`;
+            }
+
+            if (archivo.size > tamanoMaximo) {
+                return `"${archivo.name}" supera el máximo de 8 MB.`;
+            }
+        }
+
+        return "";
+    }
+
+    function actualizarVistaPreviaImagenes() {
+        limpiarVistaPreviaImagenes();
+
+        const archivos = Array.from(
+            campoProductoImagenes.files || []
+        );
+
+        const mensajeError =
+            validarImagenesSeleccionadas(archivos);
+
+        if (mensajeError) {
+            campoProductoImagenes.value = "";
+
+            mostrarMensajeFormularioProducto(
+                mensajeError,
+                "error"
+            );
+
+            return;
+        }
+
+        mostrarMensajeFormularioProducto("");
+
+        archivos.forEach((archivo, indice) => {
+            const figura = document.createElement("figure");
+            const imagen = document.createElement("img");
+            const descripcion = document.createElement("figcaption");
+            const urlImagen = URL.createObjectURL(archivo);
+
+            urlsVistaPreviaImagenes.push(urlImagen);
+
+            figura.className = "vista-previa-imagen";
+            imagen.src = urlImagen;
+            imagen.alt = `Vista previa de ${archivo.name}`;
+            descripcion.textContent =
+                `Imagen ${indice + 1}: ${archivo.name}`;
+
+            figura.append(imagen, descripcion);
+            vistaPreviaImagenesProducto.append(figura);
+        });
+    }
+
+    campoProductoImagenes.addEventListener(
+        "change",
+        actualizarVistaPreviaImagenes
+    );
 
     botonesNavegacion.forEach((boton) => {
         boton.addEventListener("click", () => {

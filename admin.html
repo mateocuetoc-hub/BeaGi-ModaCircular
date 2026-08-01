@@ -307,6 +307,34 @@
                                 </label>
                             </fieldset>
 
+                            <fieldset class="imagenes-producto">
+                                <legend>Imágenes del producto</legend>
+
+                                <label for="producto-imagenes">
+                                    Seleccionar imágenes
+                                </label>
+
+                                <input
+                                    id="producto-imagenes"
+                                    name="archivos"
+                                    type="file"
+                                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                                    multiple
+                                    aria-describedby="ayuda-imagenes-producto"
+                                >
+
+                                <p id="ayuda-imagenes-producto">
+                                    Selecciona hasta 5 imágenes JPG, PNG o WebP.
+                                    Máximo 8 MB por imagen.
+                                </p>
+
+                                <div
+                                    id="vista-previa-imagenes-producto"
+                                    class="vista-previa-imagenes-producto"
+                                    aria-live="polite"
+                                ></div>
+                            </fieldset>
+
                             <div class="acciones-formulario-producto">
                                 <button
                                     id="boton-descartar-producto"
