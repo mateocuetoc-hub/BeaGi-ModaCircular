@@ -1,197 +1,214 @@
-# BeaGi ModaCircular
+<p align="center">
+  <img src="img/preview-beagi.svg" alt="Vista previa de BeaGi ModaCircular" width="780">
+</p>
 
-Página web tipo catálogo para **BeaGi ModaCircular**, una tienda enfocada en abrigos de mujer, moda circular y venta de prendas seleccionadas.
+<h1 align="center">BeaGi ModaCircular</h1>
 
-## Ver página online
+<p align="center">
+  Catálogo web responsive y panel administrativo para una tienda de moda circular de San Felipe, Chile.
+</p>
 
-https://mateocuetoc-hub.github.io/BeaGi-ModaCircular/
+<p align="center">
+  <a href="https://mateocuetoc-hub.github.io/BeaGi-ModaCircular/"><strong>Ver tienda</strong></a>
+  ·
+  <a href="https://mateocuetoc-hub.github.io/BeaGi-ModaCircular/admin.html"><strong>Panel administrativo</strong></a>
+  ·
+  <a href="https://github.com/mateocuetoc-hub/beagi-backend"><strong>Repositorio backend</strong></a>
+</p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111" alt="JavaScript">
+  <img src="https://img.shields.io/badge/GitHub_Pages-222222?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Pages">
+</p>
 
-## Descripción
+## Sobre el proyecto
 
-**BeaGi ModaCircular** es una página web desarrollada como catálogo online para mostrar abrigos de mujer y facilitar la consulta directa por WhatsApp.
+**BeaGi ModaCircular** es el frontend de una plataforma de catálogo y administración creada para una pyme dedicada a la venta de abrigos seleccionados y confecciones propias.
 
-El proyecto está pensado para una pyme/emprendimiento, con una interfaz moderna, femenina, responsive y orientada a la venta.
+La tienda permite explorar productos, aplicar filtros, guardar favoritos y consultar directamente por WhatsApp. Además, incorpora un panel administrativo protegido para crear, editar y eliminar productos, controlar su stock y subir fotografías reales.
 
-Actualmente el catálogo funciona con productos de prueba, preparados para ser reemplazados cuando lleguen los abrigos reales.
+Este repositorio forma parte de una solución full stack:
 
-## Funcionalidades principales
+- El frontend está desarrollado con HTML, CSS y JavaScript puro.
+- La información de los abrigos se obtiene desde una API REST.
+- El backend está construido con Spring Boot y se encuentra en un repositorio independiente.
+- Las imágenes se almacenan mediante el servicio configurado en el backend.
+- La tienda pública se despliega con GitHub Pages y la API con Render.
 
-- Página de inicio con presentación de marca.
-- Diseño visual en tonos rosados, crema y vino.
-- Catálogo con 35 espacios para abrigos.
-- Productos separados en archivo `productos.js`.
-- Estructura optimizada con carpetas `css/`, `js/` e `img/`.
-- Galería preparada para varias fotos por producto.
-- Buscador de productos.
-- Filtro por talla.
-- Filtro por precio.
-- Ordenamiento de productos.
-- Contador de productos visibles.
-- Resumen de disponibilidad.
-- Estados por producto: disponible, reservado o vendido.
-- Tarjetas de producto con botón de detalle.
-- Modal interactivo para ver información del abrigo.
-- Sistema de favoritos guardado en el navegador.
-- Panel lateral de favoritos.
-- Consulta por WhatsApp de un producto.
-- Consulta por WhatsApp de varios favoritos.
-- Botón flotante de WhatsApp.
-- Botón para volver arriba.
-- Menú hamburguesa para celular.
-- Sección de lives de TikTok.
-- Sección de cómo comprar.
-- Preguntas frecuentes interactivas.
-- Sección de ubicación con Google Maps.
-- Diseño responsive optimizado para celular.
-- Página publicada con GitHub Pages.
+## Funcionalidades
 
-## Tecnologías utilizadas
+### Tienda pública
 
-- HTML5
-- CSS3
-- JavaScript
-- Visual Studio Code
-- Git
-- GitHub
-- GitHub Pages
+- Catálogo dinámico conectado a la API de productos.
+- Catálogo local de confecciones y puños removibles hechos por BeaGi.
+- Respaldo local de productos si la API no está disponible.
+- Buscador por nombre, tipo y descripción.
+- Filtros por categoría, talla, precio y disponibilidad.
+- Ordenamiento por productos destacados, precio y nombre.
+- Resumen de productos disponibles, reservados y vendidos.
+- Tarjetas con stock, estado, precio y distintivos de novedad o producto destacado.
+- Modal de detalle con galería de varias imágenes.
+- Favoritos persistentes mediante `localStorage`.
+- Consulta individual o grupal de favoritos por WhatsApp.
+- Secciones de novedades, confecciones, lives de TikTok, proceso de compra, preguntas frecuentes y ubicación.
+- Navegación y diseño responsive para computador, tablet y celular.
+- Metadatos SEO y Open Graph para compartir el sitio.
 
-## Estructura del proyecto
+### Panel administrativo
 
+- Inicio de sesión contra endpoints protegidos del backend.
+- Resumen de productos totales, disponibles y sin stock.
+- Listado administrativo con imagen, categoría, precio, stock y estado.
+- Creación, edición y eliminación de productos.
+- Control de disponibilidad, novedad y producto destacado.
+- Selección y previsualización de imágenes antes de subirlas.
+- Subida de hasta cinco imágenes JPG, PNG o WebP por producto.
+- Validación de formato, cantidad y tamaño de los archivos.
+- Interfaz preparada para incorporar la administración de categorías y pedidos.
+
+> [!NOTE]
+> La ruta del panel es pública, pero las operaciones administrativas están protegidas por la autenticación del backend. Las credenciales y secretos de producción no se almacenan en este repositorio.
+
+## Arquitectura
+
+```mermaid
+flowchart TD
+    U[Cliente o administrador] --> F[Frontend en GitHub Pages]
+    F --> A[API REST Spring Boot en Render]
+    A --> D[(PostgreSQL)]
+    A --> I[Almacenamiento de imágenes]
+    F --> C[WhatsApp y TikTok]
+```
+
+## Tecnologías
+
+| Área | Tecnologías |
+| --- | --- |
+| Interfaz | HTML5, CSS3 y JavaScript ES6+ |
+| Integración | Fetch API, REST y JSON |
+| Persistencia local | Web Storage (`localStorage`) |
+| Backend relacionado | Java, Spring Boot y PostgreSQL |
+| Despliegue | GitHub Pages y Render |
+| Control de versiones | Git y GitHub |
+
+## Estructura principal
+
+```text
 BeaGi-ModaCircular/
-├── index.html
-├── README.md
+├── index.html                 # Tienda y catálogo público
+├── admin.html                 # Panel administrativo
+├── assets/
+│   └── img/confecciones/      # Fotografías de confecciones locales
 ├── css/
-│   └── style.css
+│   ├── style.css              # Estilos de la tienda
+│   └── admin.css              # Estilos del panel
+├── img/                       # Recursos visuales generales
 ├── js/
-│   ├── productos.js
-│   └── script.js
-└── img/
+│   ├── config.js              # URLs, contacto y configuración pública
+│   ├── productos.js           # Respaldo local del catálogo
+│   ├── confecciones.js        # Productos confeccionados por BeaGi
+│   ├── script.js              # Lógica de la tienda
+│   └── admin.js               # Lógica del panel administrativo
+└── README.md
+```
 
-## Archivos principales
+## Ejecutar el frontend localmente
 
-### index.html
+### 1. Clonar el repositorio
 
-Contiene la estructura principal de la página:
+```bash
+git clone https://github.com/mateocuetoc-hub/BeaGi-ModaCircular.git
+cd BeaGi-ModaCircular
+```
 
-- Header y navegación.
-- Sección de inicio.
-- Sección de lives de TikTok.
-- Catálogo.
-- Modal de productos.
-- Panel de favoritos.
-- Sección cómo comprar.
-- Preguntas frecuentes.
-- Ubicación.
-- Contacto.
-- Footer.
+### 2. Iniciar un servidor local
 
-### css/style.css
+```bash
+python3 -m http.server 5500
+```
 
-Contiene todos los estilos visuales de la página:
+### 3. Abrir el sitio
 
-- Colores de marca.
-- Diseño responsive.
-- Tarjetas de productos.
-- Modal.
-- Panel de favoritos.
-- Menú hamburguesa.
-- Secciones informativas.
-- Mejoras para celular.
+- Tienda: <http://localhost:5500/>
+- Panel: <http://localhost:5500/admin.html>
 
-### js/productos.js
+La configuración actual consume la API desplegada. No es necesario iniciar el backend local para recorrer la tienda publicada.
 
-Contiene la información de los productos del catálogo.
+## Configuración
 
-Cada producto puede tener datos como:
+Los datos públicos y las direcciones de la API se centralizan en `js/config.js`:
 
-{
-    id: 1,
-    nombre: "Abrigo Beige Clásico",
-    tipo: "Abrigo de Paño",
-    talla: "M",
-    estado: "Excelente estado",
-    precio: 25000,
-    disponibilidad: "Disponible",
-    imagen: "",
-    imagenes: [],
-    descripcion: "Abrigo elegante y versátil, ideal para outfits de invierno.",
-    destacado: true
-}
+```js
+window.beagiConfig = {
+    whatsappNumero: "NUMERO_EN_FORMATO_INTERNACIONAL",
+    direccionPublica: "DIRECCION_PUBLICA",
+    zonaPublica: "CIUDAD_Y_REGION",
+    mapsQuery: "CONSULTA_PARA_GOOGLE_MAPS",
+    tiktokUrl: "URL_DE_TIKTOK",
+    instagramUrl: "URL_DE_INSTAGRAM",
+    apiBaseUrl: "https://api.ejemplo.com/api",
+    apiProductosUrl: "https://api.ejemplo.com/api/productos"
+};
+```
 
-Este archivo está pensado para actualizar fácilmente los productos reales sin modificar toda la lógica de la página.
+Para probar toda la aplicación con el backend local, cambia temporalmente las dos URLs de la API:
 
-### js/script.js
+```js
+apiBaseUrl: "http://localhost:8080/api",
+apiProductosUrl: "http://localhost:8080/api/productos"
+```
 
-Contiene la lógica interactiva del sitio:
+Antes de hacer un commit, recuerda devolverlas a las direcciones de producción.
 
-- Renderizado del catálogo.
-- Filtros.
-- Buscador.
-- Ordenamiento.
-- Modal de detalle.
-- Favoritos.
-- Panel de favoritos.
-- WhatsApp.
-- Menú hamburguesa.
-- Acordeón de preguntas frecuentes.
-- Cuenta regresiva para lives.
-- Botón para subir arriba.
+## Validaciones rápidas
 
-## Cómo ejecutar el proyecto localmente
+Antes de subir cambios se puede comprobar la sintaxis de los archivos principales:
 
-Entrar a la carpeta del proyecto:
+```bash
+node --check js/config.js
+node --check js/script.js
+node --check js/admin.js
+git diff --check
+```
 
-cd ~/Code/BeaGi-ModaCircular
+## Despliegue
 
-Abrir en Visual Studio Code:
+El frontend se publica mediante **GitHub Pages** desde la rama `main`.
 
-code .
+Flujo habitual:
 
-Abrir la página en Firefox:
-
-firefox index.html
-
-También se puede usar la extensión Live Server de Visual Studio Code y abrir el proyecto con Go Live.
-
-## Cómo subir cambios a GitHub
-
-Después de modificar archivos:
-
+```bash
 git status
-git add .
-git commit -m "Descripcion del cambio realizado"
-git push
+git add README.md
+git commit -m "Actualiza documentacion del frontend"
+git push origin main
+```
 
-Luego de hacer push, GitHub Pages actualiza la página online automáticamente en unos minutos.
+Después del `push`, GitHub Pages actualiza la versión pública. Los cambios que afecten endpoints o modelos también deben coordinarse con el repositorio del backend.
 
-## Próximas mejoras
+## Estado actual
 
-- Agregar logo real de BeaGi ModaCircular.
-- Agregar fotos reales de los abrigos.
-- Reemplazar productos de prueba por productos reales.
-- Cambiar número de WhatsApp por el oficial.
-- Agregar Instagram oficial.
-- Agregar TikTok oficial.
-- Definir fecha y hora real de los lives.
-- Agregar dirección o zona exacta de entrega/retiro.
-- Mejorar mensajes automáticos de WhatsApp.
-- Agregar sección de novedades / últimos ingresos.
-- Agregar SEO y vista previa bonita al compartir el link.
-- Optimizar imágenes para mejorar velocidad de carga.
+El flujo principal de publicación ya está operativo:
 
-## Información de ubicación
+- [x] Catálogo público conectado a la API.
+- [x] Filtros, favoritos y consultas por WhatsApp.
+- [x] Diseño responsive para computador y dispositivos móviles.
+- [x] Panel administrativo protegido.
+- [x] CRUD de productos.
+- [x] Carga de múltiples imágenes por producto.
+- [x] Despliegue del frontend y del backend.
+- [ ] Gestión de imágenes existentes al editar un producto.
+- [ ] Administración completa de categorías.
+- [ ] Administración completa de pedidos.
+- [ ] Pruebas automatizadas del frontend.
 
-Dirección de tienda: 121 Pje. Los Espinos, San Felipe, Valparaíso, Chile
+## Repositorios relacionados
 
-La página incluye una sección de ubicación con Google Maps y botón para abrir la dirección directamente.
-
-## Estado del proyecto
-
-Proyecto en desarrollo.
-
-Actualmente la página cuenta con una base funcional para catálogo online, favoritos, consultas por WhatsApp, lives, ubicación, preguntas frecuentes y estructura optimizada.
+- **Frontend:** [mateocuetoc-hub/BeaGi-ModaCircular](https://github.com/mateocuetoc-hub/BeaGi-ModaCircular)
+- **Backend:** [mateocuetoc-hub/beagi-backend](https://github.com/mateocuetoc-hub/beagi-backend)
 
 ## Autor
 
-Desarrollado por Mateo como proyecto web para pyme/emprendimiento.
+Desarrollado por [Mateo Cueto](https://github.com/mateocuetoc-hub), estudiante de Ingeniería en Informática, como solución web para una pyme y proyecto de portafolio.
