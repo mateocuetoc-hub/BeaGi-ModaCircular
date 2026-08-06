@@ -1140,3 +1140,63 @@ a:focus-visible {
         transition-duration: 0.01ms !important;
     }
 }
+.vista-previa-imagen {
+    position: relative;
+    overflow: hidden;
+    padding: 0.55rem;
+    background: #ffffff;
+    border: 1px solid #d8dee8;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1);
+}
+
+.vista-previa-imagen img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.vista-previa-imagen figcaption {
+    margin-top: 0.5rem;
+    overflow: hidden;
+    color: #475569;
+    font-size: 0.82rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.boton-quitar-imagen {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 2;
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    place-items: center;
+    color: #ffffff;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    background: #dc2626;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.boton-quitar-imagen:hover {
+    background: #991b1b;
+    transform: scale(1.08);
+}
+
+.boton-quitar-imagen:focus-visible {
+    outline: 3px solid #fca5a5;
+    outline-offset: 2px;
+}

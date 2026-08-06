@@ -108,6 +108,8 @@
 
     let autorizacionAdmin = "";
     let productoEnEdicionId = null;
+    let archivosImagenesSeleccionados = [];
+    let imagenesProductoGuardadas = [];
 
     if (
         !seccionLogin ||
@@ -724,6 +726,14 @@
     async function abrirFormularioEdicionProducto(producto) {
         productoEnEdicionId = producto.id;
 
+        imagenesProductoGuardadas = Array.isArray(producto.imagenes)
+            ? [...producto.imagenes]
+            : [];
+
+        archivosImagenesSeleccionados = [];
+        sincronizarCampoProductoImagenes();
+        actualizarVistaPreviaImagenes();
+
         formularioProducto.reset();
         contenedorFormularioProducto.hidden = false;
 
@@ -1232,34 +1242,110 @@
 
         return "";
     }
+    function crearBotonQuitarImagen(etiqueta) {
+    const boton = document.createElement("button");
+
+    boton.type = "button";
+    boton.className = "boton-quitar-imagen";
+    boton.textContent = "×";
+    boton.setAttribute("aria-label", etiqueta);
+    boton.title = etiqueta;
+
+    return boton;
+    }
+    function sincronizarCampoProductoImagenes() {
+        const transferencia = new DataTransfer();
+
+        archivosImagenesSeleccionados.forEach((archivo) => {
+            transferencia.items.add(archivo);
+        });
+
+        campoProductoImagenes.files = transferencia.files;
+    }
+
+    async function eliminarImagenProductoGuardada(imagen) {
+        const confirmar = window.confirm(
+            "¿Seguro que quieres eliminar esta imagen?"
+        );
+
+        if (!confirmar) {
+            return;
+        }
+
+        try {
+            const respuesta = await fetch(
+                `${apiBaseUrl}/productos/${productoEnEdicionId}/imagenes/${imagen.id}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: autorizacionAdmin
+                    }
+                }
+            );
+
+            if (!respuesta.ok) {
+                const detalle = await leerDetalleError(respuesta);
+
+                throw new Error(
+                    detalle || "No se pudo eliminar la imagen."
+                );
+            }
+
+            imagenesProductoGuardadas =
+                imagenesProductoGuardadas.filter(
+                    (imagenGuardada) =>
+                        imagenGuardada.id !== imagen.id
+                );
+
+            actualizarVistaPreviaImagenes();
+
+            mostrarMensajeFormularioProducto(
+                "Imagen eliminada correctamente."
+            );
+        } catch (error) {
+            mostrarMensajeFormularioProducto(
+                error.message || "No se pudo eliminar la imagen.",
+                "error"
+            );
+        }
+    }
 
     function actualizarVistaPreviaImagenes() {
         limpiarVistaPreviaImagenes();
 
-        const archivos = Array.from(
-            campoProductoImagenes.files || []
+        imagenesProductoGuardadas.forEach(
+            (imagenGuardada, indice) => {
+                const figura = document.createElement("figure");
+                const imagen = document.createElement("img");
+                const descripcion =
+                    document.createElement("figcaption");
+                const botonQuitar = crearBotonQuitarImagen(
+                    `Eliminar imagen guardada ${indice + 1}`
+                );
+
+                figura.className = "vista-previa-imagen";
+                imagen.src = imagenGuardada.url;
+                imagen.alt =
+                    `Imagen guardada ${indice + 1} del producto`;
+                descripcion.textContent =
+                    `Imagen guardada ${indice + 1}`;
+
+                botonQuitar.addEventListener("click", () => {
+                    eliminarImagenProductoGuardada(imagenGuardada);
+                });
+
+                figura.append(imagen, descripcion, botonQuitar);
+                vistaPreviaImagenesProducto.append(figura);
+            }
         );
 
-        const mensajeError =
-            validarImagenesSeleccionadas(archivos);
-
-        if (mensajeError) {
-            campoProductoImagenes.value = "";
-
-            mostrarMensajeFormularioProducto(
-                mensajeError,
-                "error"
-            );
-
-            return;
-        }
-
-        mostrarMensajeFormularioProducto("");
-
-        archivos.forEach((archivo, indice) => {
+        archivosImagenesSeleccionados.forEach((archivo, indice) => {
             const figura = document.createElement("figure");
             const imagen = document.createElement("img");
             const descripcion = document.createElement("figcaption");
+            const botonQuitar = crearBotonQuitarImagen(
+                `Quitar ${archivo.name}`
+            );
             const urlImagen = URL.createObjectURL(archivo);
 
             urlsVistaPreviaImagenes.push(urlImagen);
@@ -1270,14 +1356,60 @@
             descripcion.textContent =
                 `Imagen ${indice + 1}: ${archivo.name}`;
 
-            figura.append(imagen, descripcion);
+            botonQuitar.addEventListener("click", () => {
+                archivosImagenesSeleccionados.splice(indice, 1);
+
+                sincronizarCampoProductoImagenes();
+                actualizarVistaPreviaImagenes();
+                mostrarMensajeFormularioProducto("");
+            });
+
+            figura.append(imagen, descripcion, botonQuitar);
             vistaPreviaImagenesProducto.append(figura);
         });
     }
 
+    function manejarSeleccionImagenes() {
+        const archivosNuevos = Array.from(
+            campoProductoImagenes.files || []
+        );
+
+        const archivosAnteriores = [
+            ...archivosImagenesSeleccionados
+        ];
+
+        const archivosCombinados = [
+            ...archivosImagenesSeleccionados,
+            ...archivosNuevos
+        ];
+
+        const mensajeError =
+            validarImagenesSeleccionadas(archivosCombinados);
+
+        if (mensajeError) {
+            archivosImagenesSeleccionados = archivosAnteriores;
+
+            sincronizarCampoProductoImagenes();
+            actualizarVistaPreviaImagenes();
+
+            mostrarMensajeFormularioProducto(
+                mensajeError,
+                "error"
+            );
+
+            return;
+        }
+
+        archivosImagenesSeleccionados = archivosCombinados;
+
+        sincronizarCampoProductoImagenes();
+        actualizarVistaPreviaImagenes();
+        mostrarMensajeFormularioProducto("");
+    }
+
     campoProductoImagenes.addEventListener(
         "change",
-        actualizarVistaPreviaImagenes
+        manejarSeleccionImagenes
     );
 
     botonesNavegacion.forEach((boton) => {
