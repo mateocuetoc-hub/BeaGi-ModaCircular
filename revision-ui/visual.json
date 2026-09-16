@@ -1,0 +1,26 @@
+[
+  {
+    "width": 1440,
+    "height": 900,
+    "allSections": "no overflow",
+    "modalKeyboard": "pass"
+  },
+  {
+    "width": 1024,
+    "height": 768,
+    "allSections": "no overflow",
+    "modalKeyboard": "pass"
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "allSections": "no overflow",
+    "modalKeyboard": "pass"
+  },
+  {
+    "width": 360,
+    "height": 800,
+    "allSections": "no overflow",
+    "modalKeyboard": "pass"
+  }
+]

@@ -6,7 +6,7 @@
     <meta name="description" content="Catálogo online de BeaGi ModaCircular: abrigos únicos de mujer, moda circular, favoritos, consultas por WhatsApp y ventas en vivo por TikTok.">
     <meta name="keywords" content="BeaGi ModaCircular, abrigos de mujer, moda circular, ropa circular, San Felipe, abrigos, tienda de ropa, WhatsApp">
     <meta name="author" content="BeaGi ModaCircular">
-    <meta name="theme-color" content="#5c1f3a">
+    <meta name="theme-color" content="#5a1f2a">
 
     <meta property="og:title" content="BeaGi ModaCircular | Abrigos únicos de mujer">
     <meta property="og:description" content="Explora abrigos de mujer seleccionados, marca favoritos y consulta por WhatsApp. Moda circular en San Felipe.">
@@ -21,116 +21,60 @@
     <meta name="twitter:image" content="https://mateocuetoc-hub.github.io/BeaGi-ModaCircular/img/preview-beagi.svg">
 
     <title>BeaGi ModaCircular | Abrigos de mujer y moda circular</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style-v2.css">
 </head>
 <body>
 
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
     <header class="header">
-        <nav class="navbar">
-            <a href="#inicio" class="marca">
-                <div class="logo-circulo">BG</div>
-                <div>
-                    <h1>BeaGi ModaCircular</h1>
-                    <span>Abrigos únicos de mujer</span>
-                </div>
+        <nav class="navbar" aria-label="Navegación principal">
+            <a href="#inicio" class="marca" aria-label="BeaGi Moda Circular · Inicio">
+                <span class="marca-nombre">BeaGi</span>
+                <span class="marca-subtitulo">Moda Circular</span>
             </a>
-
-            <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú">
-                ☰
-            </button>
-
+            <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú" aria-controls="nav-links" aria-expanded="false">☰</button>
             <ul class="nav-links" id="nav-links">
-            <li><a href="#inicio">Inicio</a></li>
-
-            <li class="nav-dropdown">
-                <button class="nav-dropdown-toggle" type="button">
-                    Explorar <span>⌄</span>
-                </button>
-
-                <ul class="nav-dropdown-menu">
-                    <li><a href="#novedades">Novedades</a></li>
-                    <li><a href="#confecciones">Confecciones</a></li>
-                    <li><a href="#catalogo">Catálogo de abrigos</a></li>
-                    <li><a href="#lives-tiktok">Lives TikTok</a></li>
-                </ul>
-            </li>
-
-            <li class="nav-dropdown">
-                <button class="nav-dropdown-toggle" type="button">
-                    Información <span>⌄</span>
-                </button>
-
-                <ul class="nav-dropdown-menu">
-                    <li><a href="#nosotros">Nosotros</a></li>
-                    <li><a href="#como-comprar">Cómo comprar</a></li>
-
-                    <li class="solo-escritorio">
-                        <a href="#preguntas-frecuentes">
-                            Preguntas frecuentes
-                        </a>
-                    </li>
-
-                    <li><a href="#ubicacion">Ubicación</a></li>
-                </ul>
-            </li>
-
-            <li class="nav-mobile-favoritos-item">
-                <button class="nav-favoritos-mobile" id="nav-favoritos-mobile" type="button">
-                    ♡ Favoritos
-                </button>
-            </li>
-
-            <li><a href="#contacto" class="nav-cta">Contacto</a></li>
-        </ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#catalogo">Abrigos</a></li>
+                <li><a href="#confecciones">Confecciones</a></li>
+                <li><a href="#nosotros">Nosotras</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li class="nav-mobile-favoritos-item"><button class="nav-favoritos-mobile" id="nav-favoritos-mobile" type="button">♡ Favoritos</button></li>
+            </ul>
         </nav>
     </header>
 
-    <section id="inicio" class="hero">
+    <main id="contenido" tabindex="-1">
+    <section id="inicio" class="hero" aria-labelledby="titulo-inicio">
         <div class="hero-texto">
-            <span class="hero-etiqueta">Moda circular · Abrigos seleccionados</span>
-
-            <h2>Encuentra tu abrigo ideal con estilo, calidad y segunda vida</h2>
-
-            <p>
-                En BeaGi ModaCircular seleccionamos abrigos de mujer únicos,
-                con estilo, personalidad y una propuesta más consciente.
-            </p>
-
+            <span class="hero-etiqueta">Moda circular & confección artesanal</span>
+            <h1 id="titulo-inicio">Ropa con<br><em>nuevas historias</em></h1>
+            <p>Moda circular para un mañana mejor.</p>
             <div class="hero-botones">
-                <a href="#catalogo" class="btn-principal">Ver catálogo</a>
-                <a href="https://wa.me/56945571689" target="_blank" rel="noopener noreferrer" class="btn-secundario">
-                    Consultar por WhatsApp
-                </a>
+                <a href="#catalogo" class="btn-principal">Ver abrigos <span aria-hidden="true">↗</span></a>
+                <a href="#confecciones" class="btn-secundario">Descubrir confecciones</a>
             </div>
-
-            <div class="hero-datos">
-                <div>
-                    <strong>35+</strong>
-                    <span>Espacios de catálogo</span>
-                </div>
-
-                <div>
-                    <strong>100%</strong>
-                    <span>Moda circular</span>
-                </div>
-
-                <div>
-                    <strong>Online</strong>
-                    <span>Consulta rápida</span>
-                </div>
-            </div>
+            <div class="hero-nota"><span aria-hidden="true">↻</span> Una nueva forma de mirar lo que vestimos.</div>
         </div>
+        <!-- Fotografía editorial reemplazable por una imagen real de la tienda o abrigos. -->
+        <figure class="hero-editorial">
+            <img class="hero-foto" src="assets/img/confecciones/punos/puno-blanco-bonito-mano.jpeg" alt="Detalle de un puño blanco de encaje BeaGi sobre una mano frente a un espejo" width="1122" height="1402" fetchpriority="high" decoding="async">
+            <figcaption><span>El valor de los detalles</span><span>Hecho por BeaGi ↗</span></figcaption>
+            <span class="editorial-sello">Hecho a mano.<br>Con otra mirada.</span>
+        </figure>
+    </section>
 
-        <div class="hero-card">
-            <div class="hero-logo-grande">BG</div>
-            <h3>BeaGi ModaCircular</h3>
-            <p>Abrigos de mujer seleccionados con cariño.</p>
-
-            <div class="info-negocio">
-                <p><strong>Ubicación:</strong> San Felipe, Chile</p>
-                <p><strong>Horario:</strong> Lunes a sábado</p>
-                <p><strong>Atención:</strong> WhatsApp e Instagram</p>
-            </div>
+    <section id="categorias" class="categorias" aria-labelledby="titulo-categorias">
+        <div class="seccion-header"><span class="etiqueta-seccion">Elige tu próxima historia</span><h2 id="titulo-categorias">Dos formas de encontrar tu estilo</h2></div>
+        <div class="categorias-grid">
+            <a class="categoria-card categoria-abrigos" href="#catalogo">
+                <div class="categoria-neutra" aria-hidden="true"><span>Una segunda vida.<br><em>Muchas historias.</em></span><small>BEAGI · MODA CIRCULAR</small></div>
+                <div class="categoria-info"><div><h3>Abrigos</h3><p>Prendas seleccionadas para volver a acompañarte.</p></div><span aria-hidden="true">↗</span></div>
+            </a>
+            <a class="categoria-card" href="#confecciones">
+                <img src="assets/img/confecciones/punos/puno-blanco-rosado.jpeg" alt="Puños artesanales en blanco y rosado confeccionados por BeaGi" loading="lazy" decoding="async" width="1122" height="1402">
+                <div class="categoria-info"><div><h3>Confecciones</h3><p>Pequeños detalles, hechos a mano y con cariño.</p></div><span aria-hidden="true">↗</span></div>
+            </a>
         </div>
     </section>
 
@@ -387,20 +331,26 @@
         </div>
 
         <div class="catalogo-controles">
-            <input type="text" id="buscador" placeholder="Buscar abrigo, color o tipo...">
-            <select id="filtro-talla">
+            <input aria-label="Buscar abrigos" type="search" id="buscador" placeholder="Buscar abrigo, color o tipo...">
+            <select id="filtro-talla" aria-label="Filtrar por talla">
                 <option value="todos">Todas las tallas</option>
                 <option value="S">Talla S</option>
                 <option value="M">Talla M</option>
                 <option value="L">Talla L</option>
                 <option value="XL">Talla XL</option>
             </select>
-            <select id="filtro-precio">
+            <select id="filtro-precio" aria-label="Filtrar por precio">
                 <option value="todos">Todos los precios</option>
                 <option value="menos-20000">Menos de $20.000</option>
                 <option value="20000-30000">$20.000 a $30.000</option>
                 <option value="mas-30000">Más de $30.000</option>
                 <option value="consultar">Consultar</option>
+            </select>
+            <select id="filtro-disponibilidad" aria-label="Filtrar por disponibilidad">
+                <option value="todos">Todos los estados</option><option value="disponible">Disponibles</option><option value="reservado">Reservados</option><option value="vendido">Vendidos</option>
+            </select>
+            <select id="ordenar-productos" aria-label="Ordenar productos">
+                <option value="destacados">Destacados primero</option><option value="menor-precio">Menor precio</option><option value="mayor-precio">Mayor precio</option><option value="nombre">Nombre: A–Z</option>
             </select>
             <button id="btn-limpiar">Limpiar filtros</button>
         </div>
@@ -417,7 +367,7 @@
 
     <div class="resumen-catalogo" id="resumen-catalogo"></div>
 
-<p id="contador-productos" class="contador-productos"></p>
+<p id="contador-productos" class="contador-productos" aria-live="polite"></p>
         <div class="productos" id="contenedor-productos"></div>
     </section>
 
@@ -527,7 +477,7 @@
 
     <div class="ubicacion-contenedor">
         <div class="ubicacion-info">
-            <div class="ubicacion-icono">📍</div>
+            <span class="etiqueta-seccion">San Felipe · Chile</span>
 
             <h3>BeaGi ModaCircular</h3>
 
@@ -569,7 +519,7 @@
         </div>
 
         <div class="mapa-card">
-            <iframe
+            <iframe title="Ubicación de BeaGi en San Felipe"
                 src="https://www.google.com/maps?q=121+Pje.+Los+Espinos%2C+San+Felipe%2C+Valpara%C3%ADso%2C+Chile&output=embed"
                 width="100%"
                 height="420"
@@ -593,12 +543,14 @@
     </section>
 
     
+    </main>
+
     <footer class="footer footer-mejorado">
         <div class="footer-contenido">
             <div class="footer-marca">
-                <div class="logo-circulo footer-logo">BG</div>
+                <span class="marca-nombre">BeaGi</span>
                 <div>
-                    <h3>BeaGi ModaCircular</h3>
+                    <h3>Moda Circular</h3>
                     <p>Abrigos únicos de mujer · Moda circular</p>
                 </div>
             </div>
@@ -609,6 +561,7 @@
                 <a href="#catalogo">Catálogo</a>
                 <a href="#lives-tiktok">Lives TikTok</a>
                 <a href="#ubicacion">Ubicación</a>
+                <a href="#preguntas-frecuentes">Preguntas frecuentes</a>
             </div>
 
             <div class="footer-contacto">
@@ -675,8 +628,9 @@
         </div>
     </div>
 
-    <a class="whatsapp-flotante" href="https://wa.me/56945571689" target="_blank" rel="noopener noreferrer">
-        WhatsApp
+    <a class="whatsapp-flotante" aria-label="Consultar por WhatsApp" href="https://wa.me/56945571689" target="_blank" rel="noopener noreferrer">
+        <svg class="whatsapp-icono" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.2A8.5 8.5 0 1 1 20 11.5Z"/><path d="M8 7.5c-.8 1.3.3 3.7 2 5.4 1.7 1.7 4.1 2.8 5.4 2l.7-1.8-2.3-1.1-1 1c-1.5-.7-2.6-1.8-3.3-3.3l1-1-1.1-2.3Z"/></svg>
+        <span class="whatsapp-label">WhatsApp</span>
     </a>
 
 <button
@@ -690,7 +644,7 @@
 
 <div class="overlay-panel" id="overlay-panel"></div>
 
-<aside class="panel-favoritos" id="panel-favoritos">
+<aside class="panel-favoritos" id="panel-favoritos" role="dialog" aria-modal="true" aria-label="Mis favoritos">
     <div class="panel-favoritos-header">
         <div>
             <span>Selección BeaGi</span>
@@ -716,7 +670,7 @@
     </div>
 </aside>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <button
     class="btn-subir"
@@ -727,6 +681,11 @@
     ↑
 </button>
 
+    <nav class="mobile-bottom-nav" aria-label="Accesos rápidos">
+        <a href="#catalogo"><span aria-hidden="true">▦</span>Abrigos</a>
+        <a href="#confecciones"><span aria-hidden="true">✂</span>Confecciones</a>
+        <button id="mobile-favoritos" type="button"><span aria-hidden="true">♡</span>Favoritos</button>
+    </nav>
     <script src="js/config.js"></script>
     <script src="js/productos.js"></script>
     <script src="js/confecciones.js"></script>

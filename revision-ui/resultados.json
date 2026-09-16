@@ -1,0 +1,26 @@
+[
+  {
+    "width": 1440,
+    "height": 900,
+    "checks": "PASS",
+    "runtimeErrors": []
+  },
+  {
+    "width": 1024,
+    "height": 768,
+    "checks": "PASS",
+    "runtimeErrors": []
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "checks": "PASS",
+    "runtimeErrors": []
+  },
+  {
+    "width": 360,
+    "height": 800,
+    "checks": "PASS",
+    "runtimeErrors": []
+  }
+]

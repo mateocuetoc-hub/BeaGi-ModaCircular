@@ -63,6 +63,49 @@ const menuToggle = document.getElementById("menu-toggle");
 const navLinks = document.getElementById("nav-links");
 
 
+let focoAnterior = null;
+let dialogoActivo = null;
+
+function activarFocoDialogo(dialogo) {
+    focoAnterior = document.activeElement;
+    dialogoActivo = dialogo;
+}
+
+function restaurarFocoDialogo() {
+    dialogoActivo = null;
+    if (focoAnterior?.isConnected) {
+        focoAnterior.focus({ preventScroll: true });
+    } else {
+        const id = focoAnterior?.dataset.id;
+        const reemplazo = id && document.querySelector(`.btn-favorito[data-id="${id}"]`);
+        reemplazo?.focus({ preventScroll: true });
+    }
+}
+
+function cerrarDetalle() {
+    if (!modal?.classList.contains("activo")) return;
+    modal.classList.remove("activo");
+    document.body.classList.remove("modal-abierto");
+    restaurarFocoDialogo();
+}
+
+document.addEventListener("keydown", (evento) => {
+    if (evento.key !== "Tab" || !dialogoActivo) return;
+    const controles = [...dialogoActivo.querySelectorAll('button, a[href], input, select, [tabindex="0"]')]
+        .filter((elemento) => elemento.getClientRects().length && !elemento.disabled);
+    const primero = controles[0];
+    const ultimo = controles[controles.length - 1];
+    if (!dialogoActivo.contains(document.activeElement)) {
+        evento.preventDefault(); primero?.focus();
+    } else if (evento.shiftKey && document.activeElement === primero) {
+        evento.preventDefault(); ultimo?.focus();
+    } else if (!evento.shiftKey && document.activeElement === ultimo) {
+        evento.preventDefault(); primero?.focus();
+    }
+});
+
+document.getElementById("mobile-favoritos")?.addEventListener("click", abrirPanelFavoritos);
+
 let categoriaActiva = "todos";
 let confeccionActiva = "todos";
 let timeoutToast = null;
@@ -405,7 +448,7 @@ function renderizarAbrigos(listaAbrigos) {
             <div class="producto-imagen">
                 ${
                     imagenPrincipal
-                        ? `<img src="${imagenPrincipal}" alt="${abrigo.nombre}">`
+                        ? `<img loading="lazy" decoding="async" src="${imagenPrincipal}" alt="${abrigo.nombre}">`
                         : `<div class="imagen-placeholder">Foto pendiente</div>`
                 }
 
@@ -425,7 +468,7 @@ function renderizarAbrigos(listaAbrigos) {
                     ${disponibilidad.texto}
                 </span>
 
-                <button class="btn-favorito ${esFavorito ? "activo" : ""}" data-id="${abrigo.id}" aria-label="Agregar a favoritos">
+                <button class="btn-favorito ${esFavorito ? "activo" : ""}" data-id="${abrigo.id}" aria-label="${esFavorito ? "Quitar de favoritos" : "Agregar a favoritos"}" aria-pressed="${esFavorito}">
                     ${esFavorito ? "♥" : "♡"}
                 </button>
             </div>
@@ -507,8 +550,7 @@ function renderizarConfecciones(listaConfecciones) {
                 ${
                     imagenPrincipal
                         ? `
-                            <img
-                                src="${imagenPrincipal}"
+                            <img loading="lazy" decoding="async" src="${imagenPrincipal}"
                                 alt="${confeccion.nombre}"
                             >
                         `
@@ -549,6 +591,7 @@ function renderizarConfecciones(listaConfecciones) {
                     class="btn-favorito ${esFavorito ? "activo" : ""}"
                     type="button"
                     data-id="${confeccion.id}"
+                    aria-pressed="${esFavorito}"
                     aria-label="${
                         esFavorito
                             ? "Quitar de favoritos"
@@ -677,8 +720,7 @@ function abrirDetalle(id) {
         modalImagen.innerHTML = `
             <div class="galeria-modal">
                 <div class="galeria-principal">
-                    <img 
-                        id="galeria-img-principal" 
+                    <img loading="lazy" decoding="async" id="galeria-img-principal"
                         src="${imagenes[0]}" 
                         alt="${abrigo.nombre}"
                     >
@@ -694,7 +736,7 @@ function abrirDetalle(id) {
                                         data-imagen="${imagen}" 
                                         aria-label="Ver foto ${index + 1}"
                                     >
-                                        <img src="${imagen}" alt="Foto ${index + 1} de ${abrigo.nombre}">
+                                        <img loading="lazy" decoding="async" src="${imagen}" alt="Foto ${index + 1} de ${abrigo.nombre}">
                                     </button>
                                 `)
                                 .join("")}
@@ -740,7 +782,9 @@ function abrirDetalle(id) {
         ? "Consultar esta confección"
         : "Consultar este abrigo";
 
+    activarFocoDialogo(modal);
     modal.classList.add("activo");
+    cerrarModal.focus();
     document.body.classList.add("modal-abierto");
 
     const tarjetaModal = modal.querySelector(".modal-card");
@@ -783,7 +827,7 @@ function renderizarNovedades() {
             <div class="novedad-imagen">
                 ${
                     imagenPrincipal
-                        ? `<img src="${imagenPrincipal}" alt="${abrigo.nombre}">`
+                        ? `<img loading="lazy" decoding="async" src="${imagenPrincipal}" alt="${abrigo.nombre}">`
                         : `<div class="imagen-placeholder">Foto pendiente</div>`
                 }
 
@@ -870,7 +914,9 @@ function actualizarPanelFavoritos() {
         item.classList.add("item-favorito");
 
         item.innerHTML = `
-            <div class="item-favorito-img">Foto pendiente</div>
+            <div class="item-favorito-img">${obtenerImagenes(abrigo)[0]
+                ? `<img loading="lazy" decoding="async" src="${obtenerImagenes(abrigo)[0]}" alt="${abrigo.nombre}">`
+                : "Foto pendiente"}</div>
 
             <div class="item-favorito-info">
                 <h3>${abrigo.nombre}</h3>
@@ -892,11 +938,16 @@ function actualizarPanelFavoritos() {
 
 function abrirPanelFavoritos() {
     actualizarPanelFavoritos();
+    activarFocoDialogo(panelFavoritos);
+    document.body.classList.add("panel-abierto");
     panelFavoritos.classList.add("activo");
+    cerrarPanelFavoritos.focus();
     overlayPanel.classList.add("activo");
 }
 
 function cerrarPanel() {
+    if (panelFavoritos.classList.contains("activo")) restaurarFocoDialogo();
+    document.body.classList.remove("panel-abierto");
     panelFavoritos.classList.remove("activo");
     overlayPanel.classList.remove("activo");
 }
@@ -917,7 +968,7 @@ if (btnLimpiar) {
 
         categoriaActiva = "todos";
 
-        document.querySelectorAll(".chip").forEach((chip) => {
+        chipsCategorias.querySelectorAll(".chip").forEach((chip) => {
             chip.classList.remove("activo");
         });
 
@@ -941,7 +992,7 @@ if (chipsCategorias) {
 
         categoriaActiva = chip.dataset.tipo;
 
-        document.querySelectorAll(".chip").forEach((item) => {
+        chipsCategorias.querySelectorAll(".chip").forEach((item) => {
             item.classList.remove("activo");
         });
 
@@ -1079,16 +1130,14 @@ if (modalImagen) {
 
 if (cerrarModal) {
     cerrarModal.addEventListener("click", () => {
-        modal.classList.remove("activo");
-        document.body.classList.remove("modal-abierto");
+        cerrarDetalle();
     });
 }
 
 if (modal) {
     modal.addEventListener("click", (evento) => {
         if (evento.target === modal) {
-            modal.classList.remove("activo");
-        document.body.classList.remove("modal-abierto");
+            cerrarDetalle();
         }
     });
 }
@@ -1132,8 +1181,11 @@ if (panelFavoritosBody) {
 
 document.addEventListener("keydown", (evento) => {
     if (evento.key === "Escape") {
-        if (modal) modal.classList.remove("activo");
-        document.body.classList.remove("modal-abierto");
+        cerrarDetalle();
+        navLinks.classList.remove("activo");
+        menuToggle.textContent = "☰";
+        menuToggle.setAttribute("aria-label", "Abrir menú");
+        menuToggle.setAttribute("aria-expanded", "false");
         cerrarPanel();
     }
 });
@@ -1154,7 +1206,7 @@ if (btnSubir) {
     btnSubir.addEventListener("click", () => {
         window.scrollTo({
             top: 0,
-            behavior: "smooth",
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
         });
     });
 }
@@ -1166,9 +1218,11 @@ if (menuToggle && navLinks) {
         if (navLinks.classList.contains("activo")) {
             menuToggle.textContent = "×";
             menuToggle.setAttribute("aria-label", "Cerrar menú");
+            menuToggle.setAttribute("aria-expanded", "true");
         } else {
             menuToggle.textContent = "☰";
             menuToggle.setAttribute("aria-label", "Abrir menú");
+            menuToggle.setAttribute("aria-expanded", "false");
         }
     });
 
@@ -1177,6 +1231,7 @@ if (menuToggle && navLinks) {
             navLinks.classList.remove("activo");
             menuToggle.textContent = "☰";
             menuToggle.setAttribute("aria-label", "Abrir menú");
+            menuToggle.setAttribute("aria-expanded", "false");
         }
     });
 }
@@ -1184,7 +1239,11 @@ if (menuToggle && navLinks) {
 /* FAQ */
 const preguntasFaq = document.querySelectorAll(".faq-pregunta");
 
-preguntasFaq.forEach((pregunta) => {
+preguntasFaq.forEach((pregunta, index) => {
+    const respuesta = pregunta.nextElementSibling;
+    respuesta.id = `faq-respuesta-${index}`;
+    pregunta.setAttribute("aria-controls", respuesta.id);
+    pregunta.setAttribute("aria-expanded", "false");
     pregunta.addEventListener("click", () => {
         const item = pregunta.closest(".faq-item");
 
@@ -1195,6 +1254,7 @@ preguntasFaq.forEach((pregunta) => {
         });
 
         item.classList.toggle("activo");
+        preguntasFaq.forEach((boton) => boton.setAttribute("aria-expanded", boton.closest(".faq-item").classList.contains("activo")));
     });
 });
 
@@ -1273,8 +1333,11 @@ function actualizarCuentaRegresivaLive() {
 }
 
 if (btnDinamicaLive && dinamicaLive) {
+    btnDinamicaLive.setAttribute("aria-controls", "dinamica-live");
+    btnDinamicaLive.setAttribute("aria-expanded", "false");
     btnDinamicaLive.addEventListener("click", () => {
         dinamicaLive.classList.toggle("activo");
+        btnDinamicaLive.setAttribute("aria-expanded", dinamicaLive.classList.contains("activo"));
 
         if (dinamicaLive.classList.contains("activo")) {
             btnDinamicaLive.textContent = "Ocultar dinámica del live";
@@ -1532,7 +1595,7 @@ function configurarMenuActivoPorScroll() {
 
 configurarScrollReveal();
 configurarHeaderCompacto();
-configurarRippleBotones();
+// La interfaz editorial no utiliza efectos ripple.
 configurarContadoresInicio();
 configurarMenuActivoPorScroll();
 
@@ -1607,6 +1670,7 @@ if (navFavoritosMobile) {
         if (menuToggle) {
             menuToggle.textContent = "☰";
             menuToggle.setAttribute("aria-label", "Abrir menú");
+            menuToggle.setAttribute("aria-expanded", "false");
         }
 
         if (typeof abrirPanelFavoritos === "function") {
@@ -1625,6 +1689,7 @@ const mobilePagesConfig = [
         label: "Inicio",
         selectors: [
             "#inicio",
+            "#categorias",
             ".barra-info",
             "#novedades",
             "#confecciones",
@@ -1657,6 +1722,8 @@ function obtenerPaginaPorHash(hash) {
     if (
         [
             "inicio",
+            "categorias",
+            "contenido",
             "novedades",
             "confecciones",
             "catalogo",
@@ -1752,6 +1819,7 @@ function activarPaginaMovil(pageId, moverArriba = true) {
 
     document.querySelectorAll(".mobile-switch-btn").forEach((boton) => {
         boton.classList.toggle("activo", boton.dataset.mobilePage === page.id);
+        boton.setAttribute("aria-pressed", boton.dataset.mobilePage === page.id);
     });
 
     if (moverArriba) {
@@ -1771,6 +1839,35 @@ function desactivarModoMovilSecciones() {
     });
 }
 
+function actualizarEnlacesNavegacion(hash) {
+    navLinks.querySelectorAll('a[href^="#"]').forEach((enlace) => {
+        enlace.classList.toggle("activo-link", enlace.getAttribute("href") === hash);
+    });
+}
+
+function navegarMovil(hash, actualizarUrl = true) {
+    actualizarEnlacesNavegacion(hash);
+    activarPaginaMovil(obtenerPaginaPorHash(hash), false);
+    if (actualizarUrl && window.location.hash !== hash) history.pushState(null, "", hash);
+    requestAnimationFrame(() => {
+        const destino = document.querySelector(hash);
+        if (hash === "#contenido") destino?.focus({ preventScroll: true });
+        destino?.scrollIntoView({
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+            block: "start",
+        });
+    });
+}
+
+window.addEventListener("popstate", () => {
+    if (esVistaMovilBeaGi()) navegarMovil(window.location.hash || "#inicio", false);
+});
+window.addEventListener("hashchange", () => {
+    const hash = window.location.hash || "#inicio";
+    if (esVistaMovilBeaGi()) navegarMovil(hash, false);
+    else navegarEscritorio(hash, false);
+});
+
 function configurarModoAppMovil() {
     crearSwitcherMovil();
     prepararSeccionesMoviles();
@@ -1785,7 +1882,8 @@ function configurarModoAppMovil() {
                 return;
             }
 
-            activarPaginaMovil(boton.dataset.mobilePage);
+            const hashes = { inicio: "#inicio", lives: "#lives-tiktok", preguntas: "#preguntas-frecuentes" };
+            navegarMovil(hashes[boton.dataset.mobilePage]);
         });
     }
 
@@ -1817,31 +1915,17 @@ function configurarModoAppMovil() {
         if (menuToggle) {
             menuToggle.textContent = "☰";
             menuToggle.setAttribute("aria-label", "Abrir menú");
+            menuToggle.setAttribute("aria-expanded", "false");
         }
 
-        activarPaginaMovil(pageId, false);
-
-        /*
-        Después de mostrar la sección correcta, desplazamos
-        hasta el elemento exacto que se presionó.
-        */
-        requestAnimationFrame(() => {
-            const destino = document.querySelector(hash);
-
-            if (destino) {
-                destino.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                });
-            }
-        });
+        navegarMovil(hash);
     });
 
     const mediaMovil = window.matchMedia("(max-width: 768px)");
 
     const aplicarModoSegunPantalla = () => {
         if (mediaMovil.matches) {
-            activarPaginaMovil(paginaMovilActiva, false);
+            activarPaginaMovil(obtenerPaginaPorHash(window.location.hash), false);
         } else {
             desactivarModoMovilSecciones();
         }
@@ -1872,6 +1956,7 @@ const desktopPagesConfig = [
         id: "inicio",
         selectors: [
             "#inicio",
+            "#categorias",
             ".barra-info",
             "#novedades",
             "#confecciones",
@@ -1968,6 +2053,7 @@ function desactivarVistasEscritorio() {
 }
 
 function navegarEscritorio(hash, actualizarUrl = true) {
+    actualizarEnlacesNavegacion(hash);
     const vistaId = obtenerVistaEscritorioPorHash(hash);
 
     activarVistaEscritorio(vistaId);
@@ -1980,14 +2066,15 @@ function navegarEscritorio(hash, actualizarUrl = true) {
         const destino = document.querySelector(hash);
 
         if (destino) {
+            if (hash === "#contenido") destino.focus({ preventScroll: true });
             destino.scrollIntoView({
-                behavior: "smooth",
+                behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
                 block: "start",
             });
         } else {
             window.scrollTo({
                 top: 0,
-                behavior: "smooth",
+                behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
             });
         }
     });

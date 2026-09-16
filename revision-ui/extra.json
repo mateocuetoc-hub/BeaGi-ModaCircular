@@ -1,0 +1,48 @@
+{
+  "errors": [],
+  "console": [
+    "Failed to load resource: the server responded with a status of 403 ()"
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 900,
+      "remoteProducts": 7,
+      "columns": 4,
+      "persistence": true,
+      "countdown": true,
+      "resize": true
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "remoteProducts": 7,
+      "columns": 3,
+      "persistence": true,
+      "countdown": true,
+      "resize": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "remoteProducts": 7,
+      "columns": 2,
+      "persistence": true,
+      "countdown": true,
+      "resize": true
+    },
+    {
+      "width": 360,
+      "height": 800,
+      "remoteProducts": 7,
+      "columns": 2,
+      "persistence": true,
+      "countdown": true,
+      "resize": true
+    }
+  ],
+  "tiktok": {
+    "text": "@javieraparraguez_17",
+    "html": "\n            <blockquote class=\"tiktok-embed\" cite=\"https://www.tiktok.com/@javieraparraguez_17\" data-unique-id=\"javieraparraguez_17\" data-embed-type=\"creator\" data-embed-from=\"oembed\" style=\"max-width: 720px; min-width: 288px;\" id=\"v17352946131005454\">\n                <section>\n                    <a target=\"_blank\" href=\"https://www.tiktok.com/@javieraparraguez_17?refer=creator_embed\" rel=\"noopener noreferrer\">\n                        @javieraparraguez_17\n                    </a>\n                </section>\n            <iframe name=\"__tt_embed__v17352946131005454\" sandbox=\"allow-popups allow-popups-to-escape-sandbox allow-scripts allow-top-navigation allow-same-origin\" src=\"https://www.tiktok.com/embed/@javieraparraguez_17?lang=es-ES&amp;referrer=http%3A%2F%2Flocalhost%3A5500%2F%23catalogo&amp;embedFrom=oembed\" style=\"width: 0px; height: 0px; display: none; visibility: hidden;\"></iframe></blockquote>\n        "
+  }
+}
