@@ -26,6 +26,7 @@
 <body>
 
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <div class="franja-info"><div class="franja-pista"><span>PIEZAS ÚNICAS · MODA CIRCULAR · CONFECCIONES HECHAS POR BEAGI · CONSULTA DIRECTA POR WHATSAPP · ATENCIÓN EN SAN FELIPE · </span><span aria-hidden="true">PIEZAS ÚNICAS · MODA CIRCULAR · CONFECCIONES HECHAS POR BEAGI · CONSULTA DIRECTA POR WHATSAPP · ATENCIÓN EN SAN FELIPE · </span></div><button type="button" id="pausar-franja" aria-label="Pausar franja informativa" aria-pressed="false">Ⅱ</button></div>
     <header class="header">
         <nav class="navbar" aria-label="Navegación principal">
             <a href="#inicio" class="marca" aria-label="BeaGi Moda Circular · Inicio">
@@ -34,14 +35,30 @@
             </a>
             <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú" aria-controls="nav-links" aria-expanded="false">☰</button>
             <ul class="nav-links" id="nav-links">
-                <li><a href="#inicio">Inicio</a></li>
+                <li class="nav-inicio"><a href="#inicio">Inicio</a></li>
                 <li><a href="#catalogo">Abrigos</a></li>
                 <li><a href="#confecciones">Confecciones</a></li>
+                <li class="nav-lives-desktop"><a href="#lives-tiktok">Lives</a></li>
                 <li><a href="#nosotros">Nosotras</a></li>
                 <li><a href="#contacto">Contacto</a></li>
                 <li class="nav-mobile-favoritos-item"><button class="nav-favoritos-mobile" id="nav-favoritos-mobile" type="button">♡ Favoritos</button></li>
             </ul>
+            <button type="button" class="abrir-busqueda" id="abrir-busqueda" aria-expanded="false" aria-controls="busqueda-panel" hidden>⌕ <span>Buscar</span></button>
         </nav>
+        <section class="busqueda-panel" id="busqueda-panel" aria-label="Buscar productos" hidden>
+            <div class="busqueda-cabecera"><label for="busqueda-global">Encuentra tu próxima historia</label><button type="button" id="cerrar-busqueda" aria-label="Cerrar búsqueda">×</button></div>
+            <input id="busqueda-global" type="search" placeholder="Buscar abrigos o confecciones…" autocomplete="off" aria-controls="busqueda-resultados">
+            <p id="busqueda-estado" role="status">Escribe para buscar en BeaGi.</p>
+            <div id="busqueda-resultados"></div>
+        </section>
+<button
+    class="btn-favoritos-panel"
+    id="btn-favoritos-panel"
+    type="button"
+    aria-label="Ver favoritos"
+>
+    ♡ Favoritos <span id="favoritos-contador">0</span>
+</button>
     </header>
 
     <main id="contenido" tabindex="-1">
@@ -56,11 +73,28 @@
             </div>
             <div class="hero-nota"><span aria-hidden="true">↻</span> Una nueva forma de mirar lo que vestimos.</div>
         </div>
-        <!-- Fotografía editorial reemplazable por una imagen real de la tienda o abrigos. -->
-        <figure class="hero-editorial">
-            <img class="hero-foto" src="assets/img/confecciones/punos/puno-blanco-bonito-mano.jpeg" alt="Detalle de un puño blanco de encaje BeaGi sobre una mano frente a un espejo" width="1122" height="1402" fetchpriority="high" decoding="async">
-            <figcaption><span>El valor de los detalles</span><span>Hecho por BeaGi ↗</span></figcaption>
-            <span class="editorial-sello">Hecho a mano.<br>Con otra mirada.</span>
+        <figure class="hero-editorial" aria-label="Campaña BeaGi" aria-roledescription="carrusel" tabindex="0">
+            <div class="campana-slides">
+                <div class="campana-slide actual" role="group" aria-roledescription="diapositiva" aria-label="1 de 3">
+                    <img class="hero-foto" src="assets/img/confecciones/punos/puno-blanco-bonito-mano.jpeg" alt="Puño blanco de encaje sobre una mano" width="1122" height="1402" fetchpriority="high" decoding="async">
+                    <div class="campana-copy"><span>El valor de los detalles</span><a href="#confecciones">Descubrir confecciones ↗</a></div>
+                </div>
+                <div class="campana-slide" aria-hidden="true" role="group" aria-roledescription="diapositiva" aria-label="2 de 3" inert>
+                    <img class="hero-foto" src="assets/img/confecciones/punos/puno-blanco-rosado-mano.jpeg" alt="Puño artesanal blanco y rosado sobre una mano" width="1122" height="1402" loading="lazy" decoding="async">
+                    <div class="campana-copy"><span>Pequeños detalles, otra mirada</span><a href="#confecciones">Descubrir confecciones ↗</a></div>
+                </div>
+                <div class="campana-slide" aria-hidden="true" role="group" aria-roledescription="diapositiva" aria-label="3 de 3" inert>
+                    <img class="hero-foto" src="assets/img/confecciones/punos/puno-azul-mano.jpeg" alt="Puño azul confeccionado por BeaGi sobre una mano" width="1122" height="1402" loading="lazy" decoding="async">
+                    <div class="campana-copy"><span>Confecciones con identidad</span><a href="#confecciones">Descubrir confecciones ↗</a></div>
+                </div>
+            </div>
+            <figcaption><span>Hecho por BeaGi</span><span>Con otra mirada.</span></figcaption>
+            <div class="campana-controles" hidden>
+                <button type="button" data-campana="-1" aria-label="Foto anterior">←</button>
+                <div class="campana-indicadores"><button type="button" data-slide="0" aria-label="Ver foto 1" aria-pressed="true">01</button><button type="button" data-slide="1" aria-label="Ver foto 2" aria-pressed="false">02</button><button type="button" data-slide="2" aria-label="Ver foto 3" aria-pressed="false">03</button></div>
+                <button type="button" data-campana="1" aria-label="Foto siguiente">→</button>
+                <button type="button" id="pausar-campana" aria-label="Pausar carrusel" aria-pressed="false">Ⅱ</button>
+            </div>
         </figure>
     </section>
 
@@ -244,6 +278,7 @@
 
 
 <section id="novedades" class="novedades">
+    <div class="novedades-controles" hidden><button type="button" data-novedades="-1" aria-label="Novedades anteriores" aria-controls="novedades-productos">←</button><button type="button" data-novedades="1" aria-label="Novedades siguientes" aria-controls="novedades-productos">→</button></div>
     <div class="seccion-header">
         <span class="etiqueta-seccion">Últimos ingresos</span>
         <h2>Novedades de BeaGi</h2>
@@ -633,14 +668,7 @@
         <span class="whatsapp-label">WhatsApp</span>
     </a>
 
-<button
-    class="btn-favoritos-panel"
-    id="btn-favoritos-panel"
-    type="button"
-    aria-label="Ver favoritos"
->
-    ♡ Favoritos <span id="favoritos-contador">0</span>
-</button>
+
 
 <div class="overlay-panel" id="overlay-panel"></div>
 

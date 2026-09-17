@@ -218,6 +218,13 @@ async function cargarAbrigosDesdeApi() {
 }
 
 function guardarFavoritos() {
+    document.querySelectorAll('#novedades-productos .btn-favorito').forEach((boton) => {
+        const activo = favoritos.has(Number(boton.dataset.id));
+        boton.classList.toggle('activo', activo);
+        boton.setAttribute('aria-pressed', String(activo));
+        boton.textContent = activo ? '♥' : '♡';
+    });
+
     localStorage.setItem("favoritosBeaGi", JSON.stringify([...favoritos]));
 }
 
@@ -363,25 +370,6 @@ function ordenarLista(listaAbrigos) {
     });
 }
 
-function activarAnimacionesTarjetas() {
-    const tarjetas = document.querySelectorAll(".producto");
-
-    const observador = new IntersectionObserver(
-        (entradas) => {
-            entradas.forEach((entrada) => {
-                if (entrada.isIntersecting) {
-                    entrada.target.classList.add("visible");
-                }
-            });
-        },
-        {
-            threshold: 0.15,
-        }
-    );
-
-    tarjetas.forEach((tarjeta) => observador.observe(tarjeta));
-}
-
 function obtenerDescripcionFiltros(cantidad) {
     const partes = [];
 
@@ -446,6 +434,8 @@ function renderizarAbrigos(listaAbrigos) {
 
         producto.innerHTML = `
             <div class="producto-imagen">
+                ${imagenes.length > 1 ? `<img class="producto-foto-secundaria" loading="lazy" decoding="async" src="${imagenes[1]}" alt="" aria-hidden="true">` : ""}
+                <button type="button" class="btn-detalle vista-rapida" data-id="${abrigo.id}">Vista rápida</button>
                 ${
                     imagenPrincipal
                         ? `<img loading="lazy" decoding="async" src="${imagenPrincipal}" alt="${abrigo.nombre}">`
@@ -499,9 +489,10 @@ function renderizarAbrigos(listaAbrigos) {
         `;
 
         contenedorProductos.appendChild(producto);
+        revelarElemento(producto, "fade-up", contenedorProductos.children.length - 1);
     });
 
-    activarAnimacionesTarjetas();
+
 }
 
 function renderizarConfecciones(listaConfecciones) {
@@ -547,6 +538,8 @@ function renderizarConfecciones(listaConfecciones) {
 
         producto.innerHTML = `
             <div class="producto-imagen">
+                ${imagenes.length > 1 ? `<img class="producto-foto-secundaria" loading="lazy" decoding="async" src="${imagenes[1]}" alt="" aria-hidden="true">` : ""}
+                <button type="button" class="btn-detalle vista-rapida" data-id="${confeccion.id}">Vista rápida</button>
                 ${
                     imagenPrincipal
                         ? `
@@ -633,9 +626,10 @@ function renderizarConfecciones(listaConfecciones) {
         `;
 
         contenedorConfecciones.appendChild(producto);
+        revelarElemento(producto, "fade-up", contenedorConfecciones.children.length - 1);
     });
 
-    activarAnimacionesTarjetas();
+
 }
 
 function aplicarFiltroConfecciones() {
@@ -824,7 +818,12 @@ function renderizarNovedades() {
         card.classList.add("novedad-card");
 
         card.innerHTML = `
-            <div class="novedad-imagen">
+            <div class="novedad-imagen producto-imagen">
+                ${imagenes.length > 1 ? `<img class="producto-foto-secundaria" loading="lazy" decoding="async" src="${imagenes[1]}" alt="" aria-hidden="true">` : ""}
+                <button type="button" class="btn-detalle vista-rapida" data-id="${abrigo.id}">Vista rápida</button>
+                <button type="button" class="btn-favorito ${favoritos.has(abrigo.id) ? "activo" : ""}" data-id="${abrigo.id}" aria-label="Favorito: ${abrigo.nombre}" aria-pressed="${favoritos.has(abrigo.id)}">${favoritos.has(abrigo.id) ? "♥" : "♡"}</button>
+                <span class="badge-disponibilidad ${disponibilidad.clase}">${disponibilidad.texto}</span>
+                ${imagenes.length > 1 ? `<span class="badge-fotos">${imagenes.length} fotos</span>` : ""}
                 ${
                     imagenPrincipal
                         ? `<img loading="lazy" decoding="async" src="${imagenPrincipal}" alt="${abrigo.nombre}">`
@@ -862,6 +861,7 @@ function renderizarNovedades() {
         `;
 
         novedadesProductos.appendChild(card);
+        revelarElemento(card, "fade-up", novedadesProductos.children.length - 1);
     });
 }
 
@@ -1093,6 +1093,19 @@ if (contenedorConfecciones) {
 
 if (novedadesProductos) {
     novedadesProductos.addEventListener("click", (evento) => {
+        const corazon = evento.target.closest('.btn-favorito');
+        if (corazon) {
+            const id = Number(corazon.dataset.id);
+            if (favoritos.has(id)) favoritos.delete(id); else favoritos.add(id);
+            guardarFavoritos();
+            aplicarFiltros();
+            actualizarPanelFavoritos();
+            corazon.classList.toggle('activo', favoritos.has(id));
+            corazon.setAttribute('aria-pressed', String(favoritos.has(id)));
+            corazon.textContent = favoritos.has(id) ? '♥' : '♡';
+            mostrarToast(favoritos.has(id) ? 'Prenda agregada a favoritos' : 'Prenda quitada de favoritos');
+            return;
+        }
         const botonDetalle = evento.target.closest(".btn-detalle");
 
         if (!botonDetalle) {
@@ -1242,6 +1255,10 @@ const preguntasFaq = document.querySelectorAll(".faq-pregunta");
 preguntasFaq.forEach((pregunta, index) => {
     const respuesta = pregunta.nextElementSibling;
     respuesta.id = `faq-respuesta-${index}`;
+    const interior = document.createElement("div");
+    while (respuesta.firstChild) interior.appendChild(respuesta.firstChild);
+    respuesta.appendChild(interior);
+    respuesta.inert = true;
     pregunta.setAttribute("aria-controls", respuesta.id);
     pregunta.setAttribute("aria-expanded", "false");
     pregunta.addEventListener("click", () => {
@@ -1254,7 +1271,11 @@ preguntasFaq.forEach((pregunta, index) => {
         });
 
         item.classList.toggle("activo");
-        preguntasFaq.forEach((boton) => boton.setAttribute("aria-expanded", boton.closest(".faq-item").classList.contains("activo")));
+        preguntasFaq.forEach((boton) => {
+            const abierta = boton.closest(".faq-item").classList.contains("activo");
+            boton.setAttribute("aria-expanded", abierta);
+            boton.nextElementSibling.inert = !abierta;
+        });
     });
 });
 
@@ -1387,46 +1408,27 @@ configurarEnlacesSeguros();
 /* ANIMACIONES INTERACTIVAS UX */
 /* ============================= */
 
+var observadorReveal;
+function revelarElemento(elemento, variante = "fade-up", indice = 0) {
+    if (!window.IntersectionObserver || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!observadorReveal) observadorReveal = new IntersectionObserver((entradas) => {
+        entradas.forEach((entrada) => {
+            if (entrada.isIntersecting) {
+                entrada.target.classList.add("reveal-visible");
+                observadorReveal.unobserve(entrada.target);
+            }
+        });
+    }, { threshold: 0.08 });
+    elemento.dataset.reveal = variante;
+    elemento.style.setProperty("--reveal-delay", `${Math.min(indice % 4 * 80, 300)}ms`);
+    elemento.classList.add("scroll-reveal");
+    observadorReveal.observe(elemento);
+}
 function configurarScrollReveal() {
-    const elementos = document.querySelectorAll(`
-        .hero-texto,
-        .hero-card,
-        .barra-info,
-        .live-info,
-        .live-card,
-        .novedades .seccion-header,
-        .novedades-top,
-        .novedad-card,
-        .catalogo-header,
-        .catalogo-controles,
-        .chips-categorias,
-        .resumen-catalogo,
-        .paso-card,
-        .faq-item,
-        .ubicacion-info,
-        .mapa-card,
-        .footer-contenido
-    `);
-
-    elementos.forEach((elemento) => {
-        elemento.classList.add("scroll-reveal");
-    });
-
-    const observador = new IntersectionObserver(
-        (entradas) => {
-            entradas.forEach((entrada) => {
-                if (entrada.isIntersecting) {
-                    entrada.target.classList.add("reveal-visible");
-                    observador.unobserve(entrada.target);
-                }
-            });
-        },
-        {
-            threshold: 0.12,
-        }
-    );
-
-    elementos.forEach((elemento) => observador.observe(elemento));
+    document.querySelectorAll(".seccion-header, .catalogo-header, .novedades-top, .paso-card, .faq-item, .ubicacion-info, .mapa-card, .live-info, .perfil-tiktok-escritorio, .footer-contenido").forEach((el) => revelarElemento(el));
+    document.querySelectorAll(".barra-info, .categoria-card, .live-card").forEach((el) => revelarElemento(el, "scale-soft"));
+    document.querySelectorAll(".hero-texto").forEach((el) => revelarElemento(el, "fade-left"));
+    document.querySelectorAll(".hero-editorial").forEach((el) => revelarElemento(el, "fade-right"));
 }
 
 function configurarHeaderCompacto() {
@@ -2134,3 +2136,103 @@ function configurarVistasEscritorio() {
 }
 
 configurarVistasEscritorio();
+
+/* Campaña y búsqueda: comparten el catálogo y la ficha existentes. */
+(function configurarExperienciaTienda() {
+    const movimientoReducido = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const abrir = document.getElementById('abrir-busqueda');
+    const panel = document.getElementById('busqueda-panel');
+    const campo = document.getElementById('busqueda-global');
+    const resultados = document.getElementById('busqueda-resultados');
+    const estado = document.getElementById('busqueda-estado');
+    abrir.hidden = false;
+    function cerrarBusqueda() {
+        panel.hidden = true;
+        abrir.setAttribute('aria-expanded', 'false');
+        abrir.focus();
+    }
+    const normalizar = (texto) => String(texto || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    function buscar() {
+        resultados.replaceChildren();
+        const termino = normalizar(campo.value.trim());
+        if (!termino) { estado.textContent = 'Escribe para buscar en BeaGi.'; return; }
+        const encontrados = productosTienda.filter((p) => normalizar(`${p.nombre} ${p.tipo || ''} ${p.descripcion || ''}`).includes(termino));
+        estado.textContent = encontrados.length ? `${encontrados.length} resultados. Mostrando hasta 8.` : 'No encontramos productos. Prueba con otro nombre.';
+        encontrados.slice(0, 8).forEach((producto) => {
+            const boton = document.createElement('button');
+            boton.type = 'button';
+            boton.className = 'busqueda-resultado';
+            const foto = obtenerImagenes(producto)[0];
+            if (foto) {
+                const img = document.createElement('img');
+                img.src = foto; img.alt = ''; img.loading = 'lazy'; img.width = 56; img.height = 70;
+                boton.append(img);
+            }
+            const texto = document.createElement('span');
+            texto.textContent = `${producto.nombre} · ${formatearPrecio(producto.precio)}`;
+            boton.append(texto);
+            boton.addEventListener('click', () => { cerrarBusqueda(); abrirDetalle(producto.id); });
+            resultados.append(boton);
+        });
+    }
+    abrir.addEventListener('click', () => {
+        if (!panel.hidden) { cerrarBusqueda(); return; }
+        panel.hidden = false; abrir.setAttribute('aria-expanded', 'true'); buscar(); campo.focus();
+    });
+    document.getElementById('cerrar-busqueda').addEventListener('click', cerrarBusqueda);
+    campo.addEventListener('input', buscar);
+    panel.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') { e.preventDefault(); cerrarBusqueda(); }
+        const botones = [...resultados.querySelectorAll('button')];
+        if (['ArrowDown', 'ArrowUp'].includes(e.key) && botones.length) {
+            e.preventDefault();
+            const indice = botones.indexOf(document.activeElement);
+            botones[(indice + (e.key === 'ArrowDown' ? 1 : -1) + botones.length) % botones.length].focus();
+        }
+    });
+    const desktop = window.matchMedia('(min-width: 769px)');
+    desktop.addEventListener('change', () => { if (!desktop.matches && !panel.hidden) { panel.hidden = true; abrir.setAttribute('aria-expanded', 'false'); document.getElementById('menu-toggle').focus(); } });
+    const campana = document.querySelector('.hero-editorial');
+    const slides = [...campana.querySelectorAll('.campana-slide')];
+    const puntos = [...campana.querySelectorAll('[data-slide]')];
+    const pausa = document.getElementById('pausar-campana');
+    let actual = 0, timer, pausado = false, hover = false;
+    campana.querySelector('.campana-controles').hidden = false;
+    function mostrar(indice) {
+        actual = (indice + slides.length) % slides.length;
+        slides.forEach((slide, i) => { slide.classList.toggle('actual', i === actual); slide.inert = i !== actual; slide.setAttribute('aria-hidden', String(i !== actual)); });
+        puntos.forEach((punto, i) => punto.setAttribute('aria-pressed', String(i === actual)));
+    }
+    function programar() {
+        clearInterval(timer);
+        if (!pausado && !hover && !campana.contains(document.activeElement) && !movimientoReducido.matches && !document.hidden) timer = setInterval(() => mostrar(actual + 1), 5500);
+    }
+    campana.querySelectorAll('[data-campana]').forEach((boton) => boton.addEventListener('click', () => { mostrar(actual + Number(boton.dataset.campana)); programar(); }));
+    puntos.forEach((boton) => boton.addEventListener('click', () => { mostrar(Number(boton.dataset.slide)); programar(); }));
+    campana.addEventListener('keydown', (e) => {
+        if (['ArrowLeft', 'ArrowRight'].includes(e.key)) { e.preventDefault(); mostrar(actual + (e.key === 'ArrowRight' ? 1 : -1)); }
+    });
+    campana.addEventListener('mouseenter', () => { hover = true; programar(); });
+    campana.addEventListener('mouseleave', () => { hover = false; programar(); });
+    campana.addEventListener('focusin', programar);
+    campana.addEventListener('focusout', () => setTimeout(programar, 0));
+    pausa.addEventListener('click', () => {
+        pausado = !pausado; pausa.setAttribute('aria-pressed', String(pausado)); pausa.setAttribute('aria-label', pausado ? 'Reanudar carrusel' : 'Pausar carrusel'); pausa.textContent = pausado ? '▷' : 'Ⅱ'; programar();
+    });
+    movimientoReducido.addEventListener('change', programar);
+    document.addEventListener('visibilitychange', programar);
+    mostrar(0); programar();
+    document.querySelector('.novedades-controles').hidden = false;
+    novedadesProductos.tabIndex = 0;
+    novedadesProductos.setAttribute('aria-label', 'Novedades, colección desplazable');
+    document.querySelectorAll('[data-novedades]').forEach((boton) => boton.addEventListener('click', () => {
+        novedadesProductos.scrollBy({ left: Number(boton.dataset.novedades) * novedadesProductos.clientWidth, behavior: movimientoReducido.matches ? 'instant' : 'smooth' });
+    }));
+    const franja = document.querySelector('.franja-info');
+    document.getElementById('pausar-franja').addEventListener('click', (e) => {
+        const detenida = franja.classList.toggle('pausada');
+        e.currentTarget.setAttribute('aria-pressed', String(detenida));
+        e.currentTarget.setAttribute('aria-label', detenida ? 'Reanudar franja informativa' : 'Pausar franja informativa');
+        e.currentTarget.textContent = detenida ? '▷' : 'Ⅱ';
+    });
+})();
