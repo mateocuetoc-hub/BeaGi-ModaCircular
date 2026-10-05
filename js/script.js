@@ -1117,6 +1117,38 @@ if (novedadesProductos) {
     });
 }
 
+// En pantallas tactiles, un toque sobre la foto alterna entre
+// la imagen principal y la secundaria, igual que el hover en escritorio.
+const dispositivoTactil = window.matchMedia("(hover: none), (pointer: coarse)");
+
+document.addEventListener("click", (evento) => {
+    if (!dispositivoTactil.matches || evento.target.closest("button, a")) {
+        return;
+    }
+
+    const contenedorImagen = evento.target.closest(".producto-imagen");
+
+    if (!contenedorImagen?.querySelector(":scope > .producto-foto-secundaria")) {
+        return;
+    }
+
+    const mostrarSecundaria =
+        !contenedorImagen.classList.contains("foto-secundaria-visible");
+
+    document
+        .querySelectorAll(".producto-imagen.foto-secundaria-visible")
+        .forEach((imagen) => {
+            if (imagen !== contenedorImagen) {
+                imagen.classList.remove("foto-secundaria-visible");
+            }
+        });
+
+    contenedorImagen.classList.toggle(
+        "foto-secundaria-visible",
+        mostrarSecundaria
+    );
+});
+
 if (modalImagen) {
     modalImagen.addEventListener("click", (evento) => {
         const miniatura = evento.target.closest(".miniatura-modal");

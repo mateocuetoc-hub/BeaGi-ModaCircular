@@ -400,6 +400,7 @@ body.modal-abierto, body.panel-abierto { overflow: hidden; }
 .novedades-controles { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 16px; }
 .novedades-controles button { width: 44px; }
 .producto-imagen > .producto-foto-secundaria { position: absolute; inset: 0; opacity: 0; z-index: 1; pointer-events: none; }
+.producto-imagen.foto-secundaria-visible > .producto-foto-secundaria { opacity: 1; }
 .producto-imagen > img { transition: opacity .4s ease, transform .55s ease; }
 .producto-imagen > button, .producto-imagen > span { z-index: 2; }
 .vista-rapida { display: none; position: absolute; bottom: 42px; left: 12px; right: 12px; background: var(--color-superficie); }
