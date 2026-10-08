@@ -789,13 +789,17 @@ function abrirDetalle(id) {
 }
 
 function obtenerNovedades() {
-    const productosNuevos = abrigos.filter((abrigo) => abrigo.nuevo === true);
+    // Priorizamos prendas nuevas o destacadas.
+    const disponibles = abrigos.filter(
+        (abrigo) => abrigo.stock > 0
+    );
 
-    if (productosNuevos.length > 0) {
-        return productosNuevos.slice(0, 6);
-    }
+    const seleccionados = disponibles.filter(
+        (abrigo) => abrigo.nuevo === true || abrigo.destacado === true
+    );
 
-    return abrigos.filter((abrigo) => abrigo.destacado === true).slice(0, 6);
+    // Si no hay selección, mostramos prendas disponibles del catálogo.
+    return (seleccionados.length > 0 ? seleccionados : disponibles).slice(0, 6);
 }
 
 function renderizarNovedades() {
@@ -2272,12 +2276,8 @@ configurarVistasEscritorio();
     movimientoReducido.addEventListener('change', programar);
     document.addEventListener('visibilitychange', programar);
     mostrar(0); programar();
-    document.querySelector('.novedades-controles').hidden = false;
     novedadesProductos.tabIndex = 0;
     novedadesProductos.setAttribute('aria-label', 'Novedades, colección desplazable');
-    document.querySelectorAll('[data-novedades]').forEach((boton) => boton.addEventListener('click', () => {
-        novedadesProductos.scrollBy({ left: Number(boton.dataset.novedades) * novedadesProductos.clientWidth, behavior: movimientoReducido.matches ? 'instant' : 'smooth' });
-    }));
     const franja = document.querySelector('.franja-info');
     document.getElementById('pausar-franja').addEventListener('click', (e) => {
         const detenida = franja.classList.toggle('pausada');
