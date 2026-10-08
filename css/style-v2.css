@@ -482,3 +482,216 @@ main { overflow-x: clip; }
     .nav-links { gap: 12px; }
     .nav-links a { font-size: 11px; }
 }
+
+/* Tarjeta de acceso */
+.generacion-texto h3 {
+    font-size: clamp(30px, 3.4vw, 46px);
+    line-height: 1.15;
+}
+
+.generacion-texto h3 em {
+    color: #f7f1ed;
+}
+
+/* Sección independiente de polerones */
+.polerones {
+    background: #fcf8f5;
+}
+
+.polerones-volver {
+    display: inline-flex;
+    padding: 10px 0;
+    margin-bottom: 28px;
+    color: #5a1f2a;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.polerones-volver:hover {
+    text-decoration: underline;
+}
+
+.polerones-encabezado {
+    max-width: 680px;
+    margin-bottom: 36px;
+}
+
+.polerones-encabezado h2 {
+    margin: 12px 0 18px;
+    font-size: clamp(34px, 4.5vw, 56px);
+}
+
+.polerones-encabezado h2 em {
+    color: #7c3545;
+}
+
+.polerones-encabezado p,
+.polerones-detalles > p {
+    line-height: 1.7;
+}
+
+.polerones-estudio {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    border: 1px solid #e5d7cf;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.polerones-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: clamp(24px, 4vw, 48px);
+    background: #f1e6de;
+    text-align: center;
+}
+
+.polerones-insignia {
+    color: #5a1f2a;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.polerones-preview svg {
+    display: block;
+    width: min(100%, 340px);
+    height: auto;
+}
+
+.polerones-preview p {
+    color: #66534e;
+    font-size: 12px;
+}
+
+.polerones-detalles {
+    padding: clamp(24px, 4vw, 48px);
+}
+
+.polerones-detalles h3 {
+    margin: 14px 0;
+    font-size: clamp(26px, 3vw, 34px);
+}
+
+.polerones-pasos {
+    display: grid;
+    gap: 22px;
+    margin: 28px 0;
+    padding-left: 24px;
+}
+
+.polerones-pasos li {
+    padding-left: 8px;
+    color: #5a1f2a;
+}
+
+.polerones-pasos strong,
+.polerones-pasos span {
+    display: block;
+}
+
+.polerones-pasos span {
+    margin-top: 5px;
+    color: #66534e;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.polerones-aviso {
+    padding: 16px;
+    border-radius: 10px;
+    background: #f7f1ed;
+    color: #66534e;
+    font-size: 13px;
+}
+
+@media (max-width: 768px) {
+    .polerones-estudio {
+        grid-template-columns: 1fr;
+    }
+
+    .polerones-preview svg {
+        max-width: 250px;
+    }
+}
+
+/* Tarjeta de presentación: polerones de cuarto medio. */
+.categoria-generacion {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+    gap: 28px;
+    padding: clamp(28px, 5vw, 64px);
+    background: var(--color-vino);
+    color: var(--color-crema);
+    overflow: hidden;
+}
+
+.generacion-etiqueta {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.generacion-texto h3 {
+    color: var(--color-crema);
+    font-size: clamp(36px, 4.5vw, 62px);
+    line-height: 1.08;
+    margin-bottom: 20px;
+}
+
+.generacion-texto h3 em {
+    color: var(--color-rosa-polvo);
+}
+
+.generacion-texto p {
+    max-width: 390px;
+    color: var(--color-crema);
+    font-size: 14px;
+}
+
+.generacion-boton {
+    display: inline-flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 28px;
+    padding: 13px 20px;
+    background: var(--color-crema);
+    color: var(--color-vino);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.generacion-ilustracion {
+    text-align: center;
+}
+
+.generacion-ilustracion svg {
+    display: block;
+    width: min(100%, 320px);
+    margin: auto;
+}
+
+.generacion-ilustracion > span {
+    display: block;
+    margin-top: 12px;
+    font-size: 11px;
+    letter-spacing: .5px;
+}
+
+@media (max-width: 768px) {
+    .categoria-generacion {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .generacion-ilustracion svg {
+        width: 220px;
+    }
+}

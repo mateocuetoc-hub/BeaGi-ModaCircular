@@ -1719,6 +1719,11 @@ if (navFavoritosMobile) {
 
 const mobilePagesConfig = [
     {
+        id: "polerones",
+        label: "Polerones",
+        selectors: ["#polerones"],
+    },
+    {
         id: "inicio",
         label: "Inicio",
         selectors: [
@@ -1751,6 +1756,8 @@ function esVistaMovilBeaGi() {
 }
 
 function obtenerPaginaPorHash(hash) {
+    if (hash === "#polerones") return "polerones";
+
     const limpio = hash.replace("#", "");
 
     if (
@@ -1916,7 +1923,12 @@ function configurarModoAppMovil() {
                 return;
             }
 
-            const hashes = { inicio: "#inicio", lives: "#lives-tiktok", preguntas: "#preguntas-frecuentes" };
+            const hashes = {
+                inicio: "#inicio",
+                lives: "#lives-tiktok",
+                preguntas: "#preguntas-frecuentes",
+                polerones: "#polerones",
+            };
             navegarMovil(hashes[boton.dataset.mobilePage]);
         });
     }
@@ -1987,6 +1999,10 @@ configurarModoAppMovil();
 
 const desktopPagesConfig = [
     {
+        id: "polerones",
+        selectors: ["#polerones"],
+    },
+    {
         id: "inicio",
         selectors: [
             "#inicio",
@@ -2016,6 +2032,8 @@ function esVistaEscritorioBeaGi() {
 }
 
 function obtenerVistaEscritorioPorHash(hash) {
+    if (hash === "#polerones") return "polerones";
+
     const id = hash.replace("#", "");
 
     if (id === "lives-tiktok") {
